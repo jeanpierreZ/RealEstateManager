@@ -1,12 +1,18 @@
 package com.openclassrooms.realestatemanager.models
 
-data class Item(var type: String,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class Item(@PrimaryKey(autoGenerate = true) var id: Int,
+                var type: String,
                 var price: Int,
                 var surface: Int,
                 var roomsNumber: Int,
                 var description: String,
                 var photo: List<String>,
                 var address: String,
+                var district: String,
                 var pointsOfInterest: List<String>,
                 var status: String,
                 var entryDate: String,
