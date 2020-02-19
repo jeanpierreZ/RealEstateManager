@@ -3,7 +3,7 @@ package com.openclassrooms.realestatemanager.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "item_table")
 data class Item(@PrimaryKey(autoGenerate = true) var id: Int,
                 var type: String,
                 var price: Int,

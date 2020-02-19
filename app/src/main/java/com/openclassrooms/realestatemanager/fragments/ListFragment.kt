@@ -22,11 +22,15 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     private var recyclerView: RecyclerView? = null
     private var itemAdapter: ItemAdapter? = null
 
-    private var item: Item = Item(0, "type", 100, 10, 2,
+    private var itemTest: Item = Item(0, "type", 100, 10, 2,
             "description", listOf("photo"), "address", "district",
             listOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
 
-    private var itemList: MutableList<Item> = mutableListOf()
+    private var secondItemTest: Item = Item(0, "type2", 200, 10, 2,
+            "description", listOf("photo"), "address", "district2",
+            listOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
+
+    private var itemList: MutableList<Item?> = mutableListOf()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -38,10 +42,12 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         recyclerView = fragmentView.findViewById(R.id.fragment_list_recycler_view)
 
         configureRecyclerView()
-        itemList.add(0, item)
+
+        itemList.add(0, itemTest)
+        itemList.add(1, secondItemTest)
         updateUI(itemList)
 
-        return view
+        return fragmentView
     }
 
     override fun onClickItem(position: Int) {
@@ -51,8 +57,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
     private fun configureRecyclerView() {
         // Reset list
-        //itemList = null
-        //itemList.add(0, item)
+        //itemList.clear()
         // Create the adapter by passing the list of articles
         itemAdapter = ItemAdapter(itemList, Glide.with(this), this)
         // Attach the adapter to the recyclerView to populate items
@@ -61,9 +66,8 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         recyclerView?.layoutManager = LinearLayoutManager(activity)
     }
 
-    private fun updateUI(updateList: List<Item>) {
+    private fun updateUI(updateList: List<Item?>) {
         // Add the list from the request and notify the adapter
-        itemList.addAll(updateList)
-        itemAdapter?.notifyDataSetChanged()
+        itemAdapter?.setItems(updateList)
     }
 }

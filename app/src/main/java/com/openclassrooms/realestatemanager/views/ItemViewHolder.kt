@@ -41,12 +41,12 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
         imageItem = itemView.findViewById(R.id.item_image)
     }
 
-    fun updateItems(item: Item, glide: RequestManager, callback: ItemAdapter.Listener) {
+    fun updateItems(item: Item?, glide: RequestManager, callback: ItemAdapter.Listener) {
         // Update widgets
-        textViewType?.text = item.type
-        textViewDistrict?.text = item.district
-        textViewPrice?.text = item.price.toString()
-        imageItem?.let { glide.load(item.photo).into(it) }
+        textViewType?.text = item?.type
+        textViewDistrict?.text = item?.district
+        textViewPrice?.text = item?.price.toString()
+        imageItem?.let { glide.load(item?.photo).into(it) }
         // Create a new weak Reference to our Listener
         this.callbackWeakRef = WeakReference(callback)
         // Implement Listener
