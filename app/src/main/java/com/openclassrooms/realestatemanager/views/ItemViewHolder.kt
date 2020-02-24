@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.views
 
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -46,7 +47,7 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
         textViewType?.text = item?.type
         textViewDistrict?.text = item?.district
         textViewPrice?.text = item?.price.toString()
-        imageItem?.let { glide.load(item?.photo).into(it) }
+        imageItem?.let { glide.load(item?.photo?.get(1)).into(it) }
         // Create a new weak Reference to our Listener
         this.callbackWeakRef = WeakReference(callback)
         // Implement Listener

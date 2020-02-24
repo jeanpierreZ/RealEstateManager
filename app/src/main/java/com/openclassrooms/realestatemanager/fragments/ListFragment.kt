@@ -23,12 +23,14 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     private var itemAdapter: ItemAdapter? = null
 
     private var itemTest: Item = Item(0, "type", 100, 10, 2,
-            "description", listOf("photo"), "address", "district",
-            listOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
+            "description", arrayListOf("https://cdn.pixabay.com/photo/2016/03/04/03/54/catherine-deneuve-1235443__340.jpg",
+            "https://cdn.pixabay.com/photo/2016/03/20/17/19/marylyn-monroe-female-1269011__340.jpg"), "address", "district",
+            arrayListOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
 
     private var secondItemTest: Item = Item(0, "type2", 200, 10, 2,
-            "description", listOf("photo"), "address", "district2",
-            listOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
+            "description", arrayListOf("https://cdn.pixabay.com/photo/2019/08/09/21/20/james-dean-4395893_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/08/17/13/51/clint-eastwood-4412219__340.jpg"), "address", "district2",
+            arrayListOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
 
     private var itemList: MutableList<Item?> = mutableListOf()
 

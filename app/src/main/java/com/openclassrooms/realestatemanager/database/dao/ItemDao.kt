@@ -10,15 +10,14 @@ import com.openclassrooms.realestatemanager.models.Item
 
 @Dao
 interface ItemDao {
-/*
+
     @Query("SELECT * FROM item_table")
     fun getItems(): LiveData<List<Item?>>
 
     @Insert
-    fun insertItem(item: Item?): Int
+    fun insertItem(item: Item): Long
 
     @Update
-    fun updateItem(item: Item?): Int
+    fun updateItem(item: Item): Int
 
- */
 }

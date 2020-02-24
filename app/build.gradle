@@ -33,8 +33,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Fragment
-    implementation "androidx.fragment:fragment-ktx:1.2.1"
-    implementation "androidx.fragment:fragment-testing:1.2.1"
+    implementation "androidx.fragment:fragment-ktx:1.2.2"
+    debugImplementation "androidx.fragment:fragment-testing:1.2.2"
 
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.1.0'

@@ -8,9 +8,9 @@ import com.openclassrooms.realestatemanager.database.dao.ItemDao
 import com.openclassrooms.realestatemanager.models.Item
 
 // Annotate class to be a Room Database with a table (entity) of the Item class
-//@Database(entities = [Item::class], version = 1, exportSchema = false)
+@Database(entities = [Item::class], version = 1, exportSchema = false)
 abstract class ItemRoomDatabase: RoomDatabase() {
-/*
+
     // --- DAO ---
     abstract fun itemDao(): ItemDao
 
@@ -38,6 +38,4 @@ abstract class ItemRoomDatabase: RoomDatabase() {
         }
     }
 
-
- */
 }
