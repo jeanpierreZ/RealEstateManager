@@ -13,7 +13,7 @@ class ItemAdapter(private var list: List<Item?>,
                   private val glide: RequestManager,
                   private val callback: Listener): RecyclerView.Adapter<ItemViewHolder>() {
 
-    // CALLBACK
+    // Callback
     interface Listener {
         fun onClickItem(position: Int)
     }

@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,8 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
     private var itemList: MutableList<Item?> = mutableListOf()
 
+    // Declare callback
+    private var callbackItem: OnItemClickedListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -52,9 +55,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         return fragmentView
     }
 
-    override fun onClickItem(position: Int) {
-    }
-
+    //----------------------------------------------------------------------------------
     // Configure RecyclerViews, Adapters & LayoutManager
 
     private fun configureRecyclerView() {
@@ -71,5 +72,36 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     private fun updateUI(updateList: List<Item?>) {
         // Add the list from the request and notify the adapter
         itemAdapter?.setItems(updateList)
+    }
+
+    //----------------------------------------------------------------------------------
+
+    override fun onClickItem(position: Int) {
+        // Spread the click to the parent activity with the position of the item in the RecyclerView
+        callbackItem?.onItemClicked(position)
+    }
+
+    //----------------------------------------------------------------------------------
+    // Interface for callback to parent activity and associated methods when click on an article
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Call the method that creating callback after being attached to parent activity
+        createCallbackToParentActivity()
+    }
+
+    // Declare our interface that will be implemented by any container activity
+    interface OnItemClickedListener {
+        fun onItemClicked(position: Int)
+    }
+
+    // Create callback to parent activity
+    private fun createCallbackToParentActivity() {
+        try {
+            // Parent activity will automatically subscribe to callback
+            callbackItem = activity as OnItemClickedListener?
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$e must implement OnItemClickedListener")
+        }
     }
 }

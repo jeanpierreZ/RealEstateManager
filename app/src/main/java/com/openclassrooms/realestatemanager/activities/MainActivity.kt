@@ -4,9 +4,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
+
+    companion object {
+        // Key for item position
+        const val ITEM_POSITION: String = "item_position"
+    }
 
     // For design
     private var toolbar: Toolbar? = null
@@ -23,6 +29,7 @@ class MainActivity : AppCompatActivity() {
                 .commit()
     }
 
+    //----------------------------------------------------------------------------------
     // Private methods to configure design
 
     private fun configureToolbar() {
@@ -32,4 +39,18 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
     }
 
+    //----------------------------------------------------------------------------------
+    // Implement listener from ListFragment to open DetailsFragment when click on an item
+
+    override fun onItemClicked(position: Int) {
+        val detailsFragment = DetailsFragment()
+
+        val bundleItemPosition = Bundle()
+        bundleItemPosition.putInt(ITEM_POSITION, position)
+        detailsFragment.arguments = bundleItemPosition
+
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.activity_main_fragment_container_view, detailsFragment)
+                .commit()
+    }
 }
