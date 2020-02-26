@@ -21,7 +21,7 @@ class DetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         val fragmentView: View = inflater.inflate(R.layout.fragment_details, container, false)
 
-        val textView: TextView = fragmentView.findViewById(R.id.details_fragment_textview)
+        val textView: TextView = fragmentView.findViewById(R.id.details_fragment_description)
 
         val itemPosition: Int? = arguments?.getInt(ITEM_POSITION)
         textView.text = itemPosition.toString()
