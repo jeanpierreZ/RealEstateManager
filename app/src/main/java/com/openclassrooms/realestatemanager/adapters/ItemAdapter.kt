@@ -11,7 +11,7 @@ import com.openclassrooms.realestatemanager.views.ItemViewHolder
 
 class ItemAdapter(private var list: List<Item?>,
                   private val glide: RequestManager,
-                  private val callback: Listener): RecyclerView.Adapter<ItemViewHolder>() {
+                  private val callback: Listener) : RecyclerView.Adapter<ItemViewHolder>() {
 
     // Callback
     interface Listener {
@@ -35,5 +35,10 @@ class ItemAdapter(private var list: List<Item?>,
     fun setItems(itemList: List<Item?>) {
         this.list = itemList
         notifyDataSetChanged()
+    }
+
+    // Return the position of an item in the list
+    fun getPosition(position: Int): Item? {
+        return this.list[position]
     }
 }
