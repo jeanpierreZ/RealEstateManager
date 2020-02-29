@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -45,7 +46,9 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
         // Handle item selection
         return when (item.itemId) {
             R.id.menu_toolbar_add -> {
-                Toast.makeText(this, "add", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "add", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ItemActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.menu_toolbar_edit -> {
