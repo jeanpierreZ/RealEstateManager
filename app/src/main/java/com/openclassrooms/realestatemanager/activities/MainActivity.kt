@@ -1,6 +1,10 @@
 package com.openclassrooms.realestatemanager.activities
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.openclassrooms.realestatemanager.R
@@ -28,6 +32,33 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
         supportFragmentManager.beginTransaction()
                 .add(R.id.activity_main_fragment_container_view, listFragment)
                 .commit()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu and add it to the Toolbar
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.menu_toolbar_add -> {
+                Toast.makeText(this, "add", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.menu_toolbar_edit -> {
+                Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id.menu_toolbar_search -> {
+                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     //----------------------------------------------------------------------------------
