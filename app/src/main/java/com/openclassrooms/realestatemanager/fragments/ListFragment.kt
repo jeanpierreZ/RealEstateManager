@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.ItemAdapter
 import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.views.ItemViewModel
 
 
 /**
@@ -23,15 +26,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     private var recyclerView: RecyclerView? = null
     private var itemAdapter: ItemAdapter? = null
 
-    private var itemTest: Item = Item(0, "type", 100, 10, 2, 1, 2,
-            "marylyn-monroe description", arrayListOf("https://cdn.pixabay.com/photo/2016/03/04/03/54/catherine-deneuve-1235443__340.jpg",
-            "https://cdn.pixabay.com/photo/2016/03/20/17/19/marylyn-monroe-female-1269011__340.jpg"), "address", "district",
-            arrayListOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
-
-    private var secondItemTest: Item = Item(0, "type2", 200, 20, 4, 2, 3,
-            "clint-eastwood description", arrayListOf("https://cdn.pixabay.com/photo/2019/08/09/21/20/james-dean-4395893_960_720.jpg",
-            "https://cdn.pixabay.com/photo/2019/08/17/13/51/clint-eastwood-4412219__340.jpg"), "address", "district2",
-            arrayListOf("poi"), "status", "01/01/01", "02/02/02", "bobby")
+    private lateinit var itemViewModel: ItemViewModel
 
     private var itemList: MutableList<Item?> = mutableListOf()
 
@@ -48,9 +43,14 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
         configureRecyclerView()
 
-        itemList.add(0, itemTest)
-        itemList.add(1, secondItemTest)
-        updateUI(itemList)
+
+        // Use the ViewModelProvider to associate the ViewModel with MainActivity
+        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+
+        itemViewModel.getItems.observe(this, Observer { items ->
+            // Update the cached copy of the words in the adapter.
+            items?.let { updateUI(it) }
+        })
 
         return fragmentView
     }
@@ -59,8 +59,6 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     // Configure RecyclerViews, Adapters & LayoutManager
 
     private fun configureRecyclerView() {
-        // Reset list
-        //itemList.clear()
         // Create the adapter by passing the list of articles
         itemAdapter = ItemAdapter(itemList, Glide.with(this), this)
         // Attach the adapter to the recyclerView to populate items

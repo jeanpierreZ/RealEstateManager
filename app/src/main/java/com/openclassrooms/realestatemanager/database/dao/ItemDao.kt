@@ -15,9 +15,10 @@ interface ItemDao {
     fun getItems(): LiveData<List<Item?>>
 
     @Insert
-    fun insertItem(item: Item): Long
+    // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
+    suspend fun insertItem(item: Item): Long
 
     @Update
-    fun updateItem(item: Item): Int
+    suspend fun updateItem(item: Item): Int
 
 }

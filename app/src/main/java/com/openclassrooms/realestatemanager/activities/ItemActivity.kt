@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -29,6 +31,8 @@ class ItemActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, typeList)
         spinnerType.adapter = spinnerAdapter
         spinnerType.onItemSelectedListener = this
+
+        saveCreatedItem()
     }
 
     //----------------------------------------------------------------------------------
@@ -42,4 +46,18 @@ class ItemActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         textType = parent?.getItemAtPosition(position).toString()
         Toast.makeText(parent?.context, textType, Toast.LENGTH_SHORT).show()
     }
+
+    //----------------------------------------------------------------------------------
+    // Private methods
+
+    private fun saveCreatedItem() {
+        val saveButton = findViewById<Button>(R.id.button_save)
+        saveButton?.setOnClickListener {
+            val replyIntent = Intent()
+            replyIntent.putExtra(TYPE_ITEM, textType)
+            setResult(Activity.RESULT_OK, replyIntent)
+            finish()
+        }
+    }
+
 }

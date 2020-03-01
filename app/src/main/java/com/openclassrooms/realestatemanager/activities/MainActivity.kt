@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -8,12 +9,18 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
 import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.views.ItemViewModel
 
 class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
+
+    private val itemActivityRequestCode = 1
+
+    private lateinit var itemViewModel: ItemViewModel
 
     companion object {
         // Key for item position
@@ -29,10 +36,26 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
         configureToolbar()
 
+        // Use the ViewModelProvider to associate the ViewModel with MainActivity
+        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+
         val listFragment = ListFragment()
         supportFragmentManager.beginTransaction()
                 .add(R.id.activity_main_fragment_container_view, listFragment)
                 .commit()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == itemActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            data?.getStringExtra(ItemActivity.TYPE_ITEM)?.let {
+                val item = Item(null, it)
+                itemViewModel.insert(item)
+            }
+        } else {
+            Toast.makeText(applicationContext, "empty not saved", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,9 +69,8 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
         // Handle item selection
         return when (item.itemId) {
             R.id.menu_toolbar_add -> {
-//                Toast.makeText(this, "add", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, ItemActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, itemActivityRequestCode)
                 true
             }
             R.id.menu_toolbar_edit -> {
@@ -80,7 +102,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
     override fun onItemClicked(item: Item?) {
         val detailsFragment = DetailsFragment()
 
-        // Put the item un a bundle and fetch it in the fragment
+        // Put the item in a bundle and fetch it in detailsFragment
         val bundleItem = Bundle()
         bundleItem.putParcelable(BUNDLE_ITEM, item)
         detailsFragment.arguments = bundleItem
