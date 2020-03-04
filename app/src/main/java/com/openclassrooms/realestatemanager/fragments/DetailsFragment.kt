@@ -55,11 +55,15 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
         roomText.text = item?.roomsNumber.toString()
         bathroomText.text = item?.bathroomsNumber.toString()
         bedroomText.text = item?.bedroomsNumber.toString()
-        streetText.text = item?.address
-        apartmentText.text = "apart"
-        cityText.text = "city"
-        postalCodeText.text = "postal code"
-        countryText.text = " country"
+
+        val streetNumber = item?.address?.streetNumber.toString()
+        val street = item?.address?.street.toString()
+        streetText.text = String.format("$streetNumber $street")
+
+        apartmentText.text = item?.address?.apartmentNumber.toString()
+        cityText.text = item?.address?.city.toString()
+        postalCodeText.text = item?.address?.postalCode.toString()
+        countryText.text = item?.address?.country.toString()
 
         configureRecyclerView()
 

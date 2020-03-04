@@ -5,25 +5,27 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 @Parcelize
 @Entity(tableName = "item_table")
-data class Item(@PrimaryKey(autoGenerate = true) var id: Long? = null,
-                var type: String? = null,
-                var price: Int? = null,
-                var surface: Int? = null,
-                var roomsNumber: Int? = null,
-                var bathroomsNumber: Int? = null,
-                var bedroomsNumber: Int? = null,
-                var description: String? = null,
+data class Item(@PrimaryKey(autoGenerate = true) val id: Long? = null,
+                val type: String? = null,
+                val price: Int? = null,
+                val surface: Int? = null,
+                val roomsNumber: Int? = null,
+                val bathroomsNumber: Int? = null,
+                val bedroomsNumber: Int? = null,
+                val description: String? = null,
                 @Embedded
-                var photo: ArrayList<String>? = null,
-                var address: String? = null,
-                var district: String? = null,
+                val photo: ArrayList<String>? = null,
                 @Embedded
-                var pointsOfInterest: ArrayList<String>? = null,
-                var status: String? = null,
-                var entryDate: String? = null,
-                var saleDate: String? = null,
-                var realEstateAgent: String? = null) : Parcelable {
+                val address: @RawValue Address? = null,
+                val district: String? = null,
+                @Embedded
+                val pointsOfInterest: ArrayList<String>? = null,
+                val status: String? = null,
+                val entryDate: String? = null,
+                val saleDate: String? = null,
+                val realEstateAgent: String? = null) : Parcelable {
 }
