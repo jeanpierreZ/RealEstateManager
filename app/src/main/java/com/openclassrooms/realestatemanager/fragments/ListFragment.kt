@@ -59,7 +59,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     // Configure RecyclerViews, Adapters & LayoutManager
 
     private fun configureRecyclerView() {
-        // Create the adapter by passing the list of articles
+        // Create the adapter by passing the list of items
         itemAdapter = ItemAdapter(itemList, Glide.with(this), this)
         // Attach the adapter to the recyclerView to populate items
         recyclerView?.adapter = itemAdapter

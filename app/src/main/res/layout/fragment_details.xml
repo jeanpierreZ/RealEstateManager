@@ -19,10 +19,19 @@
         android:layout_height="0dp"
         android:text="Media"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_description_title"
+        app:layout_constraintBottom_toTopOf="@+id/details_fragment_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/details_fragment_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/details_fragment_description_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
 
     <TextView
         android:id="@+id/details_fragment_description_title"
@@ -33,7 +42,7 @@
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
 
     <TextView
         android:id="@+id/details_fragment_description"
