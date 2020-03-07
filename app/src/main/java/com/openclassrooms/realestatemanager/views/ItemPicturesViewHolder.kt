@@ -3,10 +3,12 @@ package com.openclassrooms.realestatemanager.views
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
+import com.openclassrooms.realestatemanager.models.Picture
 import java.lang.ref.WeakReference
 
 class ItemPicturesViewHolder(pictureView: View) : RecyclerView.ViewHolder(pictureView), View.OnClickListener {
@@ -17,6 +19,7 @@ class ItemPicturesViewHolder(pictureView: View) : RecyclerView.ViewHolder(pictur
     }
 
     private var imagePicture: ImageView? = null
+    private var textPicture: TextView? = null
 
     // FOR DATA
     private var callbackWeakRef: WeakReference<ItemPicturesAdapter.PictureListener>? = null
@@ -29,12 +32,14 @@ class ItemPicturesViewHolder(pictureView: View) : RecyclerView.ViewHolder(pictur
     }
 
     init {
-        imagePicture = pictureView.findViewById(R.id.item_pictures_image)
+        imagePicture = pictureView.findViewById(R.id.item_picture_image)
+        textPicture = pictureView.findViewById(R.id.item_picture_text)
     }
 
-    fun updatePictures(picture: String?, glide: RequestManager, callback: ItemPicturesAdapter.PictureListener) {
+    fun updatePictures(picture: Picture?, glide: RequestManager, callback: ItemPicturesAdapter.PictureListener) {
         // Update widgets
-        imagePicture?.let { glide.load(picture).into(it) }
+        textPicture?.text = picture?.pictureLocation
+        imagePicture?.let { glide.load(picture?.roomPicture).into(it) }
         // Create a new weak Reference to our Listener
         this.callbackWeakRef = WeakReference(callback)
         // Implement Listener

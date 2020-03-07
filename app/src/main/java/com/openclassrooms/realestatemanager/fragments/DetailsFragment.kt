@@ -15,6 +15,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.MainActivity.Companion.BUNDLE_ITEM
 import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
 import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.models.Picture
 
 /**
  * A simple [Fragment] subclass.
@@ -24,7 +25,7 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
     private var recyclerView: RecyclerView? = null
     private var itemPicturesAdapter: ItemPicturesAdapter? = null
 
-    private var pictureList: ArrayList<String?> = arrayListOf()
+    private var pictureList: ArrayList<Picture?> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,32 +57,23 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
         bathroomText.text = item?.bathroomsNumber.toString()
         bedroomText.text = item?.bedroomsNumber.toString()
 
-        val streetNumber = item?.address?.streetNumber.toString()
-        val street = item?.address?.street.toString()
+        val streetNumber = item?.address?.streetNumber
+        val street = item?.address?.street
         streetText.text = String.format("$streetNumber $street")
 
-        apartmentText.text = item?.address?.apartmentNumber.toString()
-        cityText.text = item?.address?.city.toString()
-        postalCodeText.text = item?.address?.postalCode.toString()
-        countryText.text = item?.address?.country.toString()
+        apartmentText.text = item?.address?.apartmentNumber
+        cityText.text = item?.address?.city
+        postalCodeText.text = item?.address?.postalCode
+        countryText.text = item?.address?.country
 
         configureRecyclerView()
 
+        Log.d("DETAILS", "item.picture = ${item?.picture}")
 
-        // Insert pictures to test the recyclerview
-/*
-        item?.photo?.add(0, "https://cdn.pixabay.com/photo/2016/03/04/03/54/catherine-deneuve-1235443__340.jpg")
-        item?.photo?.add(1, "https://cdn.pixabay.com/photo/2016/03/20/17/19/marylyn-monroe-female-1269011__340.jpg")*/
-
-        pictureList.add("https://cdn.pixabay.com/photo/2016/03/04/03/54/catherine-deneuve-1235443__340.jpg")
-        pictureList.add("https://cdn.pixabay.com/photo/2016/03/20/17/19/marylyn-monroe-female-1269011__340.jpg")
-        pictureList.add("https://cdn.pixabay.com/photo/2019/08/09/21/20/james-dean-4395893_960_720.jpg")
-        pictureList.add("https://cdn.pixabay.com/photo/2019/08/17/13/51/clint-eastwood-4412219__340.jpg"
-        )
+        pictureList.add(0, item?.picture)
 
         updateUI(pictureList)
         Log.d("DETAILS", "pictureList = $pictureList")
-
 
         return fragmentView
     }
@@ -98,7 +90,7 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
         recyclerView?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    private fun updateUI(updateList: ArrayList<String?>) {
+    private fun updateUI(updateList: ArrayList<Picture?>) {
         itemPicturesAdapter?.setPictures(updateList)
     }
 

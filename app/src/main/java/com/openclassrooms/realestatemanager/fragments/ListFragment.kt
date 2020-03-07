@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,11 +44,10 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
         configureRecyclerView()
 
-
         // Use the ViewModelProvider to associate the ViewModel with MainActivity
         itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
-        itemViewModel.getItems.observe(this, Observer { items ->
+        itemViewModel.getItems.observe(viewLifecycleOwner, Observer { items ->
             // Update the cached copy of the words in the adapter.
             items?.let { updateUI(it) }
         })
@@ -79,6 +79,8 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         val item: Item? = itemAdapter?.getPosition(position)
         // Spread the click to the parent activity
         callbackItem?.onItemClicked(item)
+        Log.d("LIST_FRAGMENT", "item.picture = ${item?.picture} ")
+        Log.d("LIST_FRAGMENT", "item.type = ${item?.type} ")
     }
 
     //----------------------------------------------------------------------------------

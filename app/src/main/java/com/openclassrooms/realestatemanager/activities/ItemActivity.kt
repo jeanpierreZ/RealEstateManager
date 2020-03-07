@@ -3,6 +3,8 @@ package com.openclassrooms.realestatemanager.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -15,15 +17,31 @@ class ItemActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     companion object {
         // Key for item type
         const val TYPE_ITEM = "typeItem"
+        const val PICTURE_ITEM = "pictureItem"
     }
 
     private lateinit var textType: String
+    private lateinit var pictureText: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item)
 
         val spinnerType: Spinner = findViewById(R.id.activity_item_type)
+        val editText: EditText = findViewById(R.id.activity_item_picture)
+
+        // Retrieve the path of a picture in the editText
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                pictureText = editText.text.toString()
+            }
+        })
 
         // Retrieve the list of types of an Item with the Type Enum
         val typeList = Type.values()
@@ -55,6 +73,7 @@ class ItemActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         saveButton?.setOnClickListener {
             val replyIntent = Intent()
             replyIntent.putExtra(TYPE_ITEM, textType)
+            replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }

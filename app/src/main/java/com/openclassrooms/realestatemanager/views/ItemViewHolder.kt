@@ -31,7 +31,6 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
         // When a click happens, we fire our listener to get the item position in the list
         val callback: ItemAdapter.Listener? = callbackWeakRef?.get()
         callback?.onClickItem(adapterPosition)
-        Log.d(TAG, "CLICK!")
     }
 
     init {
@@ -46,7 +45,8 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
         textViewType?.text = item?.type
         textViewDistrict?.text = item?.district
         textViewPrice?.text = item?.price.toString()
-        imageItem?.let { glide.load(item?.photo?.get(1)).into(it) }
+        imageItem?.let { glide.load(item?.picture?.roomPicture).into(it) }
+//        imageItem?.let { glide.load(item?.picture?.get(0)?.roomPicture).into(it) }
         // Create a new weak Reference to our Listener
         this.callbackWeakRef = WeakReference(callback)
         // Implement Listener

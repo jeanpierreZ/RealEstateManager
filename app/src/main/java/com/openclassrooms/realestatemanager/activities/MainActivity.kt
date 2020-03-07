@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -14,6 +15,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
 import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.views.ItemViewModel
 
 class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
@@ -49,10 +51,17 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == itemActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data?.getStringExtra(ItemActivity.TYPE_ITEM)?.let {
-                val item = Item(null, it)
-                itemViewModel.insert(item)
-            }
+
+            val picture = Picture("lounge", data?.getStringExtra(ItemActivity.PICTURE_ITEM))
+
+            val item = Item(null, data?.getStringExtra(ItemActivity.TYPE_ITEM)
+                    , null, null, null, null,
+                    null, null, picture, null)
+
+            Log.d("MAIN_ACTIVITY", "item.picture = ${item.picture} ")
+
+            itemViewModel.insert(item)
+
         } else {
             Toast.makeText(applicationContext, "empty not saved", Toast.LENGTH_LONG).show()
         }

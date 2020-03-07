@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.ItemActivity">
 
-    <Spinner
-        android:id="@+id/activity_item_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoComplete"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/button_save"
         android:layout_width="match_parent"
@@ -27,5 +16,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_item_type" />
+
+    <EditText
+        android:id="@+id/activity_item_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="picture"
+        app:layout_constraintBottom_toTopOf="@+id/button_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_type"
+        tools:ignore="Autofill" />
+
+    <Spinner
+        android:id="@+id/activity_item_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textAutoComplete"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

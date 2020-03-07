@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.views.ItemPicturesViewHolder
 
 
-class ItemPicturesAdapter(private var list: ArrayList<String?>,
+class ItemPicturesAdapter(private var list: ArrayList<Picture?>,
                           private val glide: RequestManager,
                           private val callback: PictureListener) : RecyclerView.Adapter<ItemPicturesViewHolder>() {
 
@@ -31,13 +32,13 @@ class ItemPicturesAdapter(private var list: ArrayList<String?>,
         holder.updatePictures(this.list[position], this.glide, this.callback)
     }
 
-    fun setPictures(pictureList: ArrayList<String?>) {
+    fun setPictures(pictureList: ArrayList<Picture?>) {
         this.list = pictureList
         notifyDataSetChanged()
     }
 
     // Return the position of a picture in the list
-    fun getPosition(position: Int): String? {
+    fun getPosition(position: Int): Picture? {
         return this.list[position]
     }
 }
