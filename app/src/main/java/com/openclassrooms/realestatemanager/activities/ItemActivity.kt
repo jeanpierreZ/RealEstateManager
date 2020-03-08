@@ -1,18 +1,22 @@
 package com.openclassrooms.realestatemanager.activities
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Type
+import com.openclassrooms.realestatemanager.utils.TypeListDialogFragment
 
 
-class ItemActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class ItemActivity : AppCompatActivity() {
 
     companion object {
         // Key for item type
@@ -20,55 +24,66 @@ class ItemActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         const val PICTURE_ITEM = "pictureItem"
     }
 
-    private lateinit var textType: String
+    private var textType: String? = null
     private lateinit var pictureText: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item)
 
-        val spinnerType: Spinner = findViewById(R.id.activity_item_type)
+        val typeView: TextView = findViewById(R.id.activity_item_type)
         val editText: EditText = findViewById(R.id.activity_item_picture)
 
+        /*val typeListDialogFragment = TypeListDialogFragment(textType, typeView)
+
+        typeListDialogFragment.onCreateDialog(savedInstanceState).show()*/
+
+        typeView.setOnClickListener {
+            // Create a charSequence array of Type Enum
+            val types: Array<CharSequence> = arrayOf(Type.DUPLEX.itemType, Type.FLAT.itemType,
+                    Type.LOFT.itemType, Type.MANOR.itemType, Type.PENTHOUSE.itemType)
+
+            // Use the Builder class for convenient dialog construction
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(R.string.realEstateType)
+                    .setItems(types,
+                            DialogInterface.OnClickListener { dialog, which ->
+                                // The 'which' argument contains the index position of the selected item
+                                textType = types[which] as String
+                                typeView.text = textType
+                            })
+                    // Set the action buttons
+                    .setNegativeButton("Erase",
+                            DialogInterface.OnClickListener { dialog, id ->
+                                textType = ""
+                                typeView.text = getString(R.string.realEstateType)
+                            })
+            // Create the AlertDialog object and return it
+            builder.create()
+            builder.show()
+        }
+
         // Retrieve the path of a picture in the editText
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
+        editText.addTextChangedListener(
+                object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                    }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                pictureText = editText.text.toString()
-            }
-        })
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        pictureText = editText.text.toString()
+                    }
+                })
 
-        // Retrieve the list of types of an Item with the Type Enum
-        val typeList = Type.values()
-        // Create adapter and add in spinnerType
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, typeList)
-        spinnerType.adapter = spinnerAdapter
-        spinnerType.onItemSelectedListener = this
-
-        saveCreatedItem()
-    }
-
-    //----------------------------------------------------------------------------------
-    // Methods for spinnerType
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        textType = parent?.getItemAtPosition(position).toString()
-        Toast.makeText(parent?.context, textType, Toast.LENGTH_SHORT).show()
+        saveItem()
     }
 
     //----------------------------------------------------------------------------------
     // Private methods
 
-    private fun saveCreatedItem() {
+    private fun saveItem() {
         val saveButton = findViewById<Button>(R.id.button_save)
         saveButton?.setOnClickListener {
             val replyIntent = Intent()
