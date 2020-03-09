@@ -25,8 +25,9 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
     private lateinit var itemViewModel: ItemViewModel
 
     companion object {
+
         // Key for item position
-        const val BUNDLE_ITEM: String = "bundle_item"
+        const val BUNDLE_ITEM: String = "BUNDLE_ITEM"
     }
 
     // For design
@@ -54,9 +55,9 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
             val picture = Picture("lounge", data?.getStringExtra(ItemActivity.PICTURE_ITEM))
 
-            val item = Item(null, data?.getStringExtra(ItemActivity.TYPE_ITEM)
-                    , null, null, null, null,
-                    null, null, picture, null)
+            val item = Item(null, data?.getStringExtra(ItemActivity.TYPE_ITEM),
+                    data?.getIntExtra(ItemActivity.PRICE_ITEM, 0), null, null,
+                    null, null, null, picture, null)
 
             Log.d("MAIN_ACTIVITY", "item.picture = ${item.picture} ")
 

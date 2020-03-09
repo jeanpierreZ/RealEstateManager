@@ -3,13 +3,13 @@ package com.openclassrooms.realestatemanager.utils
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.TextView
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Type
 
-class TypeListDialogFragment(private var textType: String?, private var typeView: TextView)
+class TypeListDialogFragment(private var type: String?, private var editType: EditText)
     : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -21,18 +21,18 @@ class TypeListDialogFragment(private var textType: String?, private var typeView
 
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
-            builder.setTitle(R.string.realEstateType)
+            builder.setTitle(R.string.real_estate_type)
                     .setItems(types,
                             DialogInterface.OnClickListener { dialog, which ->
                                 // The 'which' argument contains the index position of the selected item
-                                textType = types[which] as String
-                                typeView.text = textType
+                                type = types[which] as String
+                                editType.setText(type)
                             })
                     // Set the action buttons
-                    .setNegativeButton("Erase",
+                    .setNegativeButton(getString(R.string.erase),
                             DialogInterface.OnClickListener { dialog, id ->
-                                textType = ""
-                                typeView.text = getString(R.string.realEstateType)
+                                type = ""
+                                editType.setText(getString(R.string.real_estate_type))
                             })
             // Create the AlertDialog object and return it
             builder.create()

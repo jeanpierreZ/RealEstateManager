@@ -49,8 +49,10 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
         // Recover the item from the bundle
         val item: Item? = arguments?.getParcelable(BUNDLE_ITEM)
 
-        // Test to recover the type
-        descriptionText.text = item?.type
+        // Test to retrieve the type and the price
+        val t = item?.type
+        val p = item?.price
+        descriptionText.text = String.format("$t $p")
 
         surfaceText.text = item?.surface.toString()
         roomText.text = item?.roomsNumber.toString()
