@@ -9,13 +9,13 @@ import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Type
 
-class TypeListDialogFragment(private var type: String?, private var editType: EditText)
+class TypeDialogFragment(private var type: String?, private var editType: EditText)
     : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
-            // Create a charSequence array of Type Enum
+            // Create a charSequence array of the Type Enum
             val types: Array<CharSequence> = arrayOf(Type.DUPLEX.itemType, Type.FLAT.itemType,
                     Type.LOFT.itemType, Type.MANOR.itemType, Type.PENTHOUSE.itemType)
 
@@ -28,18 +28,16 @@ class TypeListDialogFragment(private var type: String?, private var editType: Ed
                                 type = types[which] as String
                                 editType.setText(type)
                             })
-                    // Set the action buttons
+                    // Set the negative action button
                     .setNegativeButton(getString(R.string.erase),
                             DialogInterface.OnClickListener { dialog, id ->
                                 type = ""
-                                editType.setText(getString(R.string.real_estate_type))
+                                editType.setText(activity?.getString(R.string.real_estate_type))
                             })
             // Create the AlertDialog object and return it
             builder.create()
             builder.show()
 
-            // Create the AlertDialog object and return it
-            builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }

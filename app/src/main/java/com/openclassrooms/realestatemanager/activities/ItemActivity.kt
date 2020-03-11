@@ -1,25 +1,22 @@
 package com.openclassrooms.realestatemanager.activities
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.models.Type
+import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
 
 
 class ItemActivity : AppCompatActivity() {
 
     companion object {
-
-        // Key for item type
+        // Keys for item attributes
         const val TYPE_ITEM = "TYPE_ITEM"
         const val PRICE_ITEM = "PRICE_ITEM"
         const val PICTURE_ITEM = "pictureItem"
@@ -37,33 +34,10 @@ class ItemActivity : AppCompatActivity() {
         val editPrice: EditText = findViewById(R.id.activity_item_edit_price)
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
-        /*val typeListDialogFragment = TypeListDialogFragment(textType, typeView)
-
-        typeListDialogFragment.onCreateDialog(savedInstanceState).show()*/
-
+        // Save the type of the real estate
         editType.setOnClickListener {
-            // Create a charSequence array of Type Enum
-            val types: Array<CharSequence> = arrayOf(Type.DUPLEX.itemType, Type.FLAT.itemType,
-                    Type.LOFT.itemType, Type.MANOR.itemType, Type.PENTHOUSE.itemType)
-
-            // Use the Builder class for convenient dialog construction
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle(R.string.real_estate_type)
-                    .setItems(types,
-                            DialogInterface.OnClickListener { dialog, which ->
-                                // The 'which' argument contains the index position of the selected item
-                                type = types[which] as String
-                                editType.setText(type)
-                            })
-                    // Set the action buttons
-                    .setNegativeButton(getString(R.string.erase),
-                            DialogInterface.OnClickListener { dialog, id ->
-                                type = ""
-                                editType.setText(getString(R.string.real_estate_type))
-                            })
-            // Create the AlertDialog object and return it
-            builder.create()
-            builder.show()
+            val typeDialogFragment = TypeDialogFragment(type, editType)
+            typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
         }
 
         editPrice.doOnTextChanged { text, start, count, after ->
