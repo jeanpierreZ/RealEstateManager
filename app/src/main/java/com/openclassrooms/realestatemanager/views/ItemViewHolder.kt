@@ -45,7 +45,6 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
         textViewType?.text = item?.type
         textViewDistrict?.text = item?.district
         textViewPrice?.text = item?.price.toString()
-        imageItem?.let { glide.load(item?.picture?.roomPicture).into(it) }
 //        imageItem?.let { glide.load(item?.picture?.get(0)?.roomPicture).into(it) }
         // Create a new weak Reference to our Listener
         this.callbackWeakRef = WeakReference(callback)

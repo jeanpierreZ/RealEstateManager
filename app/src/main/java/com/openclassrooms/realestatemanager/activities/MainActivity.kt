@@ -53,15 +53,15 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
         if (requestCode == itemActivityRequestCode && resultCode == Activity.RESULT_OK) {
 
-            val picture = Picture("lounge", data?.getStringExtra(ItemActivity.PICTURE_ITEM))
-
             val item = Item(null, data?.getStringExtra(ItemActivity.TYPE_ITEM),
-                    data?.getIntExtra(ItemActivity.PRICE_ITEM, 0), null, null,
-                    null, null, null, picture, null)
+                    data?.getIntExtra(ItemActivity.PRICE_ITEM, 0))
 
-            Log.d("MAIN_ACTIVITY", "item.picture = ${item.picture} ")
+            val picture = Picture(null, null, "lounge", data?.getStringExtra(ItemActivity.PICTURE_ITEM))
+
+//            item.picture = arrayListOf(picture)
 
             itemViewModel.insert(item)
+            Log.d("MAIN_ACTIVITY", "item = $item")
 
         } else {
             Toast.makeText(applicationContext, "empty not saved", Toast.LENGTH_LONG).show()

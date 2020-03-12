@@ -70,9 +70,8 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
 
         configureRecyclerView()
 
-        Log.d("DETAILS", "item.picture = ${item?.picture}")
-
-        pictureList.add(0, item?.picture)
+//        Log.d("DETAILS", "item.picture = ${item?.picture}")
+//        pictureList.add(0, item?.picture?.get(0))
 
         updateUI(pictureList)
         Log.d("DETAILS", "pictureList = $pictureList")

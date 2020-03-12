@@ -13,7 +13,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
 
 
-class ItemActivity : AppCompatActivity() {
+class ItemActivity : AppCompatActivity(), TypeDialogFragment.OnTypeChosenListener {
 
     companion object {
         // Keys for item attributes
@@ -25,19 +25,19 @@ class ItemActivity : AppCompatActivity() {
     private var type: String? = null
     private var price: Int? = null
     private lateinit var pictureText: String
+    private lateinit var editType: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item)
 
-        val editType: EditText = findViewById(R.id.activity_item_edit_type)
+        editType = findViewById(R.id.activity_item_edit_type)
         val editPrice: EditText = findViewById(R.id.activity_item_edit_price)
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
-        // Save the type of the real estate
+        // Show the AlertDialog to choose the type of the real estate
         editType.setOnClickListener {
-            val typeDialogFragment = TypeDialogFragment(type, editType)
-            typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
+            openTypeDialogFragment()    
         }
 
         editPrice.doOnTextChanged { text, start, count, after ->
@@ -64,6 +64,11 @@ class ItemActivity : AppCompatActivity() {
     //----------------------------------------------------------------------------------
     // Private methods
 
+    private fun openTypeDialogFragment() {
+        val typeDialogFragment = TypeDialogFragment(type, editType)
+        typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
+    }
+
     private fun saveItem() {
         val saveButton = findViewById<Button>(R.id.activity_item_button_save)
         saveButton?.setOnClickListener {
@@ -74,6 +79,13 @@ class ItemActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }
+    }
+
+    //----------------------------------------------------------------------------------
+    // Implement listener from TypeDialogFragment to fetch the type of the real estate
+
+    override fun onTypeChosen(typeChosen: String?) {
+        type = typeChosen
     }
 
 }

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
@@ -17,8 +18,9 @@ data class Item(@PrimaryKey(autoGenerate = true) val id: Long? = null,
                 val bathroomsNumber: Int? = null,
                 val bedroomsNumber: Int? = null,
                 val description: String? = null,
-                @Embedded
-                val picture: @RawValue Picture? = null,
+/*                @Relation
+                (parentColumn = "id", entityColumn = "itemId", entity = Item::class)
+                var picture: @RawValue ArrayList<Picture>? = null,*/
                 @Embedded
                 val address: @RawValue Address? = null,
                 val district: String? = null,
