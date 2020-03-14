@@ -13,9 +13,13 @@ import com.openclassrooms.realestatemanager.models.Picture
 @Dao
 interface ItemWithPicturesDao {
 
+    // --- GET ---
+
     @Transaction
     @Query("SELECT * FROM item_table")
     fun getItemWithPictures(): LiveData<List<ItemWithPictures?>>
+
+    // --- CREATE ---
 
     @Insert
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
@@ -25,6 +29,15 @@ interface ItemWithPicturesDao {
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
     suspend fun insertPictures(picture: Picture): Long
 
-    /*  @Update
-      suspend fun updateItemWithPictures(itemWithPictures: ItemWithPictures): Int*/
+    @Transaction
+    suspend fun insertItemWithPictures(item: Item, picture: Picture) {
+        val id = insertItem(item)
+        picture.itemId = id
+        insertPictures(picture)
+    }
+
+    // --- UPDATE ---
+
+/*  @Update
+  suspend fun updateItemWithPictures(itemWithPictures: ItemWithPictures): Int*/
 }

@@ -53,28 +53,21 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
         if (requestCode == itemActivityRequestCode && resultCode == Activity.RESULT_OK) {
 
-            // Create an item with data from ItemActivity and insert it in database
+            // Create an item with data from ItemActivity
             val item = Item(null, data?.getStringExtra(ItemActivity.TYPE_ITEM),
                     data?.getIntExtra(ItemActivity.PRICE_ITEM, 0))
-            itemWithPicturesViewModel.insertItem(item)
 
-            // Get the id from the last item inserted
-            // Create a picture with data from ItemActivity and insert it in database with the itemId
-            itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPicturesList ->
-                val lastItemId = itemWithPicturesList.last()?.item?.id
+            // Create a picture with data from ItemActivity
+            val picture = Picture(null,
+                    "lounge",
+                    data?.getStringExtra(ItemActivity.PICTURE_ITEM),
+                    null)
 
-                val picture = Picture(null,
-                        "lounge",
-                        data?.getStringExtra(ItemActivity.PICTURE_ITEM),
-                        lastItemId)
-                itemWithPicturesViewModel.insertPictures(picture)
+            // Insert item with pictures in database
+            itemWithPicturesViewModel.insertItemWithPictures(item, picture)
+            Log.d(TAG, "item = $item")
+            Log.d(TAG, "picture = $picture")
 
-                Log.d(TAG, "item = ${itemWithPicturesList.last()?.item}")
-                Log.d(TAG, "picture = $picture")
-
-                // Remove the viewModel observer
-                itemWithPicturesViewModel.getItemWithPictures.removeObservers(this)
-            })
         } else {
             Toast.makeText(applicationContext, getString(R.string.real_estate_not_saved), Toast.LENGTH_LONG).show()
         }

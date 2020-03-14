@@ -25,6 +25,10 @@ class ItemWithPicturesRepository(private val itemWithPicturesDao: ItemWithPictur
         itemWithPicturesDao.insertPictures(picture)
     }
 
+    suspend fun insertItemWithPictures(item: Item, picture: Picture){
+        itemWithPicturesDao.insertItemWithPictures(item, picture)
+    }
+
 /*    // --- UPDATE ---
     suspend fun update(itemWithPictures: ItemWithPictures) {
         itemWithPicturesDao.updateItemWithPictures(itemWithPictures)

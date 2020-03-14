@@ -16,6 +16,8 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
     // The ViewModel maintains a reference to the repository to get data.
     private val repository: ItemWithPicturesRepository
 
+    // --- GET ---
+
     // LiveData gives us updated itemWithPictures when they change.
     val getItemWithPictures: LiveData<List<ItemWithPictures?>>
 
@@ -26,6 +28,8 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
         repository = ItemWithPicturesRepository(itemWithPicturesDao)
         getItemWithPictures = repository.getItemWithPictures
     }
+
+    // --- CREATE ---
 
     /**
      * The implementation of insert() in the database is completely hidden from the UI.
@@ -43,8 +47,14 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
         repository.insertPictures(picture)
     }
 
+    fun insertItemWithPictures(item: Item, picture: Picture) = viewModelScope.launch {
+        repository.insertItemWithPictures(item, picture)
+    }
+
+    // --- UPDATE ---
+
 /*    fun update(itemWithPictures: ItemWithPictures) = viewModelScope.launch {
-        repository.update(itemWithPictures)
-    }*/
+    repository.update(itemWithPictures)
+}*/
 
 }
