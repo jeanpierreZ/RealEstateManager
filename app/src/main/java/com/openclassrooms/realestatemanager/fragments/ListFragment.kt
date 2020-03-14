@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.ItemAdapter
-import com.openclassrooms.realestatemanager.models.Item
-import com.openclassrooms.realestatemanager.views.ItemViewModel
+import com.openclassrooms.realestatemanager.models.ItemWithPictures
+import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 
 
 /**
@@ -24,12 +24,16 @@ import com.openclassrooms.realestatemanager.views.ItemViewModel
  */
 class ListFragment : Fragment(), ItemAdapter.Listener {
 
+    companion object {
+        private val TAG = ListFragment::class.java.simpleName
+    }
+
     private var recyclerView: RecyclerView? = null
     private var itemAdapter: ItemAdapter? = null
 
-    private lateinit var itemViewModel: ItemViewModel
+    private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
-    private var itemList: MutableList<Item?> = mutableListOf()
+    private var itemWithPicturesList: MutableList<ItemWithPictures?> = mutableListOf()
 
     // Declare callback
     private var callbackItem: OnItemClickedListener? = null
@@ -44,13 +48,13 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
         configureRecyclerView()
 
-        // Use the ViewModelProvider to associate the ViewModel with MainActivity
-        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+        // Use the ViewModelProvider to associate the ViewModel with ListFragment
+        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
 
-        itemViewModel.getItems.observe(viewLifecycleOwner, Observer { items ->
-            // Update the cached copy of the words in the adapter.
-            Log.d("LIST_FRAGMENT", "items = $items")
-            items?.let { updateUI(it) }
+        // Get the itemWithPicturesList
+        itemWithPicturesViewModel.getItemWithPictures.observe(viewLifecycleOwner, Observer { itemWithPicturesList ->
+            Log.d(TAG, "itemWithPicturesList = $itemWithPicturesList")
+            updateUI(itemWithPicturesList)
         })
 
         return fragmentView
@@ -61,14 +65,14 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of items
-        itemAdapter = ItemAdapter(itemList, Glide.with(this), this)
+        itemAdapter = ItemAdapter(itemWithPicturesList, Glide.with(this), this)
         // Attach the adapter to the recyclerView to populate items
         recyclerView?.adapter = itemAdapter
         // Set layout manager to position the items
         recyclerView?.layoutManager = LinearLayoutManager(activity)
     }
 
-    private fun updateUI(updateList: List<Item?>) {
+    private fun updateUI(updateList: List<ItemWithPictures?>) {
         // Add the list from the request and notify the adapter
         itemAdapter?.setItems(updateList)
     }
@@ -77,11 +81,10 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
     override fun onClickItem(position: Int) {
         // Save the item object in the RecyclerView
-        val item: Item? = itemAdapter?.getPosition(position)
+        val itemWithPictures: ItemWithPictures? = itemAdapter?.getPosition(position)
         // Spread the click to the parent activity
-        callbackItem?.onItemClicked(item)
-//        Log.d("LIST_FRAGMENT", "item.picture = ${item?.picture} ")
-        Log.d("LIST_FRAGMENT", "item.type = ${item?.type} ")
+        callbackItem?.onItemClicked(itemWithPictures)
+        Log.d(TAG, "item.type = ${itemWithPictures?.item?.type} ")
     }
 
     //----------------------------------------------------------------------------------
@@ -95,7 +98,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
     // Declare our interface that will be implemented by any container activity
     interface OnItemClickedListener {
-        fun onItemClicked(item: Item?)
+        fun onItemClicked(itemWithPictures: ItemWithPictures?)
     }
 
     // Create callback to parent activity

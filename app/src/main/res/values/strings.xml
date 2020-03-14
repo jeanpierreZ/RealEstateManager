@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Item Activity -->
     <string name="title_type">Create a the real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
     <string name="real_estate_price">Price of the real estate</string>
     <string name="erase">Erase</string>
     <string name="save">Save</string>
+
+    <!-- Main Activity -->
+    <string name="real_estate_not_saved">Real estate not saved</string>
 
 </resources>

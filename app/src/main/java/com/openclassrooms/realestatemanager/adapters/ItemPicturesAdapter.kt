@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Picture
-import com.openclassrooms.realestatemanager.views.ItemPicturesViewHolder
+import com.openclassrooms.realestatemanager.views.viewholders.ItemPicturesViewHolder
 
 
 class ItemPicturesAdapter(private var list: ArrayList<Picture?>,

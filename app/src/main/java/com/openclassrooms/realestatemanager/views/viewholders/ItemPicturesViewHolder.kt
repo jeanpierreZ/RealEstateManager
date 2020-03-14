@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.views
+package com.openclassrooms.realestatemanager.views.viewholders
 
 import android.util.Log
 import android.view.View

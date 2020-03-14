@@ -12,15 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.activities.MainActivity.Companion.BUNDLE_ITEM
+import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
-import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
 
 /**
  * A simple [Fragment] subclass.
  */
 class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
+
+    companion object {
+        private val TAG = DetailsFragment::class.java.simpleName
+    }
 
     private var recyclerView: RecyclerView? = null
     private var itemPicturesAdapter: ItemPicturesAdapter? = null
@@ -46,35 +50,34 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
         // Get RecyclerView from layout and serialise it
         recyclerView = fragmentView.findViewById(R.id.details_fragment_recycler_view)
 
-        // Recover the item from the bundle
-        val item: Item? = arguments?.getParcelable(BUNDLE_ITEM)
+        // Get the itemWithPictures from the bundle
+        val itemWithPictures: ItemWithPictures? = arguments?.getParcelable(MainActivity.BUNDLE_ITEM_WITH_PICTURES)
 
         // Test to retrieve the type and the price
-        val t = item?.type
-        val p = item?.price
+        val t = itemWithPictures?.item?.type
+        val p = itemWithPictures?.item?.price
         descriptionText.text = String.format("$t $p")
 
-        surfaceText.text = item?.surface.toString()
-        roomText.text = item?.roomsNumber.toString()
-        bathroomText.text = item?.bathroomsNumber.toString()
-        bedroomText.text = item?.bedroomsNumber.toString()
+        surfaceText.text = itemWithPictures?.item?.surface.toString()
+        roomText.text = itemWithPictures?.item?.roomsNumber.toString()
+        bathroomText.text = itemWithPictures?.item?.bathroomsNumber.toString()
+        bedroomText.text = itemWithPictures?.item?.bedroomsNumber.toString()
 
-        val streetNumber = item?.address?.streetNumber
-        val street = item?.address?.street
+        val streetNumber = itemWithPictures?.item?.address?.streetNumber
+        val street = itemWithPictures?.item?.address?.street
         streetText.text = String.format("$streetNumber $street")
 
-        apartmentText.text = item?.address?.apartmentNumber
-        cityText.text = item?.address?.city
-        postalCodeText.text = item?.address?.postalCode
-        countryText.text = item?.address?.country
+        apartmentText.text = itemWithPictures?.item?.address?.apartmentNumber
+        cityText.text = itemWithPictures?.item?.address?.city
+        postalCodeText.text = itemWithPictures?.item?.address?.postalCode
+        countryText.text = itemWithPictures?.item?.address?.country
 
         configureRecyclerView()
 
-//        Log.d("DETAILS", "item.picture = ${item?.picture}")
-//        pictureList.add(0, item?.picture?.get(0))
+        itemWithPictures?.pictures?.let { pictureList.addAll(it) }
 
         updateUI(pictureList)
-        Log.d("DETAILS", "pictureList = $pictureList")
+        Log.d(TAG, "pictureList = $pictureList")
 
         return fragmentView
     }

@@ -19,12 +19,12 @@ class ItemActivity : AppCompatActivity(), TypeDialogFragment.OnTypeChosenListene
         // Keys for item attributes
         const val TYPE_ITEM = "TYPE_ITEM"
         const val PRICE_ITEM = "PRICE_ITEM"
-        const val PICTURE_ITEM = "pictureItem"
+        const val PICTURE_ITEM = "PICTURE_ITEM"
     }
 
     private var type: String? = null
     private var price: Int? = null
-    private lateinit var pictureText: String
+    private var pictureText: String? = null
     private lateinit var editType: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class ItemActivity : AppCompatActivity(), TypeDialogFragment.OnTypeChosenListene
 
         // Show the AlertDialog to choose the type of the real estate
         editType.setOnClickListener {
-            openTypeDialogFragment()    
+            openTypeDialogFragment()
         }
 
         editPrice.doOnTextChanged { text, start, count, after ->

@@ -10,25 +10,28 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
 import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
-import com.openclassrooms.realestatemanager.views.ItemViewModel
+import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 
 class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
-    private val itemActivityRequestCode = 1
-
-    private lateinit var itemViewModel: ItemViewModel
-
     companion object {
+        private val TAG = MainActivity::class.java.simpleName
 
         // Key for item position
-        const val BUNDLE_ITEM: String = "BUNDLE_ITEM"
+        const val BUNDLE_ITEM_WITH_PICTURES: String = "BUNDLE_ITEM_WITH_PICTURES"
     }
+
+    private val itemActivityRequestCode = 1
+
+    private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
     // For design
     private var toolbar: Toolbar? = null
@@ -40,12 +43,9 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
         configureToolbar()
 
         // Use the ViewModelProvider to associate the ViewModel with MainActivity
-        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
 
-        val listFragment = ListFragment()
-        supportFragmentManager.beginTransaction()
-                .add(R.id.activity_main_fragment_container_view, listFragment)
-                .commit()
+        displayFragment()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -53,18 +53,30 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
         if (requestCode == itemActivityRequestCode && resultCode == Activity.RESULT_OK) {
 
+            // Create an item with data from ItemActivity and insert it in database
             val item = Item(null, data?.getStringExtra(ItemActivity.TYPE_ITEM),
                     data?.getIntExtra(ItemActivity.PRICE_ITEM, 0))
+            itemWithPicturesViewModel.insertItem(item)
 
-            val picture = Picture(null, null, "lounge", data?.getStringExtra(ItemActivity.PICTURE_ITEM))
+            // Get the id from the last item inserted
+            // Create a picture with data from ItemActivity and insert it in database with the itemId
+            itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPicturesList ->
+                val lastItemId = itemWithPicturesList.last()?.item?.id
 
-//            item.picture = arrayListOf(picture)
+                val picture = Picture(null,
+                        "lounge",
+                        data?.getStringExtra(ItemActivity.PICTURE_ITEM),
+                        lastItemId)
+                itemWithPicturesViewModel.insertPictures(picture)
 
-            itemViewModel.insert(item)
-            Log.d("MAIN_ACTIVITY", "item = $item")
+                Log.d(TAG, "item = ${itemWithPicturesList.last()?.item}")
+                Log.d(TAG, "picture = $picture")
 
+                // Remove the viewModel observer
+                itemWithPicturesViewModel.getItemWithPictures.removeObservers(this)
+            })
         } else {
-            Toast.makeText(applicationContext, "empty not saved", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, getString(R.string.real_estate_not_saved), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -109,12 +121,12 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
     //----------------------------------------------------------------------------------
     // Implement listener from ListFragment to open DetailsFragment when click on an item
 
-    override fun onItemClicked(item: Item?) {
+    override fun onItemClicked(itemWithPictures: ItemWithPictures?) {
         val detailsFragment = DetailsFragment()
 
         // Put the item in a bundle and fetch it in detailsFragment
         val bundleItem = Bundle()
-        bundleItem.putParcelable(BUNDLE_ITEM, item)
+        bundleItem.putParcelable(BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
         detailsFragment.arguments = bundleItem
 
         // onItemClicked -> display detailsFragment
@@ -122,4 +134,15 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
                 .replace(R.id.activity_main_fragment_container_view, detailsFragment)
                 .commit()
     }
+
+    //----------------------------------------------------------------------------------
+    // Private methods to configure design
+
+    private fun displayFragment() {
+        val listFragment = ListFragment()
+        supportFragmentManager.beginTransaction()
+                .add(R.id.activity_main_fragment_container_view, listFragment)
+                .commit()
+    }
+
 }
