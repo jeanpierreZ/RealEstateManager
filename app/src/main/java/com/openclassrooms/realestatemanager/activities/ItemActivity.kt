@@ -34,6 +34,7 @@ class ItemActivity : AppCompatActivity(),
         const val CITY_ITEM = "CITY_ITEM"
         const val POSTAL_CODE_ITEM = "POSTAL_CODE_ITEM"
         const val COUNTRY_ITEM = "COUNTRY_ITEM"
+        const val DESCRIPTION_ITEM = "DESCRIPTION_ITEM"
 
         const val PICTURE_ITEM = "PICTURE_ITEM"
     }
@@ -53,6 +54,7 @@ class ItemActivity : AppCompatActivity(),
     private var city: String? = null
     private var postalCode: String? = null
     private var country: String? = null
+    private var description: String? = null
 
     private lateinit var editType: EditText
     private lateinit var editPOI: EditText
@@ -77,6 +79,7 @@ class ItemActivity : AppCompatActivity(),
         val editCity: EditText = findViewById(R.id.activity_item_edit_city)
         val editPostalCode: EditText = findViewById(R.id.activity_item_edit_postal_code)
         val editCountry: EditText = findViewById(R.id.activity_item_edit_country)
+        val editDescription: EditText = findViewById(R.id.activity_item_edit_description)
 
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
@@ -141,6 +144,10 @@ class ItemActivity : AppCompatActivity(),
             country = text.toString()
         }
 
+        editDescription.doOnTextChanged { text, _, _, _ ->
+            description = text.toString()
+        }
+
         // Retrieve the path of a picture in the editText
         picture.addTextChangedListener(
                 object : TextWatcher {
@@ -190,6 +197,7 @@ class ItemActivity : AppCompatActivity(),
             replyIntent.putExtra(CITY_ITEM, city)
             replyIntent.putExtra(POSTAL_CODE_ITEM, postalCode)
             replyIntent.putExtra(COUNTRY_ITEM, country)
+            replyIntent.putExtra(DESCRIPTION_ITEM, description)
 
             replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)

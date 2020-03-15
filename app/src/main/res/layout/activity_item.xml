@@ -81,10 +81,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/real_estate_surface"
-            app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_price"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_surface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_surface" />
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_price" />
 
         <EditText
             android:id="@+id/activity_item_edit_surface"
@@ -147,10 +147,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/real_estate_bedrooms_number"
-            app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_bathrooms"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_bedrooms"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_bedrooms" />
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_bathrooms" />
 
         <EditText
             android:id="@+id/activity_item_edit_bedrooms"
@@ -224,7 +224,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/real_estate_street"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             app:layout_constraintBottom_toTopOf="@+id/activity_item_text_apartment_number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
@@ -335,10 +335,32 @@
             android:layout_height="wrap_content"
             android:hint="@string/real_estate_country"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/activity_item_picture"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_text_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
             app:layout_constraintTop_toBottomOf="@+id/activity_item_text_country"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/activity_item_text_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/real_estate_description"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_country" />
+
+        <EditText
+            android:id="@+id/activity_item_edit_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/real_estate_description"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_text_description"
             tools:ignore="Autofill" />
 
         <EditText
@@ -349,7 +371,7 @@
             app:layout_constraintBottom_toTopOf="@+id/activity_item_button_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_country"
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_description"
             tools:ignore="Autofill" />
 
         <Button
