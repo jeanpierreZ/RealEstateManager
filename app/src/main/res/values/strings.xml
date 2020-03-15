@@ -5,6 +5,11 @@
     <string name="title_type">Create a the real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
     <string name="real_estate_price">Price of the real estate</string>
+    <string name="real_estate_surface">Surface of the real estate</string>
+    <string name="real_estate_rooms_number">Number of rooms of the real estate</string>
+    <string name="real_estate_bathrooms_number">Number of bathrooms of the real estate</string>
+    <string name="real_estate_bedrooms_number">Number of bedrooms of the real estate</string>
+    <string name="real_estate_points_of_interest">Points of interest of the real estate</string>
     <string name="erase">Erase</string>
     <string name="save">Save</string>
 

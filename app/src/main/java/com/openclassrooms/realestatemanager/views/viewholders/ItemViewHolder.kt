@@ -42,7 +42,7 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
     fun updateItems(itemWithPictures: ItemWithPictures?, glide: RequestManager, callback: ItemAdapter.Listener) {
         // Update widgets
         textViewType?.text = itemWithPictures?.item?.type
-        textViewDistrict?.text = itemWithPictures?.item?.district
+        textViewDistrict?.text = itemWithPictures?.item?.address?.district
         textViewPrice?.text = itemWithPictures?.item?.price.toString()
 
         if (itemWithPictures?.pictures?.size != 0) {

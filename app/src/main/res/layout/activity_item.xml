@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".activities.ItemActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/activity_item_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
     <TextView
         android:id="@+id/activity_item_title"
         android:layout_width="match_parent"
@@ -21,63 +28,169 @@
 
     <TextView
         android:id="@+id/activity_item_text_type"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/real_estate_type"
         app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_type"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
         app:layout_constraintTop_toBottomOf="@+id/activity_item_title" />
 
     <EditText
         android:id="@+id/activity_item_edit_type"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/real_estate_type"
         android:inputType="none"
         android:focusable="false"
         app:layout_constraintBottom_toTopOf="@+id/activity_item_text_price"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
         app:layout_constraintTop_toBottomOf="@+id/activity_item_text_type"
         tools:ignore="Autofill" />
 
     <TextView
         android:id="@+id/activity_item_text_price"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/real_estate_price"
         app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_price"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
         app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_type" />
 
     <EditText
         android:id="@+id/activity_item_edit_price"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/real_estate_price"
         android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_text_surface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_text_price"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_item_text_surface"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/real_estate_surface"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_surface" />
+
+    <EditText
+        android:id="@+id/activity_item_edit_surface"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/real_estate_surface"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_text_rooms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_text_surface"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_item_text_rooms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/real_estate_rooms_number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_rooms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_surface" />
+
+    <EditText
+        android:id="@+id/activity_item_edit_rooms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/real_estate_rooms_number"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_text_bathrooms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_text_rooms"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_item_text_bathrooms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/real_estate_bathrooms_number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_bathrooms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_rooms" />
+
+    <EditText
+        android:id="@+id/activity_item_edit_bathrooms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/real_estate_bathrooms_number"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_text_bedrooms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_text_bathrooms"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_item_text_bedrooms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/real_estate_bedrooms_number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_bathrooms"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_bedrooms" />
+
+    <EditText
+        android:id="@+id/activity_item_edit_bedrooms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/real_estate_bedrooms_number"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_text_poi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_text_bedrooms"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_item_text_poi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/real_estate_points_of_interest"
+        app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_poi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_bedrooms" />
+
+    <EditText
+        android:id="@+id/activity_item_edit_poi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/real_estate_points_of_interest"
+        android:inputType="none"
+        android:focusable="false"
         app:layout_constraintBottom_toTopOf="@+id/activity_item_picture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_item_text_price"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_text_poi"
         tools:ignore="Autofill" />
 
     <EditText
         android:id="@+id/activity_item_picture"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="picture"
         app:layout_constraintBottom_toTopOf="@+id/activity_item_button_save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_price"
+        app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_poi"
         tools:ignore="Autofill" />
 
     <Button

@@ -16,12 +16,11 @@ data class Item(@PrimaryKey(autoGenerate = true) val id: Long? = null,
                 val roomsNumber: Int? = null,
                 val bathroomsNumber: Int? = null,
                 val bedroomsNumber: Int? = null,
-                val description: String? = null,
-                @Embedded
-                val address: @RawValue Address? = null,
-                val district: String? = null,
                 @Embedded
                 val pointsOfInterest: ArrayList<String>? = null,
+                @Embedded
+                val address: @RawValue Address? = null,
+                val description: String? = null,
                 val status: String? = null,
                 val entryDate: String? = null,
                 val saleDate: String? = null,
