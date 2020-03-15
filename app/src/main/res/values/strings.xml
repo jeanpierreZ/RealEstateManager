@@ -2,7 +2,7 @@
     <string name="app_name">Real Estate Manager</string>
 
     <!-- Item Activity -->
-    <string name="title_type">Create a the real estate</string>
+    <string name="title_type">Create a real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
     <string name="real_estate_price">Price of the real estate</string>
     <string name="real_estate_surface">Surface of the real estate</string>
@@ -10,6 +10,14 @@
     <string name="real_estate_bathrooms_number">Number of bathrooms of the real estate</string>
     <string name="real_estate_bedrooms_number">Number of bedrooms of the real estate</string>
     <string name="real_estate_points_of_interest">Points of interest of the real estate</string>
+    <string name="real_estate_street_number">Street number of the real estate</string>
+    <string name="real_estate_street">Street of the real estate</string>
+    <string name="real_estate_apartment_number">Apartment number of the real estate</string>
+    <string name="real_estate_district">District of the real estate</string>
+    <string name="real_estate_city">City of the real estate</string>
+    <string name="real_estate_postal_code">Postal code of the real estate</string>
+    <string name="real_estate_country">Country of the real estate</string>
+
     <string name="erase">Erase</string>
     <string name="save">Save</string>
 

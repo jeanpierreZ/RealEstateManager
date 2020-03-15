@@ -16,7 +16,7 @@ import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
 
 class ItemActivity : AppCompatActivity(),
         TypeDialogFragment.OnTypeChosenListener,
-        POIDialogFragment.OnPOIChosenListener{
+        POIDialogFragment.OnPOIChosenListener {
 
     companion object {
         // Keys for item attributes
@@ -27,6 +27,13 @@ class ItemActivity : AppCompatActivity(),
         const val BATHROOMS_ITEM = "BATHROOMS_ITEM"
         const val BEDROOMS_ITEM = "BEDROOMS_ITEM"
         const val POI_ITEM = "POI_ITEM"
+        const val STREET_NUMBER_ITEM = "STREET_NUMBER_ITEM"
+        const val STREET_ITEM = "STREET_ITEM"
+        const val APARTMENT_NUMBER_ITEM = "APARTMENT_NUMBER_ITEM"
+        const val DISTRICT_ITEM = "DISTRICT_ITEM"
+        const val CITY_ITEM = "CITY_ITEM"
+        const val POSTAL_CODE_ITEM = "POSTAL_CODE_ITEM"
+        const val COUNTRY_ITEM = "COUNTRY_ITEM"
 
         const val PICTURE_ITEM = "PICTURE_ITEM"
     }
@@ -39,6 +46,13 @@ class ItemActivity : AppCompatActivity(),
     private var bathrooms: Int? = null
     private var bedrooms: Int? = null
     private var pointsOfInterest: ArrayList<String>? = null
+    private var streetNumber: String? = null
+    private var street: String? = null
+    private var apartmentNumber: String? = null
+    private var district: String? = null
+    private var city: String? = null
+    private var postalCode: String? = null
+    private var country: String? = null
 
     private lateinit var editType: EditText
     private lateinit var editPOI: EditText
@@ -56,6 +70,13 @@ class ItemActivity : AppCompatActivity(),
         val editBathrooms: EditText = findViewById(R.id.activity_item_edit_bathrooms)
         val editBedrooms: EditText = findViewById(R.id.activity_item_edit_bedrooms)
         editPOI = findViewById(R.id.activity_item_edit_poi)
+        val editStreetNumber: EditText = findViewById(R.id.activity_item_edit_street_number)
+        val editStreet: EditText = findViewById(R.id.activity_item_edit_street)
+        val editApartmentNumber: EditText = findViewById(R.id.activity_item_edit_apartment_number)
+        val editDistrict: EditText = findViewById(R.id.activity_item_edit_district)
+        val editCity: EditText = findViewById(R.id.activity_item_edit_city)
+        val editPostalCode: EditText = findViewById(R.id.activity_item_edit_postal_code)
+        val editCountry: EditText = findViewById(R.id.activity_item_edit_country)
 
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
@@ -67,29 +88,57 @@ class ItemActivity : AppCompatActivity(),
             openTypeDialogFragment()
         }
 
-        editPrice.doOnTextChanged { text, start, count, after ->
+        editPrice.doOnTextChanged { text, _, _, _ ->
             price = text.toString().toIntOrNull()
         }
 
-        editSurface.doOnTextChanged { text, start, count, after ->
+        editSurface.doOnTextChanged { text, _, _, _ ->
             surface = text.toString().toIntOrNull()
         }
 
-        editRooms.doOnTextChanged { text, start, count, after ->
+        editRooms.doOnTextChanged { text, _, _, _ ->
             rooms = text.toString().toIntOrNull()
         }
 
-        editBathrooms.doOnTextChanged { text, start, count, after ->
+        editBathrooms.doOnTextChanged { text, _, _, _ ->
             bathrooms = text.toString().toIntOrNull()
         }
 
-        editBedrooms.doOnTextChanged { text, start, count, after ->
+        editBedrooms.doOnTextChanged { text, _, _, _ ->
             bedrooms = text.toString().toIntOrNull()
         }
 
         // Show the AlertDialog to choose the points of interest of the real estate
         editPOI.setOnClickListener {
             openPOIDialogFragment()
+        }
+
+        editStreetNumber.doOnTextChanged { text, _, _, _ ->
+            streetNumber = text.toString()
+        }
+
+        editStreet.doOnTextChanged { text, _, _, _ ->
+            street = text.toString()
+        }
+
+        editApartmentNumber.doOnTextChanged { text, _, _, _ ->
+            apartmentNumber = text.toString()
+        }
+
+        editDistrict.doOnTextChanged { text, _, _, _ ->
+            district = text.toString()
+        }
+
+        editCity.doOnTextChanged { text, _, _, _ ->
+            city = text.toString()
+        }
+
+        editPostalCode.doOnTextChanged { text, _, _, _ ->
+            postalCode = text.toString()
+        }
+
+        editCountry.doOnTextChanged { text, _, _, _ ->
+            country = text.toString()
         }
 
         // Retrieve the path of a picture in the editText
@@ -134,6 +183,13 @@ class ItemActivity : AppCompatActivity(),
             replyIntent.putExtra(BATHROOMS_ITEM, bathrooms)
             replyIntent.putExtra(BEDROOMS_ITEM, bedrooms)
             replyIntent.putExtra(POI_ITEM, pointsOfInterest)
+            replyIntent.putExtra(STREET_NUMBER_ITEM, streetNumber)
+            replyIntent.putExtra(STREET_ITEM, street)
+            replyIntent.putExtra(APARTMENT_NUMBER_ITEM, apartmentNumber)
+            replyIntent.putExtra(DISTRICT_ITEM, district)
+            replyIntent.putExtra(CITY_ITEM, city)
+            replyIntent.putExtra(POSTAL_CODE_ITEM, postalCode)
+            replyIntent.putExtra(COUNTRY_ITEM, country)
 
             replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)
