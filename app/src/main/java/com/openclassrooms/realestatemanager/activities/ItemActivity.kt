@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
+import com.openclassrooms.realestatemanager.utils.StatusDialogFragment
 import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
 
 
 class ItemActivity : AppCompatActivity(),
         TypeDialogFragment.OnTypeChosenListener,
-        POIDialogFragment.OnPOIChosenListener {
+        POIDialogFragment.OnPOIChosenListener,
+        StatusDialogFragment.OnStatusChosenListener {
 
     companion object {
         // Keys for item attributes
@@ -35,6 +37,7 @@ class ItemActivity : AppCompatActivity(),
         const val POSTAL_CODE_ITEM = "POSTAL_CODE_ITEM"
         const val COUNTRY_ITEM = "COUNTRY_ITEM"
         const val DESCRIPTION_ITEM = "DESCRIPTION_ITEM"
+        const val STATUS_ITEM = "STATUS_ITEM"
 
         const val PICTURE_ITEM = "PICTURE_ITEM"
     }
@@ -55,9 +58,11 @@ class ItemActivity : AppCompatActivity(),
     private var postalCode: String? = null
     private var country: String? = null
     private var description: String? = null
+    private var status: String? = null
 
     private lateinit var editType: EditText
     private lateinit var editPOI: EditText
+    private lateinit var editStatus: EditText
 
     private var pictureText: String? = null
 
@@ -80,6 +85,7 @@ class ItemActivity : AppCompatActivity(),
         val editPostalCode: EditText = findViewById(R.id.activity_item_edit_postal_code)
         val editCountry: EditText = findViewById(R.id.activity_item_edit_country)
         val editDescription: EditText = findViewById(R.id.activity_item_edit_description)
+        editStatus = findViewById(R.id.activity_item_edit_status)
 
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
@@ -148,6 +154,11 @@ class ItemActivity : AppCompatActivity(),
             description = text.toString()
         }
 
+        // Show the AlertDialog to choose the status of the real estate
+        editStatus.setOnClickListener {
+            openStatusDialogFragment()
+        }
+
         // Retrieve the path of a picture in the editText
         picture.addTextChangedListener(
                 object : TextWatcher {
@@ -173,10 +184,14 @@ class ItemActivity : AppCompatActivity(),
         typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
     }
 
-
     private fun openPOIDialogFragment() {
         val pOIDialogFragment = POIDialogFragment(pointsOfInterest, editPOI)
         pOIDialogFragment.show(supportFragmentManager, "pOIDialogFragment")
+    }
+
+    private fun openStatusDialogFragment() {
+        val statusDialogFragment = StatusDialogFragment(status, editStatus)
+        statusDialogFragment.show(supportFragmentManager, "statusDialogFragment")
     }
 
     private fun saveItem() {
@@ -198,6 +213,7 @@ class ItemActivity : AppCompatActivity(),
             replyIntent.putExtra(POSTAL_CODE_ITEM, postalCode)
             replyIntent.putExtra(COUNTRY_ITEM, country)
             replyIntent.putExtra(DESCRIPTION_ITEM, description)
+            replyIntent.putExtra(STATUS_ITEM, status)
 
             replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)
@@ -214,5 +230,9 @@ class ItemActivity : AppCompatActivity(),
 
     override fun onPOIChosen(POIChosen: ArrayList<String>?) {
         pointsOfInterest = POIChosen
+    }
+
+    override fun onStatusChosen(statusChosen: String?) {
+        status = statusChosen
     }
 }

@@ -18,6 +18,7 @@
     <string name="real_estate_postal_code">Postal code of the real estate</string>
     <string name="real_estate_country">Country of the real estate</string>
     <string name="real_estate_description">Description of the real estate</string>
+    <string name="real_estate_status">Status of the real estate</string>
 
     <string name="erase">Erase</string>
     <string name="save">Save</string>
