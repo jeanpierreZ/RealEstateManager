@@ -10,15 +10,15 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.utils.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.StatusDialogFragment
 import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
 
 
 class ItemActivity : AppCompatActivity(),
-        TypeDialogFragment.OnTypeChosenListener,
-        POIDialogFragment.OnPOIChosenListener,
-        StatusDialogFragment.OnStatusChosenListener {
+        TypeDialogFragment.OnTypeChosenListener, POIDialogFragment.OnPOIChosenListener,
+        StatusDialogFragment.OnStatusChosenListener, DateDialogFragment.OnDateListener {
 
     companion object {
         // Keys for item attributes
@@ -38,6 +38,7 @@ class ItemActivity : AppCompatActivity(),
         const val COUNTRY_ITEM = "COUNTRY_ITEM"
         const val DESCRIPTION_ITEM = "DESCRIPTION_ITEM"
         const val STATUS_ITEM = "STATUS_ITEM"
+        const val ENTRY_DATE_ITEM = "ENTRY_DATE_ITEM"
 
         const val PICTURE_ITEM = "PICTURE_ITEM"
     }
@@ -59,10 +60,12 @@ class ItemActivity : AppCompatActivity(),
     private var country: String? = null
     private var description: String? = null
     private var status: String? = null
+    private var entryDate: String? = null
 
     private lateinit var editType: EditText
     private lateinit var editPOI: EditText
     private lateinit var editStatus: EditText
+    private lateinit var editEntryDate: EditText
 
     private var pictureText: String? = null
 
@@ -86,6 +89,7 @@ class ItemActivity : AppCompatActivity(),
         val editCountry: EditText = findViewById(R.id.activity_item_edit_country)
         val editDescription: EditText = findViewById(R.id.activity_item_edit_description)
         editStatus = findViewById(R.id.activity_item_edit_status)
+        editEntryDate = findViewById(R.id.activity_item_edit_entry_date)
 
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
@@ -159,6 +163,11 @@ class ItemActivity : AppCompatActivity(),
             openStatusDialogFragment()
         }
 
+        // Show the AlertDialog to choose the entry date of the real estate
+        editEntryDate.setOnClickListener {
+            openDateDialogFragment()
+        }
+
         // Retrieve the path of a picture in the editText
         picture.addTextChangedListener(
                 object : TextWatcher {
@@ -180,18 +189,23 @@ class ItemActivity : AppCompatActivity(),
     // Private methods
 
     private fun openTypeDialogFragment() {
-        val typeDialogFragment = TypeDialogFragment(type, editType)
+        val typeDialogFragment = TypeDialogFragment(editType)
         typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
     }
 
     private fun openPOIDialogFragment() {
-        val pOIDialogFragment = POIDialogFragment(pointsOfInterest, editPOI)
+        val pOIDialogFragment = POIDialogFragment(editPOI)
         pOIDialogFragment.show(supportFragmentManager, "pOIDialogFragment")
     }
 
     private fun openStatusDialogFragment() {
-        val statusDialogFragment = StatusDialogFragment(status, editStatus)
+        val statusDialogFragment = StatusDialogFragment(editStatus)
         statusDialogFragment.show(supportFragmentManager, "statusDialogFragment")
+    }
+
+    private fun openDateDialogFragment() {
+        val dateDialogFragment = DateDialogFragment(editEntryDate)
+        dateDialogFragment.show(supportFragmentManager, "dateDialogFragment")
     }
 
     private fun saveItem() {
@@ -214,6 +228,7 @@ class ItemActivity : AppCompatActivity(),
             replyIntent.putExtra(COUNTRY_ITEM, country)
             replyIntent.putExtra(DESCRIPTION_ITEM, description)
             replyIntent.putExtra(STATUS_ITEM, status)
+            replyIntent.putExtra(ENTRY_DATE_ITEM, entryDate)
 
             replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)
@@ -234,5 +249,9 @@ class ItemActivity : AppCompatActivity(),
 
     override fun onStatusChosen(statusChosen: String?) {
         status = statusChosen
+    }
+
+    override fun onDateChosen(dateChosen: String?) {
+        entryDate = dateChosen
     }
 }

@@ -2,23 +2,22 @@ package com.openclassrooms.realestatemanager.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.PointsOfInterest
 
-class POIDialogFragment(private var pointsOfInterestList: ArrayList<String>?, private var editPOI: EditText)
-    : DialogFragment() {
+class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
 
     // Declare callback
     private var callbackPOI: OnPOIChosenListener? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
+
+            val pointsOfInterestList: ArrayList<String>? = arrayListOf()
 
             // Create a charSequence array of the PointsOfInterest Enum
             val pointsOfInterest: Array<CharSequence> = arrayOf(
@@ -37,7 +36,7 @@ class POIDialogFragment(private var pointsOfInterestList: ArrayList<String>?, pr
                     // Specify the list array, the items to be selected by default (null for none),
                     // and the listener through which to receive callbacks when items are selected
                     .setMultiChoiceItems(pointsOfInterest, null)
-                    { dialog, which, isChecked ->
+                    { _, which, isChecked ->
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items
                             selectedItems.add(which)
@@ -48,10 +47,8 @@ class POIDialogFragment(private var pointsOfInterestList: ArrayList<String>?, pr
                     }
                     // Set the action buttons
                     .setPositiveButton(android.R.string.ok)
-                    { dialog, id ->
+                    { _, _ ->
                         // User clicked OK, so save the selectedItems results
-                        // Instantiate pointsOfInterestList
-                        pointsOfInterestList = arrayListOf()
                         // For each selected item, add the of point of interest in the list
                         for (item in selectedItems) {
                             when (item) {
@@ -69,7 +66,7 @@ class POIDialogFragment(private var pointsOfInterestList: ArrayList<String>?, pr
                         editPOI.setText(displayPOI)
                     }
                     .setNegativeButton(android.R.string.cancel)
-                    { dialog, id ->
+                    { dialog, _ ->
                         dialog.dismiss()
                     }
             // Create the AlertDialog object and return it

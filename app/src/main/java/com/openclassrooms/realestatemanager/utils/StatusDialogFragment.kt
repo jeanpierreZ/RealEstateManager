@@ -9,14 +9,15 @@ import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Status
 
-class StatusDialogFragment(private var status: String?, private var editStatus: EditText)
-    : DialogFragment() {
+class StatusDialogFragment(private var editStatus: EditText) : DialogFragment() {
 
     // Declare callback
     private var callbackStatus: OnStatusChosenListener? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
+
+            var status: String?
 
             // Create a charSequence array of the Status Enum
             val statutes: Array<CharSequence> =

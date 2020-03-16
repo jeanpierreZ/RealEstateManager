@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
@@ -10,14 +9,15 @@ import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Type
 
-class TypeDialogFragment(private var type: String?, private var editType: EditText)
-    : DialogFragment() {
+class TypeDialogFragment(private var editType: EditText) : DialogFragment() {
 
     // Declare callback
     private var callbackType: OnTypeChosenListener? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
+
+            var type: String?
 
             // Create a charSequence array of the Type Enum
             val types: Array<CharSequence> = arrayOf(Type.DUPLEX.itemType, Type.FLAT.itemType,
@@ -26,23 +26,21 @@ class TypeDialogFragment(private var type: String?, private var editType: EditTe
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
             builder.setTitle(R.string.real_estate_type)
-                    .setItems(types,
-                            DialogInterface.OnClickListener { dialog, which ->
-                                // The 'which' argument contains the index position of the selected item
-                                // Set and save the selected value for the type item
-                                type = types[which] as String
-                                callbackType?.onTypeChosen(type)
-                                editType.setText(type)
-                            })
+                    .setItems(types) { _, which ->
+                        // The 'which' argument contains the index position of the selected item
+                        // Set and save the selected value for the type item
+                        type = types[which] as String
+                        callbackType?.onTypeChosen(type)
+                        editType.setText(type)
+                    }
                     // Set the negative action button
-                    .setNegativeButton(getString(R.string.erase),
-                            DialogInterface.OnClickListener { dialog, id ->
-                                // Set and save null value for the type item
-                                type = null
-                                callbackType?.onTypeChosen(type)
-                                // Set text by default
-                                editType.setText(activity?.getString(R.string.real_estate_type))
-                            })
+                    .setNegativeButton(getString(R.string.erase)) { _, _ ->
+                        // Set and save null value for the type item
+                        type = null
+                        callbackType?.onTypeChosen(type)
+                        // Set text by default
+                        editType.setText(activity?.getString(R.string.real_estate_type))
+                    }
             // Create the AlertDialog object and return it
             builder.create()
             builder.show()
