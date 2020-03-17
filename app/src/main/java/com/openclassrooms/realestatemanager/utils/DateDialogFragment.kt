@@ -10,11 +10,12 @@ import androidx.fragment.app.DialogFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DateDialogFragment(private var editDate: EditText) : DialogFragment(),
-        DatePickerDialog.OnDateSetListener {
+class DateDialogFragment(private var editDate: EditText, private val isEntryDate: Boolean)
+    : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     // Declare callback
-    private var callbackEntryDate: OnDateListener? = null
+    private var callbackEntryEntryDate: OnEntryDateListener? = null
+    private var callbackSaleEntryDate: OnSaleDateListener? = null
 
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -32,10 +33,18 @@ class DateDialogFragment(private var editDate: EditText) : DialogFragment(),
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         // Save the date chosen by the user
         calendar.set(year, month, day)
-        val date = editDate.text.toString()
-        callbackEntryDate?.onDateChosen(date)
-        // Display the date chosen
+
+        // Display and set the date chosen with calendar
         displayDate(editDate)
+
+        // Callback to parent activity
+        val date = editDate.text.toString()
+
+        if (isEntryDate) {
+            callbackEntryEntryDate?.onEntryDateChosen(date)
+        } else {
+            callbackSaleEntryDate?.onSaleDateChosen(date)
+        }
     }
 
     //---------------------------------------------------------------
@@ -57,16 +66,21 @@ class DateDialogFragment(private var editDate: EditText) : DialogFragment(),
         createCallbackToParentActivity()
     }
 
-    // Declare our interface that will be implemented by any container activity
-    interface OnDateListener {
-        fun onDateChosen(dateChosen: String?)
+    // Declare our interfaces that will be implemented by any container activity
+    interface OnEntryDateListener {
+        fun onEntryDateChosen(entryDateChosen: String?)
+    }
+
+    interface OnSaleDateListener {
+        fun onSaleDateChosen(saleDateChosen: String?)
     }
 
     // Create callback to parent activity
     private fun createCallbackToParentActivity() {
         try {
             // Parent activity will automatically subscribe to callback
-            callbackEntryDate = activity as OnDateListener?
+            callbackEntryEntryDate = activity as OnEntryDateListener?
+            callbackSaleEntryDate = activity as OnSaleDateListener?
         } catch (e: ClassCastException) {
             throw ClassCastException("$e must implement OnDateListener")
         }

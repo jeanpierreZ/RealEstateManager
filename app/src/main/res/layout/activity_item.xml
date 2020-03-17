@@ -403,10 +403,33 @@
             android:hint="@string/real_estate_entry_date"
             android:focusable="false"
             android:inputType="none"
-            app:layout_constraintBottom_toTopOf="@+id/activity_item_picture"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_text_sale_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
             app:layout_constraintTop_toBottomOf="@+id/activity_item_text_entry_date"
+            tools:ignore="Autofill,TextFields" />
+
+        <TextView
+            android:id="@+id/activity_item_text_sale_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/real_estate_sale_date"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_edit_sale_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_entry_date" />
+
+        <EditText
+            android:id="@+id/activity_item_edit_sale_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/real_estate_sale_date"
+            android:focusable="false"
+            android:inputType="none"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_text_sale_date"
             tools:ignore="Autofill,TextFields" />
 
         <EditText
@@ -417,7 +440,7 @@
             app:layout_constraintBottom_toTopOf="@+id/activity_item_button_save"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_entry_date"
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_sale_date"
             tools:ignore="Autofill" />
 
         <Button

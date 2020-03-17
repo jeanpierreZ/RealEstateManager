@@ -18,7 +18,8 @@ import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
 
 class ItemActivity : AppCompatActivity(),
         TypeDialogFragment.OnTypeChosenListener, POIDialogFragment.OnPOIChosenListener,
-        StatusDialogFragment.OnStatusChosenListener, DateDialogFragment.OnDateListener {
+        StatusDialogFragment.OnStatusChosenListener, DateDialogFragment.OnEntryDateListener,
+        DateDialogFragment.OnSaleDateListener {
 
     companion object {
         // Keys for item attributes
@@ -39,6 +40,7 @@ class ItemActivity : AppCompatActivity(),
         const val DESCRIPTION_ITEM = "DESCRIPTION_ITEM"
         const val STATUS_ITEM = "STATUS_ITEM"
         const val ENTRY_DATE_ITEM = "ENTRY_DATE_ITEM"
+        const val SALE_DATE_ITEM = "SALE_DATE_ITEM"
 
         const val PICTURE_ITEM = "PICTURE_ITEM"
     }
@@ -61,11 +63,16 @@ class ItemActivity : AppCompatActivity(),
     private var description: String? = null
     private var status: String? = null
     private var entryDate: String? = null
+    private var saleDate: String? = null
+
+    private val isEntryDate: Boolean = true
+    private val isSaleDate: Boolean = false
 
     private lateinit var editType: EditText
     private lateinit var editPOI: EditText
     private lateinit var editStatus: EditText
     private lateinit var editEntryDate: EditText
+    private lateinit var editSaleDate: EditText
 
     private var pictureText: String? = null
 
@@ -90,6 +97,7 @@ class ItemActivity : AppCompatActivity(),
         val editDescription: EditText = findViewById(R.id.activity_item_edit_description)
         editStatus = findViewById(R.id.activity_item_edit_status)
         editEntryDate = findViewById(R.id.activity_item_edit_entry_date)
+        editSaleDate = findViewById(R.id.activity_item_edit_sale_date)
 
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
@@ -165,7 +173,12 @@ class ItemActivity : AppCompatActivity(),
 
         // Show the AlertDialog to choose the entry date of the real estate
         editEntryDate.setOnClickListener {
-            openDateDialogFragment()
+            openDateDialogFragment(editEntryDate, isEntryDate)
+        }
+
+        // Show the AlertDialog to choose the sale date of the real estate
+        editSaleDate.setOnClickListener {
+            openDateDialogFragment(editSaleDate, isSaleDate)
         }
 
         // Retrieve the path of a picture in the editText
@@ -203,8 +216,8 @@ class ItemActivity : AppCompatActivity(),
         statusDialogFragment.show(supportFragmentManager, "statusDialogFragment")
     }
 
-    private fun openDateDialogFragment() {
-        val dateDialogFragment = DateDialogFragment(editEntryDate)
+    private fun openDateDialogFragment(editDate: EditText, isEntryDate: Boolean) {
+        val dateDialogFragment = DateDialogFragment(editDate, isEntryDate)
         dateDialogFragment.show(supportFragmentManager, "dateDialogFragment")
     }
 
@@ -229,6 +242,7 @@ class ItemActivity : AppCompatActivity(),
             replyIntent.putExtra(DESCRIPTION_ITEM, description)
             replyIntent.putExtra(STATUS_ITEM, status)
             replyIntent.putExtra(ENTRY_DATE_ITEM, entryDate)
+            replyIntent.putExtra(SALE_DATE_ITEM, saleDate)
 
             replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)
@@ -251,7 +265,11 @@ class ItemActivity : AppCompatActivity(),
         status = statusChosen
     }
 
-    override fun onDateChosen(dateChosen: String?) {
-        entryDate = dateChosen
+    override fun onEntryDateChosen(entryDateChosen: String?) {
+        entryDate = entryDateChosen
+    }
+
+    override fun onSaleDateChosen(saleDateChosen: String?) {
+        saleDate = saleDateChosen
     }
 }
