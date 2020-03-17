@@ -41,6 +41,7 @@ class ItemActivity : AppCompatActivity(),
         const val STATUS_ITEM = "STATUS_ITEM"
         const val ENTRY_DATE_ITEM = "ENTRY_DATE_ITEM"
         const val SALE_DATE_ITEM = "SALE_DATE_ITEM"
+        const val AGENT_ITEM = "AGENT_ITEM"
 
         const val PICTURE_ITEM = "PICTURE_ITEM"
     }
@@ -64,6 +65,7 @@ class ItemActivity : AppCompatActivity(),
     private var status: String? = null
     private var entryDate: String? = null
     private var saleDate: String? = null
+    private var agent: String? = null
 
     private val isEntryDate: Boolean = true
     private val isSaleDate: Boolean = false
@@ -98,6 +100,7 @@ class ItemActivity : AppCompatActivity(),
         editStatus = findViewById(R.id.activity_item_edit_status)
         editEntryDate = findViewById(R.id.activity_item_edit_entry_date)
         editSaleDate = findViewById(R.id.activity_item_edit_sale_date)
+        val editAgent: EditText = findViewById(R.id.activity_item_edit_agent)
 
         val picture: EditText = findViewById(R.id.activity_item_picture)
 
@@ -181,6 +184,10 @@ class ItemActivity : AppCompatActivity(),
             openDateDialogFragment(editSaleDate, isSaleDate)
         }
 
+        editAgent.doOnTextChanged { text, _, _, _ ->
+            agent = text.toString()
+        }
+
         // Retrieve the path of a picture in the editText
         picture.addTextChangedListener(
                 object : TextWatcher {
@@ -243,6 +250,7 @@ class ItemActivity : AppCompatActivity(),
             replyIntent.putExtra(STATUS_ITEM, status)
             replyIntent.putExtra(ENTRY_DATE_ITEM, entryDate)
             replyIntent.putExtra(SALE_DATE_ITEM, saleDate)
+            replyIntent.putExtra(AGENT_ITEM, agent)
 
             replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)

@@ -21,6 +21,7 @@
     <string name="real_estate_status">Status of the real estate</string>
     <string name="real_estate_entry_date">Date of entry of the real estate</string>
     <string name="real_estate_sale_date">Date of sale of the real estate</string>
+    <string name="real_estate_agent">The real estate agent in charge of this property.</string>
 
     <string name="erase">Erase</string>
     <string name="save">Save</string>
