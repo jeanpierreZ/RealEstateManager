@@ -53,20 +53,14 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
         // Get the itemWithPictures from the bundle
         val itemWithPictures: ItemWithPictures? = arguments?.getParcelable(MainActivity.BUNDLE_ITEM_WITH_PICTURES)
 
-        // Test to retrieve the type and the price
-        val t = itemWithPictures?.item?.type
-        val p = itemWithPictures?.item?.price
-        descriptionText.text = String.format("$t $p")
-
+        descriptionText.text = itemWithPictures?.item?.description
         surfaceText.text = itemWithPictures?.item?.surface.toString()
         roomText.text = itemWithPictures?.item?.roomsNumber.toString()
         bathroomText.text = itemWithPictures?.item?.bathroomsNumber.toString()
         bedroomText.text = itemWithPictures?.item?.bedroomsNumber.toString()
-
         val streetNumber = itemWithPictures?.item?.address?.streetNumber
         val street = itemWithPictures?.item?.address?.street
         streetText.text = String.format("$streetNumber $street")
-
         apartmentText.text = itemWithPictures?.item?.address?.apartmentNumber
         cityText.text = itemWithPictures?.item?.address?.city
         postalCodeText.text = itemWithPictures?.item?.address?.postalCode

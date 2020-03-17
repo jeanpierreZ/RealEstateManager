@@ -10,11 +10,11 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
+import com.openclassrooms.realestatemanager.models.Address
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
@@ -53,9 +53,28 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
         if (requestCode == itemActivityRequestCode && resultCode == Activity.RESULT_OK) {
 
+            // Create an address with data from ItemActivity
+            val address = Address(data?.getStringExtra(ItemActivity.STREET_NUMBER_ITEM),
+                    data?.getStringExtra(ItemActivity.STREET_ITEM),
+                    data?.getStringExtra(ItemActivity.APARTMENT_NUMBER_ITEM),
+                    data?.getStringExtra(ItemActivity.DISTRICT_ITEM),
+                    data?.getStringExtra(ItemActivity.CITY_ITEM),
+                    data?.getStringExtra(ItemActivity.POSTAL_CODE_ITEM),
+                    data?.getStringExtra(ItemActivity.COUNTRY_ITEM))
+
             // Create an item with data from ItemActivity
             val item = Item(null, data?.getStringExtra(ItemActivity.TYPE_ITEM),
-                    data?.getIntExtra(ItemActivity.PRICE_ITEM, 0))
+                    data?.getIntExtra(ItemActivity.PRICE_ITEM, 0),
+                    data?.getIntExtra(ItemActivity.SURFACE_ITEM, 0),
+                    data?.getIntExtra(ItemActivity.ROOMS_ITEM, 0),
+                    data?.getIntExtra(ItemActivity.BATHROOMS_ITEM, 0),
+                    data?.getIntExtra(ItemActivity.BEDROOMS_ITEM, 0),
+                    data?.getStringArrayListExtra(ItemActivity.POI_ITEM),
+                    address, data?.getStringExtra(ItemActivity.DESCRIPTION_ITEM),
+                    data?.getStringExtra(ItemActivity.STATUS_ITEM),
+                    data?.getStringExtra(ItemActivity.ENTRY_DATE_ITEM),
+                    data?.getStringExtra(ItemActivity.SALE_DATE_ITEM),
+                    data?.getStringExtra(ItemActivity.AGENT_ITEM))
 
             // Create a picture with data from ItemActivity
             val picture = Picture(null,
