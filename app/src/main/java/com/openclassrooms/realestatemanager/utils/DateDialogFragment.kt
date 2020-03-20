@@ -10,12 +10,11 @@ import androidx.fragment.app.DialogFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DateDialogFragment(private var editDate: EditText, private val isEntryDate: Boolean)
+class DateDialogFragment(private var editDate: EditText)
     : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     // Declare callback
-    private var callbackEntryEntryDate: OnEntryDateListener? = null
-    private var callbackSaleEntryDate: OnSaleDateListener? = null
+    private var callbackDate: OnDateListener? = null
 
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -38,13 +37,7 @@ class DateDialogFragment(private var editDate: EditText, private val isEntryDate
         displayDate(editDate)
 
         // Callback to parent activity
-        val date = editDate.text.toString()
-
-        if (isEntryDate) {
-            callbackEntryEntryDate?.onEntryDateChosen(date)
-        } else {
-            callbackSaleEntryDate?.onSaleDateChosen(date)
-        }
+        callbackDate?.onDateChosen(editDate)
     }
 
     //---------------------------------------------------------------
@@ -66,21 +59,16 @@ class DateDialogFragment(private var editDate: EditText, private val isEntryDate
         createCallbackToParentActivity()
     }
 
-    // Declare our interfaces that will be implemented by any container activity
-    interface OnEntryDateListener {
-        fun onEntryDateChosen(entryDateChosen: String?)
-    }
-
-    interface OnSaleDateListener {
-        fun onSaleDateChosen(saleDateChosen: String?)
+    // Declare our interface that will be implemented by any container activity
+    interface OnDateListener {
+        fun onDateChosen(editTextChosen: EditText?)
     }
 
     // Create callback to parent activity
     private fun createCallbackToParentActivity() {
         try {
             // Parent activity will automatically subscribe to callback
-            callbackEntryEntryDate = activity as OnEntryDateListener?
-            callbackSaleEntryDate = activity as OnSaleDateListener?
+            callbackDate = activity as OnDateListener?
         } catch (e: ClassCastException) {
             throw ClassCastException("$e must implement OnDateListener")
         }

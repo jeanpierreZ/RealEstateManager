@@ -18,8 +18,7 @@ import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
 
 class ItemActivity : AppCompatActivity(),
         TypeDialogFragment.OnTypeChosenListener, POIDialogFragment.OnPOIChosenListener,
-        StatusDialogFragment.OnStatusChosenListener, DateDialogFragment.OnEntryDateListener,
-        DateDialogFragment.OnSaleDateListener {
+        StatusDialogFragment.OnStatusChosenListener, DateDialogFragment.OnDateListener {
 
     companion object {
         // Keys for item attributes
@@ -66,9 +65,6 @@ class ItemActivity : AppCompatActivity(),
     private var entryDate: String? = null
     private var saleDate: String? = null
     private var agent: String? = null
-
-    private val isEntryDate: Boolean = true
-    private val isSaleDate: Boolean = false
 
     private lateinit var editType: EditText
     private lateinit var editPOI: EditText
@@ -176,12 +172,12 @@ class ItemActivity : AppCompatActivity(),
 
         // Show the AlertDialog to choose the entry date of the real estate
         editEntryDate.setOnClickListener {
-            openDateDialogFragment(editEntryDate, isEntryDate)
+            openDateDialogFragment(editEntryDate)
         }
 
         // Show the AlertDialog to choose the sale date of the real estate
         editSaleDate.setOnClickListener {
-            openDateDialogFragment(editSaleDate, isSaleDate)
+            openDateDialogFragment(editSaleDate)
         }
 
         editAgent.doOnTextChanged { text, _, _, _ ->
@@ -223,8 +219,8 @@ class ItemActivity : AppCompatActivity(),
         statusDialogFragment.show(supportFragmentManager, "statusDialogFragment")
     }
 
-    private fun openDateDialogFragment(editDate: EditText, isEntryDate: Boolean) {
-        val dateDialogFragment = DateDialogFragment(editDate, isEntryDate)
+    private fun openDateDialogFragment(editDate: EditText) {
+        val dateDialogFragment = DateDialogFragment(editDate)
         dateDialogFragment.show(supportFragmentManager, "dateDialogFragment")
     }
 
@@ -273,11 +269,11 @@ class ItemActivity : AppCompatActivity(),
         status = statusChosen
     }
 
-    override fun onEntryDateChosen(entryDateChosen: String?) {
-        entryDate = entryDateChosen
+    override fun onDateChosen(editTextChosen: EditText?) {
+        when (editTextChosen) {
+            editEntryDate -> entryDate = editTextChosen.text.toString()
+            editSaleDate -> saleDate = editTextChosen.text.toString()
+        }
     }
 
-    override fun onSaleDateChosen(saleDateChosen: String?) {
-        saleDate = saleDateChosen
-    }
 }
