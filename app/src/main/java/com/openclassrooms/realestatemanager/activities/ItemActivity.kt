@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.openclassrooms.realestatemanager.R
@@ -14,6 +15,8 @@ import com.openclassrooms.realestatemanager.utils.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.StatusDialogFragment
 import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ItemActivity : AppCompatActivity(),
@@ -71,6 +74,10 @@ class ItemActivity : AppCompatActivity(),
     private lateinit var editStatus: EditText
     private lateinit var editEntryDate: EditText
     private lateinit var editSaleDate: EditText
+
+    // To compare the dates of entry and sale
+    private lateinit var dateOfEntry: Date
+    private lateinit var dateOfSale: Date
 
     private var pictureText: String? = null
 
@@ -271,8 +278,35 @@ class ItemActivity : AppCompatActivity(),
 
     override fun onDateChosen(editTextChosen: EditText?) {
         when (editTextChosen) {
-            editEntryDate -> entryDate = editTextChosen.text.toString()
-            editSaleDate -> saleDate = editTextChosen.text.toString()
+            editEntryDate ->
+                entryDate = if (editTextChosen.text.toString() != "") {
+                    editTextChosen.text.toString()
+                } else {
+                    null
+                }
+
+            editSaleDate ->
+                saleDate = if (editTextChosen.text.toString() != "") {
+                    editTextChosen.text.toString()
+                } else {
+                    null
+                }
+        }
+
+        // Parse String from EditText to Date then compare the two dates
+        if (entryDate != null && entryDate != "" && saleDate != null && saleDate != "") {
+            val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+            dateOfEntry = sdf.parse(entryDate)
+            dateOfSale = sdf.parse(saleDate)
+
+            // The sale date cannot be earlier than the entry date
+            if (dateOfSale.before(dateOfEntry)) {
+                Toast.makeText(this, getString(R.string.sale_date_earlier_entry_date), Toast.LENGTH_LONG).show()
+                editEntryDate.text.clear()
+                editSaleDate.text.clear()
+                entryDate = null
+                saleDate = null
+            }
         }
     }
 
