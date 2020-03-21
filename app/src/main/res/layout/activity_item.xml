@@ -448,6 +448,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/real_estate_agent"
             android:inputType="text"
+            android:ellipsize="end"
             app:layout_constraintBottom_toTopOf="@+id/activity_item_picture"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"

@@ -11,17 +11,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.models.Status
+import com.openclassrooms.realestatemanager.models.Type
 import com.openclassrooms.realestatemanager.utils.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
-import com.openclassrooms.realestatemanager.utils.StatusDialogFragment
-import com.openclassrooms.realestatemanager.utils.TypeDialogFragment
+import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ItemActivity : AppCompatActivity(),
-        TypeDialogFragment.OnTypeChosenListener, POIDialogFragment.OnPOIChosenListener,
-        StatusDialogFragment.OnStatusChosenListener, DateDialogFragment.OnDateListener {
+        PropertyDialogFragment.OnPropertyChosenListener,
+        POIDialogFragment.OnPOIChosenListener,
+        DateDialogFragment.OnDateListener {
 
     companion object {
         // Keys for item attributes
@@ -75,6 +77,17 @@ class ItemActivity : AppCompatActivity(),
     private lateinit var editEntryDate: EditText
     private lateinit var editSaleDate: EditText
 
+    // Create a charSequence array of the Type Enum and a title
+    private val types: Array<CharSequence> =
+            arrayOf(Type.DUPLEX.itemType, Type.FLAT.itemType, Type.LOFT.itemType,
+                    Type.MANOR.itemType, Type.PENTHOUSE.itemType)
+    private val typeTitle = R.string.real_estate_type
+
+    // Create a charSequence array of the Status Enum and a title
+    private val statutes: Array<CharSequence> =
+            arrayOf(Status.AVAILABLE.disponibility, Status.SOLD.disponibility)
+    private val statusTitle = R.string.real_estate_status
+
     // To compare the dates of entry and sale
     private lateinit var dateOfEntry: Date
     private lateinit var dateOfSale: Date
@@ -112,7 +125,7 @@ class ItemActivity : AppCompatActivity(),
 
         // Show the AlertDialog to choose the type of the real estate
         editType.setOnClickListener {
-            openTypeDialogFragment()
+            openPropertyDialogFragment(editType, typeTitle, types)
         }
 
         editPrice.doOnTextChanged { text, _, _, _ ->
@@ -174,7 +187,7 @@ class ItemActivity : AppCompatActivity(),
 
         // Show the AlertDialog to choose the status of the real estate
         editStatus.setOnClickListener {
-            openStatusDialogFragment()
+            openPropertyDialogFragment(editStatus, statusTitle, statutes)
         }
 
         // Show the AlertDialog to choose the entry date of the real estate
@@ -211,19 +224,19 @@ class ItemActivity : AppCompatActivity(),
     //----------------------------------------------------------------------------------
     // Private methods
 
-    private fun openTypeDialogFragment() {
-        val typeDialogFragment = TypeDialogFragment(editType)
-        typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
-    }
+//    private fun openTypeDialogFragment() {
+//        val typeDialogFragment = TypeDialogFragment(editType)
+//        typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
+//    }
 
     private fun openPOIDialogFragment() {
         val pOIDialogFragment = POIDialogFragment(editPOI)
         pOIDialogFragment.show(supportFragmentManager, "pOIDialogFragment")
     }
 
-    private fun openStatusDialogFragment() {
-        val statusDialogFragment = StatusDialogFragment(editStatus)
-        statusDialogFragment.show(supportFragmentManager, "statusDialogFragment")
+    private fun openPropertyDialogFragment(editText: EditText, title: Int, list: Array<CharSequence>) {
+        val propertyDialogFragment = PropertyDialogFragment(editText, title, list)
+        propertyDialogFragment.show(supportFragmentManager, "propertyDialogFragment")
     }
 
     private fun openDateDialogFragment(editDate: EditText) {
@@ -262,35 +275,33 @@ class ItemActivity : AppCompatActivity(),
     }
 
     //----------------------------------------------------------------------------------
-    // Implement listener from the DialogFragments to fetch the data of the real estate
+    // Implement listener from the DialogFragments to fetch data of the real estate
 
-    override fun onTypeChosen(typeChosen: String?) {
-        type = typeChosen
+    override fun onPropertyChosen(propertyChosen: EditText?) {
+        if (propertyChosen != null) {
+            if (editType == propertyChosen) {
+                type = propertyChosen.text.toString()
+            } else {
+                status = propertyChosen.text.toString()
+            }
+        }
     }
 
     override fun onPOIChosen(POIChosen: ArrayList<String>?) {
         pointsOfInterest = POIChosen
     }
 
-    override fun onStatusChosen(statusChosen: String?) {
-        status = statusChosen
-    }
-
     override fun onDateChosen(editTextChosen: EditText?) {
-        when (editTextChosen) {
-            editEntryDate ->
-                entryDate = if (editTextChosen.text.toString() != "") {
-                    editTextChosen.text.toString()
-                } else {
-                    null
-                }
-
-            editSaleDate ->
-                saleDate = if (editTextChosen.text.toString() != "") {
-                    editTextChosen.text.toString()
-                } else {
-                    null
-                }
+        if (editTextChosen?.text.toString() != "") {
+            when (editTextChosen) {
+                editEntryDate -> entryDate = editTextChosen.text.toString()
+                editSaleDate -> saleDate = editTextChosen.text.toString()
+            }
+        } else {
+            when (editTextChosen) {
+                editEntryDate -> entryDate = null
+                editSaleDate -> saleDate = null
+            }
         }
 
         // Parse String from EditText to Date then compare the two dates

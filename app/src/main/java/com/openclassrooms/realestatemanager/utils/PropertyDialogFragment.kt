@@ -7,39 +7,42 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.models.Status
 
-class StatusDialogFragment(private var editStatus: EditText) : DialogFragment() {
+class PropertyDialogFragment(private var editText: EditText,
+                             private val title: Int,
+                             private val list: Array<CharSequence>) : DialogFragment() {
 
     // Declare callback
-    private var callbackStatus: OnStatusChosenListener? = null
+    private var callbackProperty: OnPropertyChosenListener? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
-            var status: String?
+            var choice: String?
 
             // Create a charSequence array of the Status Enum
-            val statutes: Array<CharSequence> =
-                    arrayOf(Status.AVAILABLE.disponibility, Status.SOLD.disponibility)
+//            val statutes: Array<CharSequence> =
+//                    arrayOf(Status.AVAILABLE.disponibility, Status.SOLD.disponibility)
 
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
-            builder.setTitle(R.string.real_estate_status)
-                    .setItems(statutes) { _, which ->
+//            builder.setTitle(R.string.real_estate_status)
+            builder.setTitle(title)
+                    .setItems(list) { _, which ->
                         // The 'which' argument contains the index position of the selected item
-                        // Set and save the selected value for the status item
-                        status = statutes[which] as String
-                        callbackStatus?.onStatusChosen(status)
-                        editStatus.setText(status)
+                        // Set and save the selected value for the property of the item
+                        choice = list[which] as String
+                        editText.setText(choice)
+                        callbackProperty?.onPropertyChosen(editText)
                     }
                     // Set the negative action button
                     .setNegativeButton(getString(R.string.erase)) { _, _ ->
                         // Set and save null value for the status item
-                        status = null
-                        callbackStatus?.onStatusChosen(status)
+//                        choice = null
+                        // Set a null value for the property of the item
+                        callbackProperty?.onPropertyChosen(null)
                         // Set hint text by default
-                        editStatus.setText(activity?.getString(R.string.real_estate_status))
+                        editText.setText(getString(title))
                     }
             // Create the AlertDialog object and return it
             builder.create()
@@ -49,7 +52,7 @@ class StatusDialogFragment(private var editStatus: EditText) : DialogFragment() 
     }
 
     //----------------------------------------------------------------------------------
-    // Interface for callback to parent activity and associated methods when choose a status item
+    // Interface for callback to parent activity and associated methods when choose a property of an item
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,17 +61,17 @@ class StatusDialogFragment(private var editStatus: EditText) : DialogFragment() 
     }
 
     // Declare our interface that will be implemented by any container activity
-    interface OnStatusChosenListener {
-        fun onStatusChosen(statusChosen: String?)
+    interface OnPropertyChosenListener {
+        fun onPropertyChosen(propertyChosen: EditText?)
     }
 
     // Create callback to parent activity
     private fun createCallbackToParentActivity() {
         try {
             // Parent activity will automatically subscribe to callback
-            callbackStatus = activity as OnStatusChosenListener?
+            callbackProperty = activity as OnPropertyChosenListener?
         } catch (e: ClassCastException) {
-            throw ClassCastException("$e must implement OnStatusChosenListener")
+            throw ClassCastException("$e must implement OnPropertyChosenListener")
         }
     }
 
