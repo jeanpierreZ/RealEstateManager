@@ -15,51 +15,43 @@
 
     <TextView
         android:id="@+id/details_fragment_media"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Media"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/media"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_recycler_view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/details_fragment_recycler_view"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_description_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
 
     <TextView
         android:id="@+id/details_fragment_description_title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/description"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
 
     <TextView
         android:id="@+id/details_fragment_description"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="This is the description"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface_title"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_description_title" />
 
     <ImageView
         android:id="@+id/details_fragment_surface_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="surface_icon"
+        android:contentDescription="@string/surface_icon"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
         app:layout_constraintEnd_toStartOf="@+id/details_fragment_surface_title"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,8 +61,8 @@
     <TextView
         android:id="@+id/details_fragment_surface_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Surface"
+        android:layout_height="wrap_content"
+        android:text="@string/surface_title"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
         app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
@@ -80,7 +72,7 @@
     <TextView
         android:id="@+id/details_fragment_surface"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="Surface in sq m"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms_title"
@@ -92,7 +84,7 @@
         android:id="@+id/details_fragment_room_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="room_icon"
+        android:contentDescription="@string/room_icon"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms"
         app:layout_constraintEnd_toStartOf="@+id/details_fragment_rooms_title"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,8 +94,8 @@
     <TextView
         android:id="@+id/details_fragment_rooms_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Number of rooms"
+        android:layout_height="wrap_content"
+        android:text="@string/number_of_rooms_title"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms"
         app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
@@ -113,10 +105,10 @@
     <TextView
         android:id="@+id/details_fragment_rooms"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="How many rooms ?"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_location_icon"
+        app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms_title"
         app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms_title" />
@@ -125,152 +117,150 @@
         android:id="@+id/details_fragment_bathroom_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="bathroom_icon"
+        android:contentDescription="@string/bathroom_icon"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms"
         app:layout_constraintEnd_toStartOf="@+id/details_fragment_bathrooms_title"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms"
         app:srcCompat="@drawable/ic_hot_tub_black_24dp" />
 
     <TextView
         android:id="@+id/details_fragment_bathrooms_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Number of bathrooms"
+        android:layout_height="wrap_content"
+        android:text="@string/number_of_bathrooms_title"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintStart_toEndOf="@+id/details_fragment_bathroom_icon"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_description" />
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms" />
 
     <TextView
         android:id="@+id/details_fragment_bathrooms"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="How many bathrooms ?"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms_title" />
 
     <ImageView
         android:id="@+id/details_fragment_bedroom_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="bedroom_icon"
+        android:contentDescription="@string/bedroom_icon"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_bathrooms_title"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+        app:layout_constraintEnd_toStartOf="@+id/details_fragment_bedrooms_title"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms"
         app:srcCompat="@drawable/ic_hotel_black_24dp" />
 
     <TextView
         android:id="@+id/details_fragment_bedrooms_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Number of bedrooms"
+        android:layout_height="wrap_content"
+        android:text="@string/number_of_bedrooms_title"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintStart_toEndOf="@+id/details_fragment_bedroom_icon"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms" />
 
     <TextView
         android:id="@+id/details_fragment_bedrooms"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="How many bedrooms ?"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_bedrooms_title" />
 
     <ImageView
         android:id="@+id/details_fragment_location_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="location_icon"
+        android:contentDescription="@string/location_icon"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
         app:layout_constraintEnd_toStartOf="@+id/details_fragment_location_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms"
+        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_description"
         app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
     <TextView
         android:id="@+id/details_fragment_location_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Location"
+        android:layout_height="wrap_content"
+        android:text="@string/location_title"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/details_fragment_location_icon"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms" />
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_description" />
 
     <TextView
         android:id="@+id/details_fragment_street"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="number and street ?"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_apartment"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_location_title" />
 
     <TextView
         android:id="@+id/details_fragment_apartment"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="apartment ?"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_city"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_street" />
 
     <TextView
         android:id="@+id/details_fragment_city"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="city ?"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_postal_code"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_apartment" />
 
     <TextView
         android:id="@+id/details_fragment_postal_code"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="postal_code ?"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_country"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_city" />
 
     <TextView
         android:id="@+id/details_fragment_country"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="country ?"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/details_fragment_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_postal_code" />
 
     <ImageView
         android:id="@+id/details_fragment_map"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_bedrooms" />
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_country" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

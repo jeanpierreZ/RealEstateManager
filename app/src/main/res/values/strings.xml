@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
+    <!-- Details Fragment -->
+    <string name="media">Media</string>
+    <string name="description">Description</string>
+    <string name="surface_icon">Surface icon</string>
+    <string name="surface_title">Surface</string>
+    <string name="room_icon">Room icon</string>
+    <string name="number_of_rooms_title">Number of rooms</string>
+    <string name="bathroom_icon">Bathroom icon</string>
+    <string name="number_of_bathrooms_title">Number of bathrooms</string>
+    <string name="bedroom_icon">Bedroom icon</string>
+    <string name="number_of_bedrooms_title">Number of bedrooms</string>
+    <string name="location_icon">Location icon</string>
+    <string name="location_title">Location</string>
+
     <!-- Item Activity -->
     <string name="title_type">Create a real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
