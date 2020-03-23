@@ -3,14 +3,19 @@ package com.openclassrooms.realestatemanager.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
+import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
 import com.openclassrooms.realestatemanager.utils.DateDialogFragment
@@ -23,9 +28,12 @@ import java.util.*
 class ItemActivity : AppCompatActivity(),
         PropertyDialogFragment.OnPropertyChosenListener,
         POIDialogFragment.OnPOIChosenListener,
-        DateDialogFragment.OnDateListener {
+        DateDialogFragment.OnDateListener,
+        ItemPicturesAdapter.PictureListener {
 
     companion object {
+        private val TAG = ItemActivity::class.java.simpleName
+
         // Keys for item attributes
         const val TYPE_ITEM = "TYPE_ITEM"
         const val PRICE_ITEM = "PRICE_ITEM"
@@ -46,11 +54,13 @@ class ItemActivity : AppCompatActivity(),
         const val ENTRY_DATE_ITEM = "ENTRY_DATE_ITEM"
         const val SALE_DATE_ITEM = "SALE_DATE_ITEM"
         const val AGENT_ITEM = "AGENT_ITEM"
+        const val PICTURE_LIST_ITEM = "PICTURE_LIST_ITEM"
 
-        const val PICTURE_ITEM = "PICTURE_ITEM"
+        // Request Code for picture
+        const val RC_CHOOSE_PHOTO = 100
     }
 
-    // Properties of a real estate
+    // Properties of a real estate, Item Model with Address, PointsOfInterest, Status and Type
     private var type: String? = null
     private var price: Int? = null
     private var surface: Int? = null
@@ -71,11 +81,19 @@ class ItemActivity : AppCompatActivity(),
     private var saleDate: String? = null
     private var agent: String? = null
 
+    // Properties of a real estate, Picture Model
+    private var pictureList: ArrayList<Picture?> = arrayListOf()
+    private var pictureLocation: String? = null
+
+    // Widget
     private lateinit var editType: EditText
     private lateinit var editPOI: EditText
     private lateinit var editStatus: EditText
     private lateinit var editEntryDate: EditText
     private lateinit var editSaleDate: EditText
+    private lateinit var pictureButton: Button
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var itemPicturesAdapter: ItemPicturesAdapter
 
     // Create a charSequence array of the Type Enum and a title
     private val types: Array<CharSequence> =
@@ -91,8 +109,6 @@ class ItemActivity : AppCompatActivity(),
     // To compare the dates of entry and sale
     private lateinit var dateOfEntry: Date
     private lateinit var dateOfSale: Date
-
-    private var pictureText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,7 +134,18 @@ class ItemActivity : AppCompatActivity(),
         editSaleDate = findViewById(R.id.activity_item_edit_sale_date)
         val editAgent: EditText = findViewById(R.id.activity_item_edit_agent)
 
-        val picture: EditText = findViewById(R.id.activity_item_picture)
+        val editPictureLocation: EditText = findViewById(R.id.activity_item_edit_picture_location)
+        pictureButton = findViewById(R.id.activity_item_button_picture)
+
+
+        // Get RecyclerView from layout and serialise it
+        recyclerView = findViewById(R.id.activity_item_recycler_view)
+
+        //----------------------------------------------------------------------------------
+
+        configureRecyclerView()
+        Log.d(TAG, "ON CREATE pictureList = $pictureList")
+        updatePictureList(pictureList)
 
         //----------------------------------------------------------------------------------
         // Get the texts typed in the editTexts
@@ -204,30 +231,50 @@ class ItemActivity : AppCompatActivity(),
             agent = text.toString()
         }
 
-        // Retrieve the path of a picture in the editText
-        picture.addTextChangedListener(
-                object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                    }
+        editPictureLocation.doOnTextChanged { text, _, _, _ ->
+            pictureLocation = text.toString()
+        }
 
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    }
+        //----------------------------------------------------------------------------------
 
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        pictureText = picture.text.toString()
-                    }
-                })
-
+        addPicture()
         saveItem()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_CHOOSE_PHOTO && resultCode == Activity.RESULT_OK) {
+            // Uri of picture selected by user
+            val uriPictureSelected = data?.data
+            // Create a Picture model with data
+            val picture = Picture(null, pictureLocation, uriPictureSelected, null)
+            // Add Picture to a list
+            pictureList.add(picture)
+            Log.d(TAG, "ON ACTIVITY RESULT pictureList = $pictureList")
+            updatePictureList(pictureList)
+        }
     }
 
     //----------------------------------------------------------------------------------
     // Private methods
 
-//    private fun openTypeDialogFragment() {
-//        val typeDialogFragment = TypeDialogFragment(editType)
-//        typeDialogFragment.show(supportFragmentManager, "typeDialogFragment")
-//    }
+    // Configure RecyclerViews, Adapters & LayoutManager
+
+    private fun configureRecyclerView() {
+        // Create the adapter by passing the list of pictures
+        itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this)
+        // Attach the adapter to the recyclerView to populate pictures
+        recyclerView.adapter = itemPicturesAdapter
+        // Set layout manager to position the pictures
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    private fun updatePictureList(updateList: ArrayList<Picture?>) {
+        itemPicturesAdapter.setPictures(updateList)
+    }
+
+    // Configure DialogFragments
 
     private fun openPOIDialogFragment() {
         val pOIDialogFragment = POIDialogFragment(editPOI)
@@ -242,6 +289,19 @@ class ItemActivity : AppCompatActivity(),
     private fun openDateDialogFragment(editDate: EditText) {
         val dateDialogFragment = DateDialogFragment(editDate)
         dateDialogFragment.show(supportFragmentManager, "dateDialogFragment")
+    }
+
+    // Configure Buttons
+
+    private fun addPicture() {
+        pictureButton.setOnClickListener {
+            if (pictureLocation != null && pictureLocation?.isNotEmpty()!!) {
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(intent, RC_CHOOSE_PHOTO)
+            } else {
+                Toast.makeText(this, getString(R.string.no_picture_location), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun saveItem() {
@@ -267,8 +327,8 @@ class ItemActivity : AppCompatActivity(),
             replyIntent.putExtra(ENTRY_DATE_ITEM, entryDate)
             replyIntent.putExtra(SALE_DATE_ITEM, saleDate)
             replyIntent.putExtra(AGENT_ITEM, agent)
+            replyIntent.putParcelableArrayListExtra(PICTURE_LIST_ITEM, pictureList)
 
-            replyIntent.putExtra(PICTURE_ITEM, pictureText)
             setResult(Activity.RESULT_OK, replyIntent)
             finish()
         }
@@ -319,6 +379,10 @@ class ItemActivity : AppCompatActivity(),
                 saleDate = null
             }
         }
+    }
+
+    override fun onClickPicture(position: Int) {
+        TODO("Not yet implemented")
     }
 
 }

@@ -38,11 +38,19 @@
     <string name="real_estate_agent">The real estate agent in charge of this property.</string>
     <string name="sale_date_earlier_entry_date">The sale date cannot be earlier than the entry date.</string>
     <string name="impossible_future_date">You cannot choose a date in the future.</string>
+    <string name="image_preview">Preview of the image</string>
+    <string name="picture_location">Picture location</string>
+    <string name="no_image_chosen">No image chosen</string>
+    <string name="no_picture_location">Choose a location to add a picture</string>
+    <string name="add_picture">Add a picture</string>
 
     <string name="erase">Erase</string>
     <string name="save">Save</string>
 
     <!-- Main Activity -->
     <string name="real_estate_not_saved">Real estate not saved</string>
+
+    <!-- Request Permissions -->
+    <string name="rationale_permission_access">This application needs to access your external storage and internet to work.</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.activities
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -19,14 +20,22 @@ import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
-class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
+class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, EasyPermissions.PermissionCallbacks {
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
 
         // Key for item position
         const val BUNDLE_ITEM_WITH_PICTURES: String = "BUNDLE_ITEM_WITH_PICTURES"
+
+        // Static data for Permissions
+        val PERMS = arrayOf(Manifest.permission.INTERNET, Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        const val PERMS_REQUEST_CODE = 123
     }
 
     private val itemActivityRequestCode = 1
@@ -42,10 +51,16 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
 
         configureToolbar()
 
-        // Use the ViewModelProvider to associate the ViewModel with MainActivity
-        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        // Request permission when starting MainActivity
+        EasyPermissions.requestPermissions(this, getString(R.string.rationale_permission_access),
+                PERMS_REQUEST_CODE, *PERMS)
 
-        displayFragment()
+        // Open the view with RestaurantMapFragment if permissions were already allowed
+        if (EasyPermissions.hasPermissions(this, *PERMS)) {
+            // Use the ViewModelProvider to associate the ViewModel with MainActivity
+            itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+            displayFragment()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -78,13 +93,11 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
                     data?.getStringExtra(ItemActivity.AGENT_ITEM))
 
             // Create a picture with data from ItemActivity
-            val picture = Picture(null,
-                    "lounge",
-                    data?.getStringExtra(ItemActivity.PICTURE_ITEM),
-                    null)
+            val picture = data?.getParcelableArrayListExtra<Picture>(ItemActivity.PICTURE_LIST_ITEM)
 
             // Insert item with pictures in database
-            itemWithPicturesViewModel.insertItemWithPictures(item, picture)
+//            itemWithPicturesViewModel.insertItemWithPictures(item, picture)
+            picture?.get(0)?.let { itemWithPicturesViewModel.insertItemWithPictures(item, it) }
             Log.d(TAG, "item = $item")
             Log.d(TAG, "picture = $picture")
 
@@ -131,6 +144,13 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
         setSupportActionBar(toolbar)
     }
 
+    private fun displayFragment() {
+        val listFragment = ListFragment()
+        supportFragmentManager.beginTransaction()
+                .add(R.id.activity_main_fragment_container_view, listFragment)
+                .commit()
+    }
+
     //----------------------------------------------------------------------------------
     // Implement listener from ListFragment to open DetailsFragment when click on an item
 
@@ -149,13 +169,24 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener {
     }
 
     //----------------------------------------------------------------------------------
-    // Private methods to configure design
+    // Easy Permissions
 
-    private fun displayFragment() {
-        val listFragment = ListFragment()
-        supportFragmentManager.beginTransaction()
-                .add(R.id.activity_main_fragment_container_view, listFragment)
-                .commit()
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        // If there isn't permission, wait for the user to allow permissions before starting...
+        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        displayFragment()
     }
 
 }

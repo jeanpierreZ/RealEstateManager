@@ -4,13 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.openclassrooms.realestatemanager.database.dao.ItemWithPicturesDao
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.Picture
+import com.openclassrooms.realestatemanager.utils.UriConverter
 
 // Annotate class to be a Room Database with tables (entities) of the Item and Picture classes
 @Database(entities = [Item::class, Picture::class], version = 1, exportSchema = false)
-abstract class ItemWithPicturesRoomDatabase: RoomDatabase() {
+// Define the TypeConverters to be used for Uri in Picture
+@TypeConverters(UriConverter::class)
+abstract class ItemWithPicturesRoomDatabase : RoomDatabase() {
 
     // --- DAO ---
     abstract fun itemWithPicturesDao(): ItemWithPicturesDao
