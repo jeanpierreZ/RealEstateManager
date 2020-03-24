@@ -93,13 +93,13 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
                     data?.getStringExtra(ItemActivity.AGENT_ITEM))
 
             // Create a picture with data from ItemActivity
-            val picture = data?.getParcelableArrayListExtra<Picture>(ItemActivity.PICTURE_LIST_ITEM)
+            val pictureList: ArrayList<Picture?> =
+                    data?.getParcelableArrayListExtra<Picture>(ItemActivity.PICTURE_LIST_ITEM) as ArrayList<Picture?>
 
             // Insert item with pictures in database
-//            itemWithPicturesViewModel.insertItemWithPictures(item, picture)
-            picture?.get(0)?.let { itemWithPicturesViewModel.insertItemWithPictures(item, it) }
+            itemWithPicturesViewModel.insertItemWithPictures(item, pictureList)
             Log.d(TAG, "item = $item")
-            Log.d(TAG, "picture = $picture")
+            Log.d(TAG, "picture = $pictureList")
 
         } else {
             Toast.makeText(applicationContext, getString(R.string.real_estate_not_saved), Toast.LENGTH_LONG).show()

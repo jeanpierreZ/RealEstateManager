@@ -145,7 +145,6 @@ class ItemActivity : AppCompatActivity(),
 
         configureRecyclerView()
         Log.d(TAG, "ON CREATE pictureList = $pictureList")
-        updatePictureList(pictureList)
 
         //----------------------------------------------------------------------------------
         // Get the texts typed in the editTexts

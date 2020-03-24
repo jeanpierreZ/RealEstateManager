@@ -43,12 +43,12 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
         repository.insertItem(item)
     }
 
-    fun insertPictures(picture: Picture) = viewModelScope.launch {
-        repository.insertPictures(picture)
+    fun insertPictures(pictureList: ArrayList<Picture?>) = viewModelScope.launch {
+        repository.insertPictures(pictureList)
     }
 
-    fun insertItemWithPictures(item: Item, picture: Picture) = viewModelScope.launch {
-        repository.insertItemWithPictures(item, picture)
+    fun insertItemWithPictures(item: Item, pictureList: ArrayList<Picture?>) = viewModelScope.launch {
+        repository.insertItemWithPictures(item, pictureList)
     }
 
     // --- UPDATE ---

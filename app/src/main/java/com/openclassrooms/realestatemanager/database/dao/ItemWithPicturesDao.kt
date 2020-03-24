@@ -27,13 +27,15 @@ interface ItemWithPicturesDao {
 
     @Insert
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
-    suspend fun insertPictures(picture: Picture): Long
+    suspend fun insertPictures(pictureList: ArrayList<Picture?>)
 
     @Transaction
-    suspend fun insertItemWithPictures(item: Item, picture: Picture) {
+    suspend fun insertItemWithPictures(item: Item, pictureList: ArrayList<Picture?>) {
         val id = insertItem(item)
-        picture.itemId = id
-        insertPictures(picture)
+        for (picture in pictureList) {
+            picture?.itemId = id
+        }
+        insertPictures(pictureList)
     }
 
     // --- UPDATE ---

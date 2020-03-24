@@ -21,12 +21,12 @@ class ItemWithPicturesRepository(private val itemWithPicturesDao: ItemWithPictur
         itemWithPicturesDao.insertItem(item)
     }
 
-    suspend fun insertPictures(picture: Picture) {
-        itemWithPicturesDao.insertPictures(picture)
+    suspend fun insertPictures(pictureList: ArrayList<Picture?>) {
+        itemWithPicturesDao.insertPictures(pictureList)
     }
 
-    suspend fun insertItemWithPictures(item: Item, picture: Picture){
-        itemWithPicturesDao.insertItemWithPictures(item, picture)
+    suspend fun insertItemWithPictures(item: Item, pictureList: ArrayList<Picture?>) {
+        itemWithPicturesDao.insertItemWithPictures(item, pictureList)
     }
 
 /*    // --- UPDATE ---
