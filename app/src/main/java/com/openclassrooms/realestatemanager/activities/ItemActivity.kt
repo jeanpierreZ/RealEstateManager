@@ -107,8 +107,8 @@ class ItemActivity : AppCompatActivity(),
     private val statusTitle = R.string.real_estate_status
 
     // To compare the dates of entry and sale
-    private lateinit var dateOfEntry: Date
-    private lateinit var dateOfSale: Date
+    private var dateOfEntry: Date? = null
+    private var dateOfSale: Date? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -366,11 +366,11 @@ class ItemActivity : AppCompatActivity(),
         // Parse String from EditText to Date then compare the two dates
         if (entryDate != null && entryDate != "" && saleDate != null && saleDate != "") {
             val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-            dateOfEntry = sdf.parse(entryDate)
-            dateOfSale = sdf.parse(saleDate)
+            dateOfEntry = sdf.parse(entryDate!!)
+            dateOfSale = sdf.parse(saleDate!!)
 
             // The sale date cannot be earlier than the entry date
-            if (dateOfSale.before(dateOfEntry)) {
+            if (dateOfSale!!.before(dateOfEntry)) {
                 Toast.makeText(this, getString(R.string.sale_date_earlier_entry_date), Toast.LENGTH_LONG).show()
                 editEntryDate.text.clear()
                 editSaleDate.text.clear()

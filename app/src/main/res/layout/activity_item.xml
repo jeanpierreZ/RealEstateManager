@@ -480,7 +480,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_item_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             app:layout_constraintBottom_toTopOf="@+id/activity_item_button_save"
             app:layout_constraintTop_toBottomOf="@+id/activity_item_button_picture" />
 

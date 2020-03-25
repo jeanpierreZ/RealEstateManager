@@ -20,13 +20,8 @@ class PropertyDialogFragment(private var editText: EditText,
 
             var choice: String?
 
-            // Create a charSequence array of the Status Enum
-//            val statutes: Array<CharSequence> =
-//                    arrayOf(Status.AVAILABLE.disponibility, Status.SOLD.disponibility)
-
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
-//            builder.setTitle(R.string.real_estate_status)
             builder.setTitle(title)
                     .setItems(list) { _, which ->
                         // The 'which' argument contains the index position of the selected item
@@ -37,9 +32,7 @@ class PropertyDialogFragment(private var editText: EditText,
                     }
                     // Set the negative action button
                     .setNegativeButton(getString(R.string.erase)) { _, _ ->
-                        // Set and save null value for the status item
-//                        choice = null
-                        // Set a null value for the property of the item
+                        // Save a null value for the property of the item
                         callbackProperty?.onPropertyChosen(null)
                         // Set hint text by default
                         editText.setText(getString(title))
