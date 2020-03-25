@@ -11,12 +11,22 @@ import com.openclassrooms.realestatemanager.views.viewholders.ItemPicturesViewHo
 
 class ItemPicturesAdapter(private var list: ArrayList<Picture?>,
                           private val glide: RequestManager,
-                          private val callback: PictureListener) : RecyclerView.Adapter<ItemPicturesViewHolder>() {
+                          private val callback: PictureListener,
+                          private val callbackLongClick: PictureLongClickListener)
+    : RecyclerView.Adapter<ItemPicturesViewHolder>() {
 
-    // Callback
+    //----------------------------------------------------------------------------------
+    // Callbacks
+
     interface PictureListener {
         fun onClickPicture(position: Int)
     }
+
+    interface PictureLongClickListener {
+        fun onLongClickItem(position: Int)
+    }
+
+    //----------------------------------------------------------------------------------
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemPicturesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -29,7 +39,7 @@ class ItemPicturesAdapter(private var list: ArrayList<Picture?>,
     }
 
     override fun onBindViewHolder(holder: ItemPicturesViewHolder, position: Int) {
-        holder.updatePictures(this.list[position], this.glide, this.callback)
+        holder.updatePictures(this.list[position], this.glide, this.callback, this.callbackLongClick)
     }
 
     fun setPictures(pictureList: ArrayList<Picture?>) {

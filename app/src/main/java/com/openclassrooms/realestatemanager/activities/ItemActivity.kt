@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,10 +27,9 @@ import java.util.*
 
 
 class ItemActivity : AppCompatActivity(),
-        PropertyDialogFragment.OnPropertyChosenListener,
-        POIDialogFragment.OnPOIChosenListener,
+        PropertyDialogFragment.OnPropertyChosenListener, POIDialogFragment.OnPOIChosenListener,
         DateDialogFragment.OnDateListener,
-        ItemPicturesAdapter.PictureListener {
+        ItemPicturesAdapter.PictureListener, ItemPicturesAdapter.PictureLongClickListener {
 
     companion object {
         private val TAG = ItemActivity::class.java.simpleName
@@ -262,7 +262,7 @@ class ItemActivity : AppCompatActivity(),
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of pictures
-        itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this)
+        itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this, this)
         // Attach the adapter to the recyclerView to populate pictures
         recyclerView.adapter = itemPicturesAdapter
         // Set layout manager to position the pictures
@@ -295,7 +295,7 @@ class ItemActivity : AppCompatActivity(),
     private fun addPicture() {
         pictureButton.setOnClickListener {
             if (pictureLocation != null && pictureLocation?.isNotEmpty()!!) {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(intent, RC_CHOOSE_PHOTO)
             } else {
                 Toast.makeText(this, getString(R.string.no_picture_location), Toast.LENGTH_SHORT).show()
@@ -381,7 +381,26 @@ class ItemActivity : AppCompatActivity(),
     }
 
     override fun onClickPicture(position: Int) {
-        TODO("Not yet implemented")
+        // Do nothing
+    }
+
+    override fun onLongClickItem(position: Int) {
+        // Get the picture object with the position in the RecyclerView
+        val picture: Picture? = itemPicturesAdapter.getPosition(position)
+
+        // Create an AlertDialog to request deletion of the picture
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage(getString(R.string.delete_picture))
+        builder.apply {
+            setPositiveButton(android.R.string.ok) { _, _ ->
+                // Remove the picture object from the list to save
+                pictureList.remove(picture)
+                // Use notifyItemRemoved instead of the updatePictureList() method to enjoy animation
+                itemPicturesAdapter.notifyItemRemoved(position)
+            }
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
 }

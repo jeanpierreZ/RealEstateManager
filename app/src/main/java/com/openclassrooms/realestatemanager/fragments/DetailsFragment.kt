@@ -20,7 +20,7 @@ import com.openclassrooms.realestatemanager.models.Picture
 /**
  * A simple [Fragment] subclass.
  */
-class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
+class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPicturesAdapter.PictureLongClickListener {
 
     companion object {
         private val TAG = DetailsFragment::class.java.simpleName
@@ -81,7 +81,7 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of pictures
-        itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this)
+        itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this, this)
         // Attach the adapter to the recyclerView to populate pictures
         recyclerView?.adapter = itemPicturesAdapter
         // Set layout manager to position the pictures
@@ -93,9 +93,14 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener {
     }
 
     //----------------------------------------------------------------------------------
+    // Interfaces for callback from ItemPicturesAdapter
 
     override fun onClickPicture(position: Int) {
         Log.d("DETAILS", "CLICK on picture !")
+    }
+
+    override fun onLongClickItem(position: Int) {
+        Log.d("DETAILS", "LONG CLICK on picture !")
     }
 
 }

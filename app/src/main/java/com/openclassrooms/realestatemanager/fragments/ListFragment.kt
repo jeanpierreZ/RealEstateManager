@@ -78,6 +78,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     }
 
     //----------------------------------------------------------------------------------
+    // Interface for callback from ItemAdapter
 
     override fun onClickItem(position: Int) {
         // Save the item object in the RecyclerView
