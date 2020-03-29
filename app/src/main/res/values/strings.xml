@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
+    <!-- Main Activity -->
+    <string name="real_estate_not_saved">Real estate not saved</string>
+
     <!-- Details Fragment -->
     <string name="media">Media</string>
     <string name="description">Description</string>
@@ -45,12 +48,14 @@
     <string name="add_picture">Add a picture</string>
     <string name="take_picture">Take a picture</string>
     <string name="delete_picture">Delete this picture?</string>
-
     <string name="erase">Erase</string>
     <string name="save">Save</string>
 
-    <!-- Main Activity -->
-    <string name="real_estate_not_saved">Real estate not saved</string>
+    <!-- NavigationDrawer -->
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="map">MAP</string>
+    <string name="real_estate">REAL ESTATE</string>
 
     <!-- Request Permissions -->
     <string name="rationale_permission_access">This application needs to access your external storage and internet to work.</string>

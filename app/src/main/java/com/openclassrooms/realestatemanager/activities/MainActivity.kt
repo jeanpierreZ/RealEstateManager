@@ -9,9 +9,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
@@ -23,7 +28,9 @@ import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesVie
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, EasyPermissions.PermissionCallbacks {
+
+class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, EasyPermissions.PermissionCallbacks,
+        NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -36,20 +43,22 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
 
         const val PERMS_REQUEST_CODE = 123
+        const val itemActivityRequestCode = 1
     }
-
-    private val itemActivityRequestCode = 1
 
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
     // For design
-    private var toolbar: Toolbar? = null
+    private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
+    private val drawerLayout by lazy { findViewById<DrawerLayout>(R.id.drawer_layout) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         configureToolbar()
+        configureDrawerLayout()
+        configureNavigationView()
 
         // Request permission when starting MainActivity
         EasyPermissions.requestPermissions(this, getString(R.string.rationale_permission_access),
@@ -138,10 +147,49 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     // Private methods to configure design
 
     private fun configureToolbar() {
-        // Get the toolbar view inside the activity layout
-        toolbar = findViewById(R.id.toolbar)
         // Set the Toolbar
         setSupportActionBar(toolbar)
+    }
+
+    private fun configureDrawerLayout() {
+        // "Hamburger icon"
+        val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, android.R.color.white)
+        drawerLayout?.addDrawerListener(toggle)
+        toggle.syncState()
+    }
+
+    private fun configureNavigationView() {
+        val navigationView: NavigationView = findViewById(R.id.activity_main_nav_view)
+        // For Menu Item
+        navigationView.setNavigationItemSelectedListener(this)
+    }
+
+    //----------------------------------------------------------------------------------
+    // Methods for NavigationView in NavigationDrawer
+    override fun onBackPressed() {
+        // Handle back click to close menu
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // Handle Navigation Item Click
+        when (item.itemId) {
+            R.id.menu_nav_drawer_real_estate ->
+                // Get MainActivity
+                Toast.makeText(this, getString(R.string.app_name), Toast.LENGTH_SHORT).show()
+            R.id.menu_nav_drawer_map ->
+                // Get MapActivity
+                Toast.makeText(this, getString(R.string.map), Toast.LENGTH_SHORT).show()
+
+        }
+        this.drawerLayout?.closeDrawer(GravityCompat.START)
+        return true
     }
 
     private fun displayFragment() {
