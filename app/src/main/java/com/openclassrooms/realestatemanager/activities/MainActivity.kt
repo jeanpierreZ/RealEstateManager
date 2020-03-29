@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
         // Static data for Permissions
         val PERMS = arrayOf(Manifest.permission.INTERNET, Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
 
         const val PERMS_REQUEST_CODE = 123
     }

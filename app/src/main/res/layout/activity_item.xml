@@ -461,20 +461,30 @@
             android:layout_height="wrap_content"
             android:hint="@string/picture_location"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/activity_item_button_picture"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_button_add_picture"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/activity_item_guideline"
             app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_agent"
             tools:ignore="Autofill" />
 
         <Button
-            android:id="@+id/activity_item_button_picture"
+            android:id="@+id/activity_item_button_add_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_picture"
             app:layout_constraintBottom_toTopOf="@+id/activity_item_recycler_view"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/activity_item_button_take_picture"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_picture_location" />
+
+        <Button
+            android:id="@+id/activity_item_button_take_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/take_picture"
+            app:layout_constraintBottom_toTopOf="@+id/activity_item_recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_item_button_add_picture"
             app:layout_constraintTop_toBottomOf="@+id/activity_item_edit_picture_location" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -482,7 +492,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             app:layout_constraintBottom_toTopOf="@+id/activity_item_button_save"
-            app:layout_constraintTop_toBottomOf="@+id/activity_item_button_picture" />
+            app:layout_constraintTop_toBottomOf="@+id/activity_item_button_add_picture" />
 
         <Button
             android:id="@+id/activity_item_button_save"
