@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +49,8 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
+    private var detailsFragment = DetailsFragment()
+
     // For design
     private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     private val drawerLayout by lazy { findViewById<DrawerLayout>(R.id.drawer_layout) }
@@ -68,8 +71,10 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         if (EasyPermissions.hasPermissions(this, *PERMS)) {
             // Use the ViewModelProvider to associate the ViewModel with MainActivity
             itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
-            displayFragment()
+            displayListFragment()
         }
+
+        displayDetailsFragment()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -192,28 +197,42 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         return true
     }
 
-    private fun displayFragment() {
+    private fun displayListFragment() {
         val listFragment = ListFragment()
         supportFragmentManager.beginTransaction()
                 .add(R.id.activity_main_fragment_container_view, listFragment)
                 .commit()
     }
 
+    private fun displayDetailsFragment() {
+        // Only add DetailFragment in Tablet mode (If found frame_layout_detail)
+        if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.activity_main_details_fragment_container_view, detailsFragment)
+                    .commit()
+        }
+    }
+
     //----------------------------------------------------------------------------------
-    // Implement listener from ListFragment to open DetailsFragment when click on an item
+    // Implement listener from ListFragment to display DetailsFragment when click on an item
 
     override fun onItemClicked(itemWithPictures: ItemWithPictures?) {
-        val detailsFragment = DetailsFragment()
 
         // Put the item in a bundle and fetch it in detailsFragment
         val bundleItem = Bundle()
         bundleItem.putParcelable(BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
         detailsFragment.arguments = bundleItem
 
-        // onItemClicked -> display detailsFragment
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_main_fragment_container_view, detailsFragment)
-                .commit()
+        // Refresh detailsFragment in Tablet mode
+        if (detailsFragment.isVisible) {
+            supportFragmentManager.beginTransaction().detach(detailsFragment).commit()
+            supportFragmentManager.beginTransaction().attach(detailsFragment).commit()
+        } else {
+            // Display detailsFragment instead of ListFragment in Phone mode
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_main_fragment_container_view, detailsFragment)
+                    .commit()
+        }
     }
 
     //----------------------------------------------------------------------------------
@@ -234,7 +253,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         // If there isn't permission, wait for the user to allow permissions before starting...
         itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
-        displayFragment()
+        displayListFragment()
     }
 
 }

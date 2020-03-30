@@ -85,7 +85,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         val itemWithPictures: ItemWithPictures? = itemAdapter?.getPosition(position)
         // Spread the click to the parent activity
         callbackItem?.onItemClicked(itemWithPictures)
-        Log.d(TAG, "item.type = ${itemWithPictures?.item?.type} ")
+        Log.d(TAG, "Click on ${itemWithPictures?.item?.type} ")
     }
 
     //----------------------------------------------------------------------------------

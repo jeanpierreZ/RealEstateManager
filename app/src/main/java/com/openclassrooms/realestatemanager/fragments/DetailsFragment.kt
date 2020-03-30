@@ -68,6 +68,10 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPic
 
         configureRecyclerView()
 
+        // Clear the pictureList in case of reuse it
+        pictureList.clear()
+
+        // Add photos of the chosen real estate from ListFragment
         itemWithPictures?.pictures?.let { pictureList.addAll(it) }
 
         updateUI(pictureList)
