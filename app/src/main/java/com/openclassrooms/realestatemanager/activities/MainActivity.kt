@@ -185,13 +185,14 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle Navigation Item Click
         when (item.itemId) {
-            R.id.menu_nav_drawer_real_estate ->
+            R.id.menu_nav_drawer_main_activity -> {
                 // Get MainActivity
-                Toast.makeText(this, getString(R.string.app_name), Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
             R.id.menu_nav_drawer_map ->
                 // Get MapActivity
                 Toast.makeText(this, getString(R.string.map), Toast.LENGTH_SHORT).show()
-
         }
         this.drawerLayout?.closeDrawer(GravityCompat.START)
         return true

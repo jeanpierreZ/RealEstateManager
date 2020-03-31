@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
@@ -153,11 +154,12 @@ class ItemActivity : AppCompatActivity(),
 
         //----------------------------------------------------------------------------------
 
+        configureToolbar()
         configureRecyclerView()
         Log.d(TAG, "ON CREATE pictureList = $pictureList")
 
         //----------------------------------------------------------------------------------
-        // Get the texts typed in the editTexts
+        // Get data
 
         // Show the AlertDialog to choose the type of the real estate
         editType.setOnClickListener {
@@ -244,8 +246,6 @@ class ItemActivity : AppCompatActivity(),
             pictureLocation = text.toString()
         }
 
-        // When user click on buttons
-
         addPictureButton.setOnClickListener {
             addPicture()
         }
@@ -291,9 +291,17 @@ class ItemActivity : AppCompatActivity(),
     }
 
     //----------------------------------------------------------------------------------
-    // Private methods
+    // Configure Toolbar, RecyclerView, Adapter & LayoutManager
 
-    // Configure RecyclerViews, Adapters & LayoutManager
+    private fun configureToolbar() {
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        // Set the Toolbar
+        setSupportActionBar(toolbar)
+        // Get a support ActionBar corresponding to this toolbar
+        val actionBar = supportActionBar
+        // Enable the Up button
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of pictures

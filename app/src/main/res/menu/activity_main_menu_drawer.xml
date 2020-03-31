@@ -7,7 +7,7 @@
         <item android:title="">
             <menu>
                 <item
-                    android:id="@+id/menu_nav_drawer_real_estate"
+                    android:id="@+id/menu_nav_drawer_main_activity"
                     android:icon="@drawable/ic_home_black_24dp"
                     android:title="@string/real_estate" />
                 <item
