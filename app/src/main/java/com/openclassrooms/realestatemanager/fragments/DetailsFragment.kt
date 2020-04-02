@@ -3,10 +3,9 @@ package com.openclassrooms.realestatemanager.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +49,9 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPic
         // Get RecyclerView from layout and serialise it
         recyclerView = fragmentView.findViewById(R.id.details_fragment_recycler_view)
 
+        // For Toolbar menu
+        setHasOptionsMenu(true)
+
         // Get the itemWithPictures from the bundle
         val itemWithPictures: ItemWithPictures? = arguments?.getParcelable(MainActivity.BUNDLE_ITEM_WITH_PICTURES)
 
@@ -78,6 +80,21 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPic
         Log.d(TAG, "pictureList = $pictureList")
 
         return fragmentView
+    }
+
+    //----------------------------------------------------------------------------------
+    // Methods for Toolbar Menu
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.findItem(R.id.menu_toolbar_edit)?.isVisible = true
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_toolbar_edit) {
+            Toast.makeText(activity, "edit", Toast.LENGTH_SHORT).show()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     //----------------------------------------------------------------------------------

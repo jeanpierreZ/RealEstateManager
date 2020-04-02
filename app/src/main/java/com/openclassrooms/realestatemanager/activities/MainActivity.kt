@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -77,6 +76,8 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         displayDetailsFragment()
     }
 
+    //----------------------------------------------------------------------------------
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
                     data?.getStringExtra(ItemActivity.SALE_DATE_ITEM),
                     data?.getStringExtra(ItemActivity.AGENT_ITEM))
 
-            // Create a picture with data from ItemActivity
+            // Create a list of pictures with data from ItemActivity
             val pictureList: ArrayList<Picture?> =
                     data?.getParcelableArrayListExtra<Picture>(ItemActivity.PICTURE_LIST_ITEM) as ArrayList<Picture?>
 
@@ -120,39 +121,32 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         }
     }
 
+    //----------------------------------------------------------------------------------
+    // Methods for Toolbar Menu
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Inflate the menu and add it to the Toolbar
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.menu_toolbar, menu)
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        menu?.findItem(R.id.menu_toolbar_edit)?.isVisible = false
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
-        return when (item.itemId) {
+        when (item.itemId) {
             R.id.menu_toolbar_add -> {
                 val intent = Intent(this, ItemActivity::class.java)
                 startActivityForResult(intent, itemActivityRequestCode)
-                true
             }
-            R.id.menu_toolbar_edit -> {
-                Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show()
-                true
-            }
-
             R.id.menu_toolbar_search -> {
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show()
-                true
             }
-            else -> super.onOptionsItemSelected(item)
         }
+        return super.onOptionsItemSelected(item)
     }
 
     //----------------------------------------------------------------------------------
     // Private methods to configure design
 
     private fun configureToolbar() {
-        // Set the Toolbar
         setSupportActionBar(toolbar)
     }
 
@@ -173,6 +167,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
     //----------------------------------------------------------------------------------
     // Methods for NavigationView in NavigationDrawer
+
     override fun onBackPressed() {
         // Handle back click to close menu
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -197,6 +192,9 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         this.drawerLayout?.closeDrawer(GravityCompat.START)
         return true
     }
+
+    //----------------------------------------------------------------------------------
+    // Private methods to display fragments
 
     private fun displayListFragment() {
         val listFragment = ListFragment()
