@@ -19,7 +19,7 @@
     <string name="location_title">Location</string>
 
     <!-- Item Activity -->
-    <string name="title_type">Create a real estate</string>
+    <string name="create_real_estate">Create a real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
     <string name="real_estate_price">Price of the real estate</string>
     <string name="real_estate_surface">Surface of the real estate</string>
