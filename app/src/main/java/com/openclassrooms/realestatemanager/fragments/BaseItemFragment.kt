@@ -40,8 +40,6 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 abstract class BaseItemFragment : Fragment(),
-        PropertyDialogFragment.OnPropertyChosenListener, POIDialogFragment.OnPOIChosenListener,
-        DateDialogFragment.OnDateListener,
         ItemPicturesAdapter.PictureListener, ItemPicturesAdapter.PictureLongClickListener {
 
     companion object {
@@ -75,7 +73,7 @@ abstract class BaseItemFragment : Fragment(),
     }
 
     // Properties of a real estate, Item Model with Address, PointsOfInterest, Status and Type
-    private var type: String? = null
+    protected var type: String? = null
     private var price: Int? = null
     private var surface: Int? = null
     private var rooms: Int? = null
@@ -104,11 +102,27 @@ abstract class BaseItemFragment : Fragment(),
 
     // Widget
     protected lateinit var titleText: TextView
-    private lateinit var editType: EditText
-    private lateinit var editPOI: EditText
-    private lateinit var editStatus: EditText
-    private lateinit var editEntryDate: EditText
-    private lateinit var editSaleDate: EditText
+    protected var editType: EditText? = null
+    protected lateinit var editPrice: EditText
+    protected lateinit var editSurface: EditText
+    protected lateinit var editRooms: EditText
+    protected lateinit var editBathrooms: EditText
+    protected lateinit var editBedrooms: EditText
+    protected lateinit var editPOI: EditText
+    protected lateinit var editStreetNumber: EditText
+    protected lateinit var editStreet: EditText
+    protected lateinit var editApartmentNumber: EditText
+    protected lateinit var editDistrict: EditText
+    protected lateinit var editCity: EditText
+    protected lateinit var editPostalCode: EditText
+    protected lateinit var editCountry: EditText
+    protected lateinit var editDescription: EditText
+    protected lateinit var editStatus: EditText
+    protected lateinit var editEntryDate: EditText
+    protected lateinit var editSaleDate: EditText
+    protected lateinit var editAgent: EditText
+    private lateinit var editPictureLocation: EditText
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemPicturesAdapter: ItemPicturesAdapter
 
@@ -120,7 +134,7 @@ abstract class BaseItemFragment : Fragment(),
 
     // Create a charSequence array of the Status Enum and a title
     private val statutes: Array<CharSequence> =
-            arrayOf(Status.AVAILABLE.disponibility, Status.SOLD.disponibility)
+            arrayOf(Status.AVAILABLE.availability, Status.SOLD.availability)
     private val statusTitle = R.string.real_estate_status
 
     // To compare the dates of entry and sale
@@ -136,25 +150,25 @@ abstract class BaseItemFragment : Fragment(),
         titleText = fragmentView.findViewById(R.id.fragment_base_item_title)
 
         editType = fragmentView.findViewById(R.id.fragment_base_item_edit_type)
-        val editPrice: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_price)
-        val editSurface: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_surface)
-        val editRooms: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_rooms)
-        val editBathrooms: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_bathrooms)
-        val editBedrooms: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_bedrooms)
+        editPrice = fragmentView.findViewById(R.id.fragment_base_item_edit_price)
+        editSurface = fragmentView.findViewById(R.id.fragment_base_item_edit_surface)
+        editRooms = fragmentView.findViewById(R.id.fragment_base_item_edit_rooms)
+        editBathrooms = fragmentView.findViewById(R.id.fragment_base_item_edit_bathrooms)
+        editBedrooms = fragmentView.findViewById(R.id.fragment_base_item_edit_bedrooms)
         editPOI = fragmentView.findViewById(R.id.fragment_base_item_edit_poi)
-        val editStreetNumber: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_street_number)
-        val editStreet: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_street)
-        val editApartmentNumber: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_apartment_number)
-        val editDistrict: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_district)
-        val editCity: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_city)
-        val editPostalCode: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_postal_code)
-        val editCountry: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_country)
-        val editDescription: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_description)
+        editStreetNumber = fragmentView.findViewById(R.id.fragment_base_item_edit_street_number)
+        editStreet = fragmentView.findViewById(R.id.fragment_base_item_edit_street)
+        editApartmentNumber = fragmentView.findViewById(R.id.fragment_base_item_edit_apartment_number)
+        editDistrict = fragmentView.findViewById(R.id.fragment_base_item_edit_district)
+        editCity = fragmentView.findViewById(R.id.fragment_base_item_edit_city)
+        editPostalCode = fragmentView.findViewById(R.id.fragment_base_item_edit_postal_code)
+        editCountry = fragmentView.findViewById(R.id.fragment_base_item_edit_country)
+        editDescription = fragmentView.findViewById(R.id.fragment_base_item_edit_description)
         editStatus = fragmentView.findViewById(R.id.fragment_base_item_edit_status)
         editEntryDate = fragmentView.findViewById(R.id.fragment_base_item_edit_entry_date)
         editSaleDate = fragmentView.findViewById(R.id.fragment_base_item_edit_sale_date)
-        val editAgent: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_agent)
-        val editPictureLocation: EditText = fragmentView.findViewById(R.id.fragment_base_item_edit_picture_location)
+        editAgent = fragmentView.findViewById(R.id.fragment_base_item_edit_agent)
+        editPictureLocation = fragmentView.findViewById(R.id.fragment_base_item_edit_picture_location)
         val addPictureButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_add_picture)
         val takePictureButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_take_picture)
         val saveButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_save)
@@ -168,8 +182,8 @@ abstract class BaseItemFragment : Fragment(),
         // Get data
 
         // Show the AlertDialog to choose the type of the real estate
-        editType.setOnClickListener {
-            openPropertyDialogFragment(editType, typeTitle, types)
+        editType?.setOnClickListener {
+            openPropertyDialogFragment(editType!!, typeTitle, types)
         }
 
         editPrice.doOnTextChanged { text, _, _, _ ->
@@ -310,7 +324,7 @@ abstract class BaseItemFragment : Fragment(),
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    private fun updatePictureList(updateList: ArrayList<Picture?>) {
+    protected fun updatePictureList(updateList: ArrayList<Picture?>) {
         itemPicturesAdapter.setPictures(updateList)
     }
 
@@ -422,9 +436,9 @@ abstract class BaseItemFragment : Fragment(),
     }
 
     //----------------------------------------------------------------------------------
-    // Implement listener from the DialogFragments to fetch data of the real estate
+    // Use DialogFragments data received in ItemActivity
 
-    override fun onPropertyChosen(propertyChosen: EditText?) {
+    fun setPropertyChosen(propertyChosen: EditText?) {
         if (propertyChosen != null) {
             if (editType == propertyChosen) {
                 type = propertyChosen.text.toString()
@@ -434,11 +448,11 @@ abstract class BaseItemFragment : Fragment(),
         }
     }
 
-    override fun onPOIChosen(POIChosen: ArrayList<String>?) {
+    fun setPOIChosen(POIChosen: ArrayList<String>?) {
         pointsOfInterest = POIChosen
     }
 
-    override fun onDateChosen(editTextChosen: EditText?) {
+    fun setDateChosen(editTextChosen: EditText?) {
         if (editTextChosen?.text.toString() != "") {
             when (editTextChosen) {
                 editEntryDate -> entryDate = editTextChosen.text.toString()

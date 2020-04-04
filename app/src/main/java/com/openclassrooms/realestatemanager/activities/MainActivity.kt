@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         // Request codes
         const val PERMS_REQUEST_CODE = 123
         const val ITEM_ACTIVITY_REQUEST_CODE = 1
+        const val UPDATE_ITEM_ACTIVITY_REQUEST_CODE = 2
     }
 
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
@@ -86,44 +87,59 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == ITEM_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                ITEM_ACTIVITY_REQUEST_CODE -> {
+                    // Insert item with pictures in database
+                    itemWithPicturesViewModel.insertItemWithPictures(itemData(data, null), pictureData(data))
+                    Log.d(TAG, "item = ${itemData(data, null)}")
+                    Log.d(TAG, "picture = ${pictureData(data)}")
+                }
 
-            // Create an address with data from ItemActivity
-            val address = Address(data?.getStringExtra(BaseItemFragment.STREET_NUMBER_ITEM),
-                    data?.getStringExtra(BaseItemFragment.STREET_ITEM),
-                    data?.getStringExtra(BaseItemFragment.APARTMENT_NUMBER_ITEM),
-                    data?.getStringExtra(BaseItemFragment.DISTRICT_ITEM),
-                    data?.getStringExtra(BaseItemFragment.CITY_ITEM),
-                    data?.getStringExtra(BaseItemFragment.POSTAL_CODE_ITEM),
-                    data?.getStringExtra(BaseItemFragment.COUNTRY_ITEM))
+                UPDATE_ITEM_ACTIVITY_REQUEST_CODE -> {
 
-            // Create an item with data from ItemActivity
-            val item = Item(null, data?.getStringExtra(BaseItemFragment.TYPE_ITEM),
-                    data?.getIntExtra(BaseItemFragment.PRICE_ITEM, 0),
-                    data?.getIntExtra(BaseItemFragment.SURFACE_ITEM, 0),
-                    data?.getIntExtra(BaseItemFragment.ROOMS_ITEM, 0),
-                    data?.getIntExtra(BaseItemFragment.BATHROOMS_ITEM, 0),
-                    data?.getIntExtra(BaseItemFragment.BEDROOMS_ITEM, 0),
-                    data?.getStringArrayListExtra(BaseItemFragment.POI_ITEM),
-                    address,
-                    data?.getStringExtra(BaseItemFragment.DESCRIPTION_ITEM),
-                    data?.getStringExtra(BaseItemFragment.STATUS_ITEM),
-                    data?.getStringExtra(BaseItemFragment.ENTRY_DATE_ITEM),
-                    data?.getStringExtra(BaseItemFragment.SALE_DATE_ITEM),
-                    data?.getStringExtra(BaseItemFragment.AGENT_ITEM))
+                }
 
-            // Create a list of pictures with data from ItemActivity
-            val pictureList: ArrayList<Picture?> =
-                    data?.getParcelableArrayListExtra<Picture>(BaseItemFragment.PICTURE_LIST_ITEM) as ArrayList<Picture?>
-
-            // Insert item with pictures in database
-            itemWithPicturesViewModel.insertItemWithPictures(item, pictureList)
-            Log.d(TAG, "item = $item")
-            Log.d(TAG, "picture = $pictureList")
+            }
 
         } else {
             Toast.makeText(applicationContext, getString(R.string.real_estate_not_saved), Toast.LENGTH_LONG).show()
         }
+    }
+
+    //----------------------------------------------------------------------------------
+    // Methods to set data from onActivityResult
+
+    private fun itemData(data: Intent?, id: Long?): Item {
+        // Create an address with data from ItemActivity
+        val address = Address(data?.getStringExtra(BaseItemFragment.STREET_NUMBER_ITEM),
+                data?.getStringExtra(BaseItemFragment.STREET_ITEM),
+                data?.getStringExtra(BaseItemFragment.APARTMENT_NUMBER_ITEM),
+                data?.getStringExtra(BaseItemFragment.DISTRICT_ITEM),
+                data?.getStringExtra(BaseItemFragment.CITY_ITEM),
+                data?.getStringExtra(BaseItemFragment.POSTAL_CODE_ITEM),
+                data?.getStringExtra(BaseItemFragment.COUNTRY_ITEM))
+
+        // Create an item with data from ItemActivity
+        return Item(id, data?.getStringExtra(BaseItemFragment.TYPE_ITEM),
+                data?.getIntExtra(BaseItemFragment.PRICE_ITEM, 0),
+                data?.getIntExtra(BaseItemFragment.SURFACE_ITEM, 0),
+                data?.getIntExtra(BaseItemFragment.ROOMS_ITEM, 0),
+                data?.getIntExtra(BaseItemFragment.BATHROOMS_ITEM, 0),
+                data?.getIntExtra(BaseItemFragment.BEDROOMS_ITEM, 0),
+                data?.getStringArrayListExtra(BaseItemFragment.POI_ITEM),
+                address,
+                data?.getStringExtra(BaseItemFragment.DESCRIPTION_ITEM),
+                data?.getStringExtra(BaseItemFragment.STATUS_ITEM),
+                data?.getStringExtra(BaseItemFragment.ENTRY_DATE_ITEM),
+                data?.getStringExtra(BaseItemFragment.SALE_DATE_ITEM),
+                data?.getStringExtra(BaseItemFragment.AGENT_ITEM))
+    }
+
+    private fun pictureData(data: Intent?): ArrayList<Picture?> {
+        // Create a list of pictures with data from ItemActivity
+        return data?.getParcelableArrayListExtra<Picture>(BaseItemFragment.PICTURE_LIST_ITEM)
+                as ArrayList<Picture?>
     }
 
     //----------------------------------------------------------------------------------

@@ -91,4 +91,9 @@ class DateDialogFragment(private var editDate: EditText)
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        callbackDate = null
+    }
+
 }

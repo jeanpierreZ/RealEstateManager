@@ -68,4 +68,8 @@ class PropertyDialogFragment(private var editText: EditText,
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        callbackProperty = null
+    }
 }

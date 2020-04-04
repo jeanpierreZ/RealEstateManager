@@ -17,7 +17,7 @@ class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
-            val pointsOfInterestList: ArrayList<String>? = arrayListOf()
+            val pointsOfInterestChosen: ArrayList<String>? = arrayListOf()
 
             // Create a charSequence array of the PointsOfInterest Enum
             val pointsOfInterest: Array<CharSequence> = arrayOf(
@@ -52,17 +52,17 @@ class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
                         // For each selected item, add the of point of interest in the list
                         for (item in selectedItems) {
                             when (item) {
-                                0 -> pointsOfInterestList?.add(PointsOfInterest.PARK.type)
-                                1 -> pointsOfInterestList?.add(PointsOfInterest.RESTAURANT.type)
-                                2 -> pointsOfInterestList?.add(PointsOfInterest.SCHOOL.type)
-                                3 -> pointsOfInterestList?.add(PointsOfInterest.SHOP.type)
-                                4 -> pointsOfInterestList?.add(PointsOfInterest.TRAIN_STATION.type)
+                                0 -> pointsOfInterestChosen?.add(PointsOfInterest.PARK.type)
+                                1 -> pointsOfInterestChosen?.add(PointsOfInterest.RESTAURANT.type)
+                                2 -> pointsOfInterestChosen?.add(PointsOfInterest.SCHOOL.type)
+                                3 -> pointsOfInterestChosen?.add(PointsOfInterest.SHOP.type)
+                                4 -> pointsOfInterestChosen?.add(PointsOfInterest.TRAIN_STATION.type)
                             }
                         }
                         // Save the selected values for the points of interest of the item
-                        callbackPOI?.onPOIChosen(pointsOfInterestList)
+                        callbackPOI?.onPOIChosen(pointsOfInterestChosen)
                         // Display the chosen points of interest
-                        val displayPOI = pointsOfInterestList?.joinToString { it -> it }
+                        val displayPOI = pointsOfInterestChosen?.joinToString { it -> it }
                         editPOI.setText(displayPOI)
                     }
                     .setNegativeButton(android.R.string.cancel)
@@ -100,4 +100,9 @@ class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
             throw ClassCastException("$e must implement OnPOIChosenListener")
         }
     }
+
+/*    override fun onDetach() {
+        super.onDetach()
+        callbackPOI = null
+    }*/
 }

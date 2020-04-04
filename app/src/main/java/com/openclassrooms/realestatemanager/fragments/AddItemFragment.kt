@@ -17,7 +17,7 @@ class AddItemFragment : BaseItemFragment() {
         // Inflate the parent layout for this fragment
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        val title = arguments?.getString(ItemActivity.TITLE_FRAGMENT)
+        val title = arguments?.getString(ItemActivity.TITLE)
         titleText.text = title
 
         return view

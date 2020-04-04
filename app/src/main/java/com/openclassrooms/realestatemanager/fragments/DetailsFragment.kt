@@ -1,16 +1,17 @@
 package com.openclassrooms.realestatemanager.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.activities.ItemActivity
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
@@ -19,7 +20,9 @@ import com.openclassrooms.realestatemanager.models.Picture
 /**
  * A simple [Fragment] subclass.
  */
-class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPicturesAdapter.PictureLongClickListener {
+class DetailsFragment : Fragment(),
+        ItemPicturesAdapter.PictureListener,
+        ItemPicturesAdapter.PictureLongClickListener {
 
     companion object {
         private val TAG = DetailsFragment::class.java.simpleName
@@ -28,6 +31,9 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPic
     private var recyclerView: RecyclerView? = null
     private var itemPicturesAdapter: ItemPicturesAdapter? = null
 
+    // Get the itemWithPictures from the bundle
+    private val itemWithPictures: ItemWithPictures?
+            by lazy { arguments?.getParcelable<ItemWithPictures>(MainActivity.BUNDLE_ITEM_WITH_PICTURES) }
     private var pictureList: ArrayList<Picture?> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -51,9 +57,6 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPic
 
         // For Toolbar menu
         setHasOptionsMenu(true)
-
-        // Get the itemWithPictures from the bundle
-        val itemWithPictures: ItemWithPictures? = arguments?.getParcelable(MainActivity.BUNDLE_ITEM_WITH_PICTURES)
 
         descriptionText.text = itemWithPictures?.item?.description
         surfaceText.text = itemWithPictures?.item?.surface.toString()
@@ -92,7 +95,10 @@ class DetailsFragment : Fragment(), ItemPicturesAdapter.PictureListener, ItemPic
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_toolbar_edit) {
-            Toast.makeText(activity, "edit", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, ItemActivity::class.java)
+            intent.putExtra(MainActivity.TITLE_ITEM_ACTIVITY, getString(R.string.update_real_estate))
+            intent.putExtra(MainActivity.BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
+            startActivityForResult(intent, MainActivity.UPDATE_ITEM_ACTIVITY_REQUEST_CODE)
         }
         return super.onOptionsItemSelected(item)
     }
