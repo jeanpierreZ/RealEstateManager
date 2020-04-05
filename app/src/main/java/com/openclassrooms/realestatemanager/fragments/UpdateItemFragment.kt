@@ -36,13 +36,11 @@ class UpdateItemFragment : BaseItemFragment() {
         editBathrooms.setText(itemWithPictures?.item?.bathroomsNumber.toString())
         editBedrooms.setText(itemWithPictures?.item?.bedroomsNumber.toString())
 
-        val pointsOfInterestList: ArrayList<String>? = itemWithPictures?.item?.pointsOfInterest
+        val pointsOfInterestList = itemWithPictures?.item?.pointsOfInterest
         val displayPOI = pointsOfInterestList?.joinToString { it -> it }
         editPOI.setText(displayPOI)
 
         editStreetNumber.setText(itemWithPictures?.item?.address?.streetNumber)
-        Log.d("AAA", "editStreetNumber + {${editStreetNumber.text}}")
-
         editStreet.setText(itemWithPictures?.item?.address?.street)
         editApartmentNumber.setText(itemWithPictures?.item?.address?.apartmentNumber)
         editDistrict.setText(itemWithPictures?.item?.address?.district)

@@ -101,8 +101,8 @@ class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
         }
     }
 
-/*    override fun onDetach() {
+    override fun onDetach() {
         super.onDetach()
         callbackPOI = null
-    }*/
+    }
 }

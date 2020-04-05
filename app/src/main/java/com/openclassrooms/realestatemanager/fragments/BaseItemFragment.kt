@@ -416,7 +416,7 @@ abstract class BaseItemFragment : Fragment(),
         saveItemIntent.putExtra(ROOMS_ITEM, rooms)
         saveItemIntent.putExtra(BATHROOMS_ITEM, bathrooms)
         saveItemIntent.putExtra(BEDROOMS_ITEM, bedrooms)
-        saveItemIntent.putExtra(POI_ITEM, pointsOfInterest)
+        saveItemIntent.putStringArrayListExtra(POI_ITEM, pointsOfInterest)
         saveItemIntent.putExtra(STREET_NUMBER_ITEM, streetNumber)
         saveItemIntent.putExtra(STREET_ITEM, street)
         saveItemIntent.putExtra(APARTMENT_NUMBER_ITEM, apartmentNumber)

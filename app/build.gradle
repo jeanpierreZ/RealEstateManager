@@ -71,4 +71,7 @@ dependencies {
 
     // Easy Permissions
     implementation 'pub.devrel:easypermissions:3.0.0'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

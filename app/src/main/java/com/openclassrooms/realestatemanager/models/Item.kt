@@ -16,8 +16,7 @@ data class Item(@PrimaryKey(autoGenerate = true) val id: Long? = null,
                 val roomsNumber: Int? = null,
                 val bathroomsNumber: Int? = null,
                 val bedroomsNumber: Int? = null,
-                @Embedded
-                val pointsOfInterest: ArrayList<String>? = null,
+                val pointsOfInterest: ArrayList<String>? = ArrayList(),
                 @Embedded
                 val address: @RawValue Address? = null,
                 val description: String? = null,
