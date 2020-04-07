@@ -68,7 +68,7 @@ class ItemActivity : AppCompatActivity(),
 
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-                .add(R.id.activity_item_fragment_container_view, fragment)
+                .replace(R.id.activity_item_fragment_container_view, fragment)
                 .commit()
     }
 

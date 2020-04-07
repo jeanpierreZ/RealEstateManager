@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,9 +25,10 @@ class UpdateItemFragment : BaseItemFragment() {
         val title = arguments?.getString(ItemActivity.TITLE)
         titleText.text = title
 
-        // Get the itemWithPictures object from the bundle
+        // Get data from the itemWithPictures
         val itemWithPictures: ItemWithPictures? = arguments?.getParcelable(ItemActivity.ITEM_WITH_PICTURES)
 
+        // Set data in editTexts
         editType?.setText(itemWithPictures?.item?.type)
         editPrice.setText(itemWithPictures?.item?.price.toString())
         editSurface.setText(itemWithPictures?.item?.surface.toString())
@@ -58,6 +58,35 @@ class UpdateItemFragment : BaseItemFragment() {
         val pictureList: ArrayList<Picture?> = arrayListOf()
         itemWithPictures?.pictures?.let { pictureList.addAll(it) }
         updatePictureList(pictureList)
+
+        /* Set the initial data in the properties of the real estate
+         The data will only be modified if the user enters something else
+         */
+        itemId = itemWithPictures?.item?.id
+
+        type = itemWithPictures?.item?.type
+        price = itemWithPictures?.item?.price
+        surface = itemWithPictures?.item?.surface
+        rooms = itemWithPictures?.item?.roomsNumber
+        bathrooms = itemWithPictures?.item?.bathroomsNumber
+        bedrooms = itemWithPictures?.item?.bedroomsNumber
+        pointsOfInterest = itemWithPictures?.item?.pointsOfInterest
+
+        streetNumber = itemWithPictures?.item?.address?.streetNumber
+        street = itemWithPictures?.item?.address?.street
+        apartmentNumber = itemWithPictures?.item?.address?.apartmentNumber
+        district = itemWithPictures?.item?.address?.district
+        city = itemWithPictures?.item?.address?.city
+        postalCode = itemWithPictures?.item?.address?.postalCode
+        country = itemWithPictures?.item?.address?.country
+
+        status = itemWithPictures?.item?.status
+        description = itemWithPictures?.item?.description
+        entryDate = itemWithPictures?.item?.entryDate
+        saleDate = itemWithPictures?.item?.saleDate
+        agent = itemWithPictures?.item?.realEstateAgent
+
+        // TODO check why pictures are not saved
 
         return view
     }

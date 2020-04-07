@@ -53,8 +53,8 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
 
     // --- UPDATE ---
 
-/*    fun update(itemWithPictures: ItemWithPictures) = viewModelScope.launch {
-    repository.update(itemWithPictures)
-}*/
+    fun updateItemWithPictures(item: Item, pictureList: ArrayList<Picture?>) = viewModelScope.launch {
+        repository.updateItemWithPictures(item, pictureList)
+    }
 
 }

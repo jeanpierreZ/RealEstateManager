@@ -1,10 +1,7 @@
 package com.openclassrooms.realestatemanager.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
@@ -40,6 +37,7 @@ interface ItemWithPicturesDao {
 
     // --- UPDATE ---
 
-/*  @Update
-  suspend fun updateItemWithPictures(itemWithPictures: ItemWithPictures): Int*/
+    @Update
+    suspend fun updateItemWithPictures(item: Item, pictureList: ArrayList<Picture?>): Int
+
 }

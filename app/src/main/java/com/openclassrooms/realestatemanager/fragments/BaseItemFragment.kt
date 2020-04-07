@@ -46,6 +46,7 @@ abstract class BaseItemFragment : Fragment(),
         private val TAG = BaseItemFragment::class.java.simpleName
 
         // Keys for item attributes
+        const val ID_ITEM = "ID_ITEM"
         const val TYPE_ITEM = "TYPE_ITEM"
         const val PRICE_ITEM = "PRICE_ITEM"
         const val SURFACE_ITEM = "SURFACE_ITEM"
@@ -73,25 +74,26 @@ abstract class BaseItemFragment : Fragment(),
     }
 
     // Properties of a real estate, Item Model with Address, PointsOfInterest, Status and Type
+    protected var itemId: Long? = null
     protected var type: String? = null
-    private var price: Int? = null
-    private var surface: Int? = null
-    private var rooms: Int? = null
-    private var bathrooms: Int? = null
-    private var bedrooms: Int? = null
-    private var pointsOfInterest: ArrayList<String>? = null
-    private var streetNumber: String? = null
-    private var street: String? = null
-    private var apartmentNumber: String? = null
-    private var district: String? = null
-    private var city: String? = null
-    private var postalCode: String? = null
-    private var country: String? = null
-    private var description: String? = null
-    private var status: String? = null
-    private var entryDate: String? = null
-    private var saleDate: String? = null
-    private var agent: String? = null
+    protected var price: Int? = null
+    protected var surface: Int? = null
+    protected var rooms: Int? = null
+    protected var bathrooms: Int? = null
+    protected var bedrooms: Int? = null
+    protected var pointsOfInterest: ArrayList<String>? = null
+    protected var streetNumber: String? = null
+    protected var street: String? = null
+    protected var apartmentNumber: String? = null
+    protected var district: String? = null
+    protected var city: String? = null
+    protected var postalCode: String? = null
+    protected var country: String? = null
+    protected var description: String? = null
+    protected var status: String? = null
+    protected var entryDate: String? = null
+    protected var saleDate: String? = null
+    protected var agent: String? = null
 
     // Properties of a real estate, Picture Model
     private var pictureList: ArrayList<Picture?> = arrayListOf()
@@ -148,7 +150,6 @@ abstract class BaseItemFragment : Fragment(),
         val fragmentView: View = inflater.inflate(R.layout.fragment_base_item, container, false)
 
         titleText = fragmentView.findViewById(R.id.fragment_base_item_title)
-
         editType = fragmentView.findViewById(R.id.fragment_base_item_edit_type)
         editPrice = fragmentView.findViewById(R.id.fragment_base_item_edit_price)
         editSurface = fragmentView.findViewById(R.id.fragment_base_item_edit_surface)
@@ -275,7 +276,7 @@ abstract class BaseItemFragment : Fragment(),
         }
 
         saveButton.setOnClickListener {
-            saveItem()
+            saveItemWithPictures()
         }
 
         return fragmentView
@@ -408,8 +409,9 @@ abstract class BaseItemFragment : Fragment(),
         }
     }
 
-    private fun saveItem() {
+    protected open fun saveItemWithPictures() {
         val saveItemIntent = Intent()
+        saveItemIntent.putExtra(ID_ITEM, itemId)
         saveItemIntent.putExtra(TYPE_ITEM, type)
         saveItemIntent.putExtra(PRICE_ITEM, price)
         saveItemIntent.putExtra(SURFACE_ITEM, surface)

@@ -98,7 +98,7 @@ class DetailsFragment : Fragment(),
             val intent = Intent(activity, ItemActivity::class.java)
             intent.putExtra(MainActivity.TITLE_ITEM_ACTIVITY, getString(R.string.update_real_estate))
             intent.putExtra(MainActivity.BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
-            startActivityForResult(intent, MainActivity.UPDATE_ITEM_ACTIVITY_REQUEST_CODE)
+            activity?.startActivityForResult(intent, MainActivity.UPDATE_ITEM_ACTIVITY_REQUEST_CODE)
         }
         return super.onOptionsItemSelected(item)
     }

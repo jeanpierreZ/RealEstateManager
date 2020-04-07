@@ -72,13 +72,12 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         EasyPermissions.requestPermissions(this, getString(R.string.rationale_permission_access),
                 PERMS_REQUEST_CODE, *PERMS)
 
-        // Open the view with RestaurantMapFragment if permissions were already allowed
+        // Display the list of real estates if permissions were already allowed
         if (EasyPermissions.hasPermissions(this, *PERMS)) {
             // Use the ViewModelProvider to associate the ViewModel with MainActivity
             itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
             displayListFragment()
         }
-
         displayDetailsFragment()
     }
 
@@ -89,19 +88,26 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
+
                 ITEM_ACTIVITY_REQUEST_CODE -> {
                     // Insert item with pictures in database
-                    itemWithPicturesViewModel.insertItemWithPictures(itemData(data, null), pictureData(data))
+                    itemWithPicturesViewModel
+                            .insertItemWithPictures(itemData(data, null), pictureData(data))
                     Log.d(TAG, "item = ${itemData(data, null)}")
                     Log.d(TAG, "picture = ${pictureData(data)}")
                 }
 
                 UPDATE_ITEM_ACTIVITY_REQUEST_CODE -> {
+                    // Update item with pictures in database
+                    itemWithPicturesViewModel
+                            .updateItemWithPictures(itemData(data, data?.getLongExtra(BaseItemFragment.ID_ITEM, 0)), pictureData(data))
+                    Log.d(TAG, "update item = ${itemData(data, null)}")
+                    Log.d(TAG, "update picture = ${pictureData(data)}")
 
+                    TODO()
+                    // Update fragment with the new itemWithPictures
                 }
-
             }
-
         } else {
             Toast.makeText(applicationContext, getString(R.string.real_estate_not_saved), Toast.LENGTH_LONG).show()
         }
@@ -221,7 +227,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     private fun displayListFragment() {
         val listFragment = ListFragment()
         supportFragmentManager.beginTransaction()
-                .add(R.id.activity_main_fragment_container_view, listFragment)
+                .replace(R.id.activity_main_fragment_container_view, listFragment)
                 .commit()
     }
 
@@ -229,7 +235,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         // Only add DetailFragment in Tablet mode (If found frame_layout_detail)
         if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.activity_main_details_fragment_container_view, detailsFragment)
+                    .replace(R.id.activity_main_details_fragment_container_view, detailsFragment)
                     .commit()
         }
     }
