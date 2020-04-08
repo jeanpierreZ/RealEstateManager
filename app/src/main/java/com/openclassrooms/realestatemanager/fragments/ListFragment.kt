@@ -83,8 +83,8 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     override fun onClickItem(position: Int) {
         // Save the item object in the RecyclerView
         val itemWithPictures: ItemWithPictures? = itemAdapter?.getPosition(position)
-        // Spread the click to the parent activity
-        callbackItem?.onItemClicked(itemWithPictures)
+        // Spread the click to the parent activity with the item id
+        callbackItem?.onItemClicked(itemWithPictures?.item?.id)
         Log.d(TAG, "Click on ${itemWithPictures?.item?.type} ")
     }
 
@@ -99,7 +99,7 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
     // Declare our interface that will be implemented by any container activity
     interface OnItemClickedListener {
-        fun onItemClicked(itemWithPictures: ItemWithPictures?)
+        fun onItemClicked(itemWithPicturesId: Long?)
     }
 
     // Create callback to parent activity

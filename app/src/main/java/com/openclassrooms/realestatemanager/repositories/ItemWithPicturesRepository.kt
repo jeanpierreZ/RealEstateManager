@@ -15,6 +15,10 @@ class ItemWithPicturesRepository(private val itemWithPicturesDao: ItemWithPictur
     // Observed LiveData will notify the observer when the data has changed.
     val getItemWithPictures: LiveData<List<ItemWithPictures?>> = itemWithPicturesDao.getItemWithPictures()
 
+    fun getUpdatedItemWithPictures(updatedId: Long?): LiveData<ItemWithPictures?> {
+        return itemWithPicturesDao.getUpdatedItemWithPictures(updatedId)
+    }
+
     // --- CREATE ---
 
     suspend fun insertItem(item: Item) {

@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.AddItemFragment
+import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.UpdateItemFragment
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.utils.DateDialogFragment
@@ -21,7 +22,7 @@ class ItemActivity : AppCompatActivity(),
         DateDialogFragment.OnDateListener {
 
     companion object {
-        // Key for fragment title
+        // Keys for fragment title and itemWithPictures
         const val TITLE: String = "TITLE_FRAGMENT"
         const val ITEM_WITH_PICTURES: String = "ITEM_WITH_PICTURES_FRAGMENT"
     }
@@ -35,8 +36,8 @@ class ItemActivity : AppCompatActivity(),
         setContentView(R.layout.activity_item)
 
         title = intent.getStringExtra(MainActivity.TITLE_ITEM_ACTIVITY)
-        // itemWithPictures object from DetailsFragment used in UpdateItemFragment
-        itemWithPictures = intent.getParcelableExtra(MainActivity.BUNDLE_ITEM_WITH_PICTURES)
+        // itemWithPictures object from DetailsFragment
+        itemWithPictures = intent.getParcelableExtra(DetailsFragment.BUNDLE_ITEM_WITH_PICTURES)
 
         configureToolbar()
         displayCreateItemFragment()

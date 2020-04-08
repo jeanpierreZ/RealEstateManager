@@ -29,6 +29,8 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
         getItemWithPictures = repository.getItemWithPictures
     }
 
+    fun getUpdatedItemWithPictures(updatedId: Long?) = repository.getUpdatedItemWithPictures(updatedId)
+
     // --- CREATE ---
 
     /**

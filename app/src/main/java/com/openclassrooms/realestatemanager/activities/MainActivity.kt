@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,7 +22,6 @@ import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
 import com.openclassrooms.realestatemanager.models.Address
 import com.openclassrooms.realestatemanager.models.Item
-import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -36,8 +34,8 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     companion object {
         private val TAG = MainActivity::class.java.simpleName
 
-        // Key for item position
-        const val BUNDLE_ITEM_WITH_PICTURES: String = "BUNDLE_ITEM_WITH_PICTURES"
+        // Key for item id
+        const val BUNDLE_ITEM_ID: String = "BUNDLE_ITEM_ID"
 
         // Key for item title
         const val TITLE_ITEM_ACTIVITY: String = "TITLE_ITEM_ACTIVITY"
@@ -90,22 +88,17 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
             when (requestCode) {
 
                 ITEM_ACTIVITY_REQUEST_CODE -> {
-                    // Insert item with pictures in database
+                    // Insert itemWithPictures in database
                     itemWithPicturesViewModel
                             .insertItemWithPictures(itemData(data, null), pictureData(data))
-                    Log.d(TAG, "item = ${itemData(data, null)}")
-                    Log.d(TAG, "picture = ${pictureData(data)}")
                 }
 
                 UPDATE_ITEM_ACTIVITY_REQUEST_CODE -> {
-                    // Update item with pictures in database
+                    // Update itemWithPictures in database
                     itemWithPicturesViewModel
-                            .updateItemWithPictures(itemData(data, data?.getLongExtra(BaseItemFragment.ID_ITEM, 0)), pictureData(data))
-                    Log.d(TAG, "update item = ${itemData(data, null)}")
-                    Log.d(TAG, "update picture = ${pictureData(data)}")
-
-                    TODO()
-                    // Update fragment with the new itemWithPictures
+                            .updateItemWithPictures(itemData(data,
+                                    data?.getLongExtra(BaseItemFragment.ID_ITEM, 0)),
+                                    pictureData(data))
                 }
             }
         } else {
@@ -243,11 +236,11 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     //----------------------------------------------------------------------------------
     // Implement listener from ListFragment to display DetailsFragment when click on an item
 
-    override fun onItemClicked(itemWithPictures: ItemWithPictures?) {
+    override fun onItemClicked(itemWithPicturesId: Long?) {
 
-        // Put the item in a bundle and fetch it in detailsFragment
+        // Put the item id in a bundle and fetch it in detailsFragment
         val bundleItem = Bundle()
-        bundleItem.putParcelable(BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
+        itemWithPicturesId?.let { bundleItem.putLong(BUNDLE_ITEM_ID, it) }
         detailsFragment.arguments = bundleItem
 
         // Refresh detailsFragment in Tablet mode

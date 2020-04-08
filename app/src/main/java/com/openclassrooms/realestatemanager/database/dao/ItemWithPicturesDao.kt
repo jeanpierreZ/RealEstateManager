@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.database.dao
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.room.*
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
@@ -16,6 +17,14 @@ interface ItemWithPicturesDao {
     @Query("SELECT * FROM item_table")
     fun getItemWithPictures(): LiveData<List<ItemWithPictures?>>
 
+    @Transaction
+    @Query("SELECT * FROM item_table WHERE id = :updatedId")
+    fun updateItemWithPictures(updatedId: Long?): LiveData<ItemWithPictures?>
+
+    // Avoid false positive notifications for observable queries
+    fun getUpdatedItemWithPictures(updatedId: Long?): LiveData<ItemWithPictures?> =
+            Transformations.distinctUntilChanged(updateItemWithPictures(updatedId))
+
     // --- CREATE ---
 
     @Insert
@@ -23,7 +32,6 @@ interface ItemWithPicturesDao {
     suspend fun insertItem(item: Item): Long
 
     @Insert
-    // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
     suspend fun insertPictures(pictureList: ArrayList<Picture?>)
 
     @Transaction

@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,8 +16,8 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.ItemActivity
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
-import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
+import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -26,15 +28,16 @@ class DetailsFragment : Fragment(),
 
     companion object {
         private val TAG = DetailsFragment::class.java.simpleName
+
+        // Key for itemWithPictures
+        const val BUNDLE_ITEM_WITH_PICTURES: String = "BUNDLE_ITEM_WITH_PICTURES"
     }
 
     private var recyclerView: RecyclerView? = null
     private var itemPicturesAdapter: ItemPicturesAdapter? = null
-
-    // Get the itemWithPictures from the bundle
-    private val itemWithPictures: ItemWithPictures?
-            by lazy { arguments?.getParcelable<ItemWithPictures>(MainActivity.BUNDLE_ITEM_WITH_PICTURES) }
     private var pictureList: ArrayList<Picture?> = arrayListOf()
+
+    private var editIntent = Intent()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,36 +54,51 @@ class DetailsFragment : Fragment(),
         val cityText: TextView = fragmentView.findViewById(R.id.details_fragment_city)
         val postalCodeText: TextView = fragmentView.findViewById(R.id.details_fragment_postal_code)
         val countryText: TextView = fragmentView.findViewById(R.id.details_fragment_country)
-
-        // Get RecyclerView from layout and serialise it
         recyclerView = fragmentView.findViewById(R.id.details_fragment_recycler_view)
 
         // For Toolbar menu
         setHasOptionsMenu(true)
 
-        descriptionText.text = itemWithPictures?.item?.description
-        surfaceText.text = itemWithPictures?.item?.surface.toString()
-        roomText.text = itemWithPictures?.item?.roomsNumber.toString()
-        bathroomText.text = itemWithPictures?.item?.bathroomsNumber.toString()
-        bedroomText.text = itemWithPictures?.item?.bedroomsNumber.toString()
-        val streetNumber = itemWithPictures?.item?.address?.streetNumber
-        val street = itemWithPictures?.item?.address?.street
-        streetText.text = String.format("$streetNumber $street")
-        apartmentText.text = itemWithPictures?.item?.address?.apartmentNumber
-        cityText.text = itemWithPictures?.item?.address?.city
-        postalCodeText.text = itemWithPictures?.item?.address?.postalCode
-        countryText.text = itemWithPictures?.item?.address?.country
+        editIntent = Intent(activity, ItemActivity::class.java)
 
-        configureRecyclerView()
+        // Get the identifier of the itemWithPictures from the bundle
+        val itemWithPicturesId: Long? = arguments?.getLong(MainActivity.BUNDLE_ITEM_ID, -1)
 
-        // Clear the pictureList in case of reuse it
-        pictureList.clear()
+        // Use the ViewModelProvider to associate the ViewModel with DetailsFragment
+        val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
 
-        // Add photos of the chosen real estate from ListFragment
-        itemWithPictures?.pictures?.let { pictureList.addAll(it) }
+        // Observe changes in the itemWithPictures retrieved with the item id stored in the bundle
+        itemWithPicturesViewModel.getUpdatedItemWithPictures(itemWithPicturesId)
+                .observe(viewLifecycleOwner, Observer { itemWithPictures ->
 
-        updateUI(pictureList)
-        Log.d(TAG, "pictureList = $pictureList")
+                    // Put the itemWithPictures in the intent, which is used when the user want to edit data
+                    editIntent.putExtra(BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
+
+                    // Set the editTexts
+                    descriptionText.text = itemWithPictures?.item?.description
+                    surfaceText.text = itemWithPictures?.item?.surface.toString()
+                    roomText.text = itemWithPictures?.item?.roomsNumber.toString()
+                    bathroomText.text = itemWithPictures?.item?.bathroomsNumber.toString()
+                    bedroomText.text = itemWithPictures?.item?.bedroomsNumber.toString()
+                    val streetNumber = itemWithPictures?.item?.address?.streetNumber
+                    val street = itemWithPictures?.item?.address?.street
+                    streetText.text = String.format("$streetNumber $street")
+                    apartmentText.text = itemWithPictures?.item?.address?.apartmentNumber
+                    cityText.text = itemWithPictures?.item?.address?.city
+                    postalCodeText.text = itemWithPictures?.item?.address?.postalCode
+                    countryText.text = itemWithPictures?.item?.address?.country
+
+                    configureRecyclerView()
+
+                    // Clear the pictureList in case of reuse it
+                    pictureList.clear()
+
+                    // Add photos of the chosen real estate from ListFragment
+                    itemWithPictures?.pictures?.let { pictureList.addAll(it) }
+
+                    updateUI(pictureList)
+                    Log.d(TAG, "pictureList = $pictureList")
+                })
 
         return fragmentView
     }
@@ -95,10 +113,8 @@ class DetailsFragment : Fragment(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_toolbar_edit) {
-            val intent = Intent(activity, ItemActivity::class.java)
-            intent.putExtra(MainActivity.TITLE_ITEM_ACTIVITY, getString(R.string.update_real_estate))
-            intent.putExtra(MainActivity.BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
-            activity?.startActivityForResult(intent, MainActivity.UPDATE_ITEM_ACTIVITY_REQUEST_CODE)
+            editIntent.putExtra(MainActivity.TITLE_ITEM_ACTIVITY, getString(R.string.update_real_estate))
+            activity?.startActivityForResult(editIntent, MainActivity.UPDATE_ITEM_ACTIVITY_REQUEST_CODE)
         }
         return super.onOptionsItemSelected(item)
     }
