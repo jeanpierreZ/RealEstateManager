@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
         // Static data for Permissions
         val PERMS = arrayOf(Manifest.permission.INTERNET, Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
         // Request codes
         const val PERMS_REQUEST_CODE = 123
