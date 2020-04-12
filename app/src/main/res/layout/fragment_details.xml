@@ -256,11 +256,16 @@
         app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_postal_code" />
 
-    <ImageView
+    <com.google.android.gms.maps.MapView
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/details_fragment_map"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_country" />
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_country"
+        map:cameraZoom="13"
+        map:mapType="normal"
+        map:liteMode="true">
+    </com.google.android.gms.maps.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

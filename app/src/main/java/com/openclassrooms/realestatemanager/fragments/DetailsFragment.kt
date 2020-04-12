@@ -12,6 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.ItemActivity
 import com.openclassrooms.realestatemanager.activities.MainActivity
@@ -19,18 +22,23 @@ import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 
+
 /**
  * A simple [Fragment] subclass.
  */
 class DetailsFragment : Fragment(),
         ItemPicturesAdapter.PictureListener,
-        ItemPicturesAdapter.PictureLongClickListener {
+        ItemPicturesAdapter.PictureLongClickListener,
+        OnMapReadyCallback {
 
     companion object {
         private val TAG = DetailsFragment::class.java.simpleName
 
         // Key for itemWithPictures
         const val BUNDLE_ITEM_WITH_PICTURES: String = "BUNDLE_ITEM_WITH_PICTURES"
+
+        // Keys for storing activity state
+        private const val MAPVIEW_BUNDLE_KEY = "MAPVIEW_BUNDLE_KEY"
     }
 
     private var recyclerView: RecyclerView? = null
@@ -38,6 +46,10 @@ class DetailsFragment : Fragment(),
     private var pictureList: ArrayList<Picture?> = arrayListOf()
 
     private var editIntent = Intent()
+
+    // Google Mobile Services Objects
+    private var mapView: MapView? = null
+    // private val googleMap: GoogleMap? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,6 +68,8 @@ class DetailsFragment : Fragment(),
         val countryText: TextView = fragmentView.findViewById(R.id.details_fragment_country)
         recyclerView = fragmentView.findViewById(R.id.details_fragment_recycler_view)
 
+        mapView = fragmentView.findViewById(R.id.details_fragment_map)
+
         // For Toolbar menu
         setHasOptionsMenu(true)
 
@@ -66,6 +80,16 @@ class DetailsFragment : Fragment(),
 
         // Use the ViewModelProvider to associate the ViewModel with DetailsFragment
         val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+
+        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
+        // objects or sub-Bundles.
+        var mapViewBundle: Bundle? = null
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
+        }
+        mapView!!.onCreate(mapViewBundle)
+        mapView!!.getMapAsync(this)
+        mapView!!.isClickable = false
 
         // Observe changes in the itemWithPictures retrieved with the item id stored in the bundle
         itemWithPicturesViewModel.getUpdatedItemWithPictures(itemWithPicturesId)
@@ -144,6 +168,27 @@ class DetailsFragment : Fragment(),
 
     override fun onLongClickItem(position: Int) {
         Log.d("DETAILS", "LONG CLICK on picture !")
+    }
+
+    //----------------------------------------------------------------------------------
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+        // Prevent to show the My Location button, the MapToolbar and the Compass
+        googleMap?.uiSettings?.isMyLocationButtonEnabled = false
+        googleMap?.uiSettings?.isMapToolbarEnabled = false
+        googleMap?.uiSettings?.isCompassEnabled = false
+    }
+
+    //----------------------------------------------------------------------------------
+    // LifeCycle of Map
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        var mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY)
+        if (mapViewBundle == null) {
+            mapViewBundle = Bundle()
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
+        }
+        mapView?.onSaveInstanceState(mapViewBundle)
     }
 
 }

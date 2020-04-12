@@ -277,13 +277,18 @@
         app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_postal_code" />
 
-    <ImageView
+    <com.google.android.gms.maps.MapView
+        xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/details_fragment_map"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal" />
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
+        map:cameraZoom="13"
+        map:mapType="normal"
+        map:liteMode="true">
+    </com.google.android.gms.maps.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
