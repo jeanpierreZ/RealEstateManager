@@ -2,24 +2,32 @@ package com.openclassrooms.realestatemanager.fragments
 
 
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.ItemActivity
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
 import com.openclassrooms.realestatemanager.models.Picture
+import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 
 
@@ -47,9 +55,11 @@ class DetailsFragment : Fragment(),
 
     private var editIntent = Intent()
 
+    private val myUtils = MyUtils()
+
     // Google Mobile Services Objects
     private var mapView: MapView? = null
-    // private val googleMap: GoogleMap? = null
+    private lateinit var map: GoogleMap
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -67,7 +77,6 @@ class DetailsFragment : Fragment(),
         val postalCodeText: TextView = fragmentView.findViewById(R.id.details_fragment_postal_code)
         val countryText: TextView = fragmentView.findViewById(R.id.details_fragment_country)
         recyclerView = fragmentView.findViewById(R.id.details_fragment_recycler_view)
-
         mapView = fragmentView.findViewById(R.id.details_fragment_map)
 
         // For Toolbar menu
@@ -98,30 +107,60 @@ class DetailsFragment : Fragment(),
                     // Put the itemWithPictures in the intent, which is used when the user want to edit data
                     editIntent.putExtra(BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
 
+                    // Get data to set addresses for textViews and map
+                    val streetNumber = itemWithPictures?.item?.itemAddress?.streetNumber ?: ""
+                    val street = itemWithPictures?.item?.itemAddress?.street ?: ""
+                    val district = itemWithPictures?.item?.itemAddress?.district
+                    val apartmentNumber = itemWithPictures?.item?.itemAddress?.apartmentNumber
+                    val postalCode = itemWithPictures?.item?.itemAddress?.postalCode
+                    val city = itemWithPictures?.item?.itemAddress?.city
+                    val country = itemWithPictures?.item?.itemAddress?.country
+
+                    val shortAddress = String.format("$streetNumber $street ")
+                    val fullAddress = String.format("$shortAddress $district $postalCode $city $country")
+
+                    // Get data to set Integers for textViews
+                    val surface = itemWithPictures?.item?.surface
+                    val roomsNumber = itemWithPictures?.item?.roomsNumber
+                    val bathroomsNumber = itemWithPictures?.item?.bathroomsNumber
+                    val bedroomsNumber = itemWithPictures?.item?.bedroomsNumber
+
                     // Set the editTexts
                     descriptionText.text = itemWithPictures?.item?.description
-                    surfaceText.text = itemWithPictures?.item?.surface.toString()
-                    roomText.text = itemWithPictures?.item?.roomsNumber.toString()
-                    bathroomText.text = itemWithPictures?.item?.bathroomsNumber.toString()
-                    bedroomText.text = itemWithPictures?.item?.bedroomsNumber.toString()
-                    val streetNumber = itemWithPictures?.item?.address?.streetNumber
-                    val street = itemWithPictures?.item?.address?.street
-                    streetText.text = String.format("$streetNumber $street")
-                    apartmentText.text = itemWithPictures?.item?.address?.apartmentNumber
-                    cityText.text = itemWithPictures?.item?.address?.city
-                    postalCodeText.text = itemWithPictures?.item?.address?.postalCode
-                    countryText.text = itemWithPictures?.item?.address?.country
+
+                    myUtils.displayIntegerProperties(surface, surfaceText)
+                    myUtils.displayIntegerProperties(roomsNumber, roomText)
+                    myUtils.displayIntegerProperties(bathroomsNumber, bathroomText)
+                    myUtils.displayIntegerProperties(bedroomsNumber, bedroomText)
+
+                    streetText.text = shortAddress
+                    if (apartmentNumber != null) {
+                        apartmentText.text = String.format(getString(R.string.apt) + " $apartmentNumber")
+                    }
+                    cityText.text = city
+                    postalCodeText.text = postalCode
+                    countryText.text = country
 
                     configureRecyclerView()
-
                     // Clear the pictureList in case of reuse it
                     pictureList.clear()
-
                     // Add photos of the chosen real estate from ListFragment
                     itemWithPictures?.pictures?.let { pictureList.addAll(it) }
-
                     updateUI(pictureList)
                     Log.d(TAG, "pictureList = $pictureList")
+
+                    // Display the real estate on the map
+                    val realEstateLatLng = getLatLngFromAddress(fullAddress)
+                    if (realEstateLatLng != LatLng(0.0, 0.0)) {
+                        addRealEstateMarker(realEstateLatLng)
+                    } else {
+                        if (fragmentView.isVisible) {
+                            Snackbar.make(fragmentView,
+                                    getString(R.string.address_not_available),
+                                    Snackbar.LENGTH_LONG)
+                                    .show()
+                        }
+                    }
                 })
 
         return fragmentView
@@ -172,15 +211,17 @@ class DetailsFragment : Fragment(),
 
     //----------------------------------------------------------------------------------
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.map = googleMap
         // Prevent to show the My Location button, the MapToolbar and the Compass
-        googleMap?.uiSettings?.isMyLocationButtonEnabled = false
-        googleMap?.uiSettings?.isMapToolbarEnabled = false
-        googleMap?.uiSettings?.isCompassEnabled = false
+        map.uiSettings.isMyLocationButtonEnabled = false
+        map.uiSettings.isMapToolbarEnabled = false
+        map.uiSettings.isCompassEnabled = false
     }
 
     //----------------------------------------------------------------------------------
-    // LifeCycle of Map
+    // For Google Map
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         var mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY)
@@ -189,6 +230,29 @@ class DetailsFragment : Fragment(),
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
         }
         mapView?.onSaveInstanceState(mapViewBundle)
+    }
+
+    // Get the latitude and the longitude from the address of the real estate
+    private fun getLatLngFromAddress(fullAddress: String): LatLng {
+        var latitude = 0.0
+        var longitude = 0.0
+        val geocoder = Geocoder(activity)
+        val addresses: List<Address>
+        addresses = geocoder.getFromLocationName(fullAddress, 1)
+
+        if (addresses.isNotEmpty()) {
+            latitude = addresses[0].latitude
+            longitude = addresses[0].longitude
+        }
+
+        return LatLng(latitude, longitude)
+    }
+
+    // Display the real estate on the map
+    private fun addRealEstateMarker(latLng: LatLng) {
+        map.addMarker(MarkerOptions()
+                .position(latLng))
+        map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 
 }

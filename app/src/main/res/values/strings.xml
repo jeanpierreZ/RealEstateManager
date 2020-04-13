@@ -17,6 +17,8 @@
     <string name="number_of_bedrooms_title">Number of bedrooms</string>
     <string name="location_icon">Location icon</string>
     <string name="location_title">Location</string>
+    <string name="apt">Apt</string>
+    <string name="address_not_available">Address not available to display the map</string>
 
     <!-- Item Activity -->
     <string name="create_real_estate">Create a real estate</string>

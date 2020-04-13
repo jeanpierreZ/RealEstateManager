@@ -20,8 +20,8 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.BaseItemFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
-import com.openclassrooms.realestatemanager.models.Address
 import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.models.ItemAddress
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
     private fun itemData(data: Intent?, id: Long?): Item {
         // Create an address with data from ItemActivity
-        val address = Address(data?.getStringExtra(BaseItemFragment.STREET_NUMBER_ITEM),
+        val itemAddress = ItemAddress(data?.getStringExtra(BaseItemFragment.STREET_NUMBER_ITEM),
                 data?.getStringExtra(BaseItemFragment.STREET_ITEM),
                 data?.getStringExtra(BaseItemFragment.APARTMENT_NUMBER_ITEM),
                 data?.getStringExtra(BaseItemFragment.DISTRICT_ITEM),
@@ -122,13 +122,13 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
         // Create an item with data from ItemActivity
         return Item(id, data?.getStringExtra(BaseItemFragment.TYPE_ITEM),
-                data?.getIntExtra(BaseItemFragment.PRICE_ITEM, 0),
-                data?.getIntExtra(BaseItemFragment.SURFACE_ITEM, 0),
-                data?.getIntExtra(BaseItemFragment.ROOMS_ITEM, 0),
-                data?.getIntExtra(BaseItemFragment.BATHROOMS_ITEM, 0),
-                data?.getIntExtra(BaseItemFragment.BEDROOMS_ITEM, 0),
+                data?.getIntExtra(BaseItemFragment.PRICE_ITEM, -1),
+                data?.getIntExtra(BaseItemFragment.SURFACE_ITEM, -1),
+                data?.getIntExtra(BaseItemFragment.ROOMS_ITEM, -1),
+                data?.getIntExtra(BaseItemFragment.BATHROOMS_ITEM, -1),
+                data?.getIntExtra(BaseItemFragment.BEDROOMS_ITEM, -1),
                 data?.getStringArrayListExtra(BaseItemFragment.POI_ITEM),
-                address,
+                itemAddress,
                 data?.getStringExtra(BaseItemFragment.DESCRIPTION_ITEM),
                 data?.getStringExtra(BaseItemFragment.STATUS_ITEM),
                 data?.getStringExtra(BaseItemFragment.ENTRY_DATE_ITEM),
@@ -226,10 +226,11 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     }
 
     private fun displayDetailsFragment() {
-        // Only add DetailFragment in Tablet mode (If found frame_layout_detail)
+        // At launch, only add DetailsFragment in Tablet mode, but hide the fragment because no real estate is selected
         if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_details_fragment_container_view, detailsFragment)
+                    .hide(detailsFragment)
                     .commit()
         }
     }
@@ -245,9 +246,10 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         detailsFragment.arguments = bundleItem
 
         // Refresh detailsFragment in Tablet mode
-        if (detailsFragment.isVisible) {
+        if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction().detach(detailsFragment).commit()
-            supportFragmentManager.beginTransaction().attach(detailsFragment).commit()
+            // show() is used because detailsFragment is hide at launch
+            supportFragmentManager.beginTransaction().attach(detailsFragment).show(detailsFragment).commit()
         } else {
             // Display detailsFragment instead of ListFragment in Phone mode
             supportFragmentManager.beginTransaction()

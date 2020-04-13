@@ -18,9 +18,9 @@ data class Item(@PrimaryKey(autoGenerate = true) val id: Long? = null,
                 val bedroomsNumber: Int? = null,
                 val pointsOfInterest: ArrayList<String>? = ArrayList(),
                 @Embedded
-                val address: @RawValue Address? = null,
+                val itemAddress: @RawValue ItemAddress? = null,
                 val description: String? = null,
                 val status: String? = null,
                 val entryDate: String? = null,
                 val saleDate: String? = null,
-                val realEstateAgent: String? = null) : Parcelable
+                val agent: String? = null) : Parcelable

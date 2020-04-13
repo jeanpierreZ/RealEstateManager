@@ -8,6 +8,7 @@ import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.ItemAdapter
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
+import com.openclassrooms.realestatemanager.utils.MyUtils
 import java.lang.ref.WeakReference
 
 
@@ -22,6 +23,7 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
     private var textViewDistrict: TextView? = null
     private var textViewPrice: TextView? = null
     private var imageItem: ImageView? = null
+    private val myUtils = MyUtils()
 
     // FOR DATA
     private var callbackWeakRef: WeakReference<ItemAdapter.Listener>? = null
@@ -42,8 +44,8 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
     fun updateItems(itemWithPictures: ItemWithPictures?, glide: RequestManager, callback: ItemAdapter.Listener) {
         // Update widgets
         textViewType?.text = itemWithPictures?.item?.type
-        textViewDistrict?.text = itemWithPictures?.item?.address?.district
-        textViewPrice?.text = itemWithPictures?.item?.price.toString()
+        textViewDistrict?.text = itemWithPictures?.item?.itemAddress?.district
+        myUtils.displayIntegerProperties(itemWithPictures?.item?.price, textViewPrice)
 
         if (itemWithPictures?.pictures?.size != 0) {
             imageItem?.let { glide.load(itemWithPictures?.pictures?.get(0)?.roomPicture).into(it) }

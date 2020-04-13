@@ -78,9 +78,9 @@ abstract class BaseItemFragment : Fragment(),
     protected var type: String? = null
     protected var price: Int? = null
     protected var surface: Int? = null
-    protected var rooms: Int? = null
-    protected var bathrooms: Int? = null
-    protected var bedrooms: Int? = null
+    protected var roomsNumber: Int? = null
+    protected var bathroomsNumber: Int? = null
+    protected var bedroomsNumber: Int? = null
     protected var pointsOfInterest: ArrayList<String>? = null
     protected var streetNumber: String? = null
     protected var street: String? = null
@@ -196,15 +196,15 @@ abstract class BaseItemFragment : Fragment(),
         }
 
         editRooms.doOnTextChanged { text, _, _, _ ->
-            rooms = text.toString().toIntOrNull()
+            roomsNumber = text.toString().toIntOrNull()
         }
 
         editBathrooms.doOnTextChanged { text, _, _, _ ->
-            bathrooms = text.toString().toIntOrNull()
+            bathroomsNumber = text.toString().toIntOrNull()
         }
 
         editBedrooms.doOnTextChanged { text, _, _, _ ->
-            bedrooms = text.toString().toIntOrNull()
+            bedroomsNumber = text.toString().toIntOrNull()
         }
 
         // Show the AlertDialog to choose the points of interest of the real estate
@@ -415,9 +415,9 @@ abstract class BaseItemFragment : Fragment(),
         saveItemIntent.putExtra(TYPE_ITEM, type)
         saveItemIntent.putExtra(PRICE_ITEM, price)
         saveItemIntent.putExtra(SURFACE_ITEM, surface)
-        saveItemIntent.putExtra(ROOMS_ITEM, rooms)
-        saveItemIntent.putExtra(BATHROOMS_ITEM, bathrooms)
-        saveItemIntent.putExtra(BEDROOMS_ITEM, bedrooms)
+        saveItemIntent.putExtra(ROOMS_ITEM, roomsNumber)
+        saveItemIntent.putExtra(BATHROOMS_ITEM, bathroomsNumber)
+        saveItemIntent.putExtra(BEDROOMS_ITEM, bedroomsNumber)
         saveItemIntent.putStringArrayListExtra(POI_ITEM, pointsOfInterest)
         saveItemIntent.putExtra(STREET_NUMBER_ITEM, streetNumber)
         saveItemIntent.putExtra(STREET_ITEM, street)
