@@ -10,4 +10,6 @@ data class ItemAddress(val streetNumber: String? = null,
                        val district: String? = null,
                        val city: String? = null,
                        val postalCode: String? = null,
-                       val country: String? = null) : Parcelable
+                       val country: String? = null,
+                       val latitude: Double? = null,
+                       val longitude: Double? = null) : Parcelable

@@ -118,7 +118,9 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
                 data?.getStringExtra(BaseItemFragment.DISTRICT_ITEM),
                 data?.getStringExtra(BaseItemFragment.CITY_ITEM),
                 data?.getStringExtra(BaseItemFragment.POSTAL_CODE_ITEM),
-                data?.getStringExtra(BaseItemFragment.COUNTRY_ITEM))
+                data?.getStringExtra(BaseItemFragment.COUNTRY_ITEM),
+                data?.getDoubleExtra(BaseItemFragment.LATITUDE_ITEM, 0.0),
+                data?.getDoubleExtra(BaseItemFragment.LONGITUDE_ITEM, 0.0))
 
         // Create an item with data from ItemActivity
         return Item(id, data?.getStringExtra(BaseItemFragment.TYPE_ITEM),

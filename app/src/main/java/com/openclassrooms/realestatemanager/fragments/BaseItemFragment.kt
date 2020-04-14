@@ -2,6 +2,8 @@ package com.openclassrooms.realestatemanager.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -61,6 +63,8 @@ abstract class BaseItemFragment : Fragment(),
         const val CITY_ITEM = "CITY_ITEM"
         const val POSTAL_CODE_ITEM = "POSTAL_CODE_ITEM"
         const val COUNTRY_ITEM = "COUNTRY_ITEM"
+        const val LATITUDE_ITEM = "LATITUDE_ITEM"
+        const val LONGITUDE_ITEM = "LONGITUDE_ITEM"
         const val DESCRIPTION_ITEM = "DESCRIPTION_ITEM"
         const val STATUS_ITEM = "STATUS_ITEM"
         const val ENTRY_DATE_ITEM = "ENTRY_DATE_ITEM"
@@ -74,6 +78,7 @@ abstract class BaseItemFragment : Fragment(),
     }
 
     // Properties of a real estate, Item Model with Address, PointsOfInterest, Status and Type
+    private val saveItemIntent = Intent()
     protected var itemId: Long? = null
     protected var type: String? = null
     protected var price: Int? = null
@@ -89,6 +94,8 @@ abstract class BaseItemFragment : Fragment(),
     protected var city: String? = null
     protected var postalCode: String? = null
     protected var country: String? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
     protected var description: String? = null
     protected var status: String? = null
     protected var entryDate: String? = null
@@ -348,7 +355,7 @@ abstract class BaseItemFragment : Fragment(),
     }
 
     //----------------------------------------------------------------------------------
-    // Private methods for Buttons
+    // Private methods for Pictures and data
 
     private fun addPicture() {
         if (pictureLocation != null && pictureLocation?.isNotEmpty()!!) {
@@ -409,8 +416,29 @@ abstract class BaseItemFragment : Fragment(),
         }
     }
 
-    protected open fun saveItemWithPictures() {
-        val saveItemIntent = Intent()
+    private fun storeLatLng() {
+        val streetNumberFormat = streetNumber ?: ""
+        val streetFormat = street ?: ""
+        val districtFormat = district ?: ""
+        val postalCodeFormat = postalCode ?: ""
+        val cityFormat = city ?: ""
+        val countryFormat = country ?: ""
+        val fullAddress = String.format("$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat")
+        val geocoder = Geocoder(activity)
+        val addresses: List<Address>
+        addresses = geocoder.getFromLocationName(fullAddress, 1)
+
+        if (addresses.isNotEmpty()) {
+            latitude = addresses[0].latitude
+            longitude = addresses[0].longitude
+        }
+        saveItemIntent.putExtra(LATITUDE_ITEM, latitude)
+        saveItemIntent.putExtra(LONGITUDE_ITEM, longitude)
+    }
+
+    private fun saveItemWithPictures() {
+        storeLatLng()
+//        val saveItemIntent = Intent()
         saveItemIntent.putExtra(ID_ITEM, itemId)
         saveItemIntent.putExtra(TYPE_ITEM, type)
         saveItemIntent.putExtra(PRICE_ITEM, price)

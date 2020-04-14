@@ -60,6 +60,7 @@ class DetailsFragment : Fragment(),
     // Google Mobile Services Objects
     private var mapView: MapView? = null
     private lateinit var map: GoogleMap
+    private lateinit var realEstateLatLng: LatLng
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -110,14 +111,12 @@ class DetailsFragment : Fragment(),
                     // Get data to set addresses for textViews and map
                     val streetNumber = itemWithPictures?.item?.itemAddress?.streetNumber ?: ""
                     val street = itemWithPictures?.item?.itemAddress?.street ?: ""
-                    val district = itemWithPictures?.item?.itemAddress?.district
                     val apartmentNumber = itemWithPictures?.item?.itemAddress?.apartmentNumber
                     val postalCode = itemWithPictures?.item?.itemAddress?.postalCode
                     val city = itemWithPictures?.item?.itemAddress?.city
                     val country = itemWithPictures?.item?.itemAddress?.country
 
                     val shortAddress = String.format("$streetNumber $street ")
-                    val fullAddress = String.format("$shortAddress $district $postalCode $city $country")
 
                     // Get data to set Integers for textViews
                     val surface = itemWithPictures?.item?.surface
@@ -150,16 +149,18 @@ class DetailsFragment : Fragment(),
                     Log.d(TAG, "pictureList = $pictureList")
 
                     // Display the real estate on the map
-                    val realEstateLatLng = getLatLngFromAddress(fullAddress)
-                    if (realEstateLatLng != LatLng(0.0, 0.0)) {
-                        addRealEstateMarker(realEstateLatLng)
+                    realEstateLatLng = if (itemWithPictures?.item?.itemAddress?.latitude != null && itemWithPictures.item.itemAddress.longitude != null) {
+                        LatLng(itemWithPictures.item.itemAddress.latitude,
+                                itemWithPictures.item.itemAddress.longitude)
                     } else {
-                        if (fragmentView.isVisible) {
-                            Snackbar.make(fragmentView,
-                                    getString(R.string.address_not_available),
-                                    Snackbar.LENGTH_LONG)
-                                    .show()
-                        }
+                        LatLng(0.0, 0.0)
+                    }
+
+                    if (realEstateLatLng == LatLng(0.0, 0.0) && fragmentView.isVisible) {
+                        clearMap(realEstateLatLng)
+                        Snackbar.make(fragmentView, getString(R.string.address_not_available), Snackbar.LENGTH_LONG).show()
+                    } else {
+                        addRealEstateMarker(realEstateLatLng)
                     }
                 })
 
@@ -232,20 +233,10 @@ class DetailsFragment : Fragment(),
         mapView?.onSaveInstanceState(mapViewBundle)
     }
 
-    // Get the latitude and the longitude from the address of the real estate
-    private fun getLatLngFromAddress(fullAddress: String): LatLng {
-        var latitude = 0.0
-        var longitude = 0.0
-        val geocoder = Geocoder(activity)
-        val addresses: List<Address>
-        addresses = geocoder.getFromLocationName(fullAddress, 1)
-
-        if (addresses.isNotEmpty()) {
-            latitude = addresses[0].latitude
-            longitude = addresses[0].longitude
-        }
-
-        return LatLng(latitude, longitude)
+    // Clear the map
+    private fun clearMap(latLng: LatLng) {
+        map.clear()
+        map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 
     // Display the real estate on the map
@@ -254,5 +245,4 @@ class DetailsFragment : Fragment(),
                 .position(latLng))
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
-
 }
