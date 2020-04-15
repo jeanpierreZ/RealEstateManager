@@ -103,7 +103,7 @@ abstract class BaseItemFragment : Fragment(),
     protected var agent: String? = null
 
     // Properties of a real estate, Picture Model
-    private var pictureList: ArrayList<Picture?> = arrayListOf()
+    protected var pictureList: ArrayList<Picture?> = arrayListOf()
     private var pictureLocation: String? = null
 
     // File use when user take a photo with the camera
@@ -359,7 +359,7 @@ abstract class BaseItemFragment : Fragment(),
 
     private fun addPicture() {
         if (pictureLocation != null && pictureLocation?.isNotEmpty()!!) {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, RC_CHOOSE_PHOTO)
         } else {
             Toast.makeText(activity, getString(R.string.no_picture_location), Toast.LENGTH_SHORT).show()

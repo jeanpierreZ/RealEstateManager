@@ -89,7 +89,6 @@ class UpdateItemFragment : BaseItemFragment() {
 
         //----------------------------------------------------------------------------------
         // Set the recyclerView
-        val pictureList: ArrayList<Picture?> = arrayListOf()
         itemWithPictures?.pictures?.let { pictureList.addAll(it) }
         updatePictureList(pictureList)
 
