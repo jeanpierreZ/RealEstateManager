@@ -2,8 +2,6 @@ package com.openclassrooms.realestatemanager.fragments
 
 
 import android.content.Intent
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -60,7 +58,6 @@ class DetailsFragment : Fragment(),
     // Google Mobile Services Objects
     private var mapView: MapView? = null
     private lateinit var map: GoogleMap
-    private lateinit var realEstateLatLng: LatLng
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -149,18 +146,18 @@ class DetailsFragment : Fragment(),
                     Log.d(TAG, "pictureList = $pictureList")
 
                     // Display the real estate on the map
-                    realEstateLatLng = if (itemWithPictures?.item?.itemAddress?.latitude != null && itemWithPictures.item.itemAddress.longitude != null) {
-                        LatLng(itemWithPictures.item.itemAddress.latitude,
-                                itemWithPictures.item.itemAddress.longitude)
-                    } else {
-                        LatLng(0.0, 0.0)
+                    clearMap()
+                    val realEstateLatLng = itemWithPictures?.item?.itemAddress?.latitude?.let {
+                        itemWithPictures.item.itemAddress.longitude?.let { it1 ->
+                            LatLng(it, it1)
+                        }
                     }
-
-                    if (realEstateLatLng == LatLng(0.0, 0.0) && fragmentView.isVisible) {
-                        clearMap(realEstateLatLng)
-                        Snackbar.make(fragmentView, getString(R.string.address_not_available), Snackbar.LENGTH_LONG).show()
-                    } else {
-                        addRealEstateMarker(realEstateLatLng)
+                    if (realEstateLatLng != null) {
+                        if (realEstateLatLng == LatLng(0.0, 0.0) && fragmentView.isVisible) {
+                            Snackbar.make(fragmentView, getString(R.string.address_not_available), Snackbar.LENGTH_LONG).show()
+                        } else if (realEstateLatLng != LatLng(0.0, 0.0)) {
+                            addRealEstateMarker(realEstateLatLng)
+                        }
                     }
                 })
 
@@ -234,7 +231,8 @@ class DetailsFragment : Fragment(),
     }
 
     // Clear the map
-    private fun clearMap(latLng: LatLng) {
+    private fun clearMap() {
+        val latLng = LatLng(0.0, 0.0)
         map.clear()
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }

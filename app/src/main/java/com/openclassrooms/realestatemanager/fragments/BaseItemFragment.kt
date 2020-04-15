@@ -438,7 +438,6 @@ abstract class BaseItemFragment : Fragment(),
 
     private fun saveItemWithPictures() {
         storeLatLng()
-//        val saveItemIntent = Intent()
         saveItemIntent.putExtra(ID_ITEM, itemId)
         saveItemIntent.putExtra(TYPE_ITEM, type)
         saveItemIntent.putExtra(PRICE_ITEM, price)
