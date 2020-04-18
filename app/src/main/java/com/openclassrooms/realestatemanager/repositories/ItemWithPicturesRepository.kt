@@ -11,12 +11,13 @@ import com.openclassrooms.realestatemanager.models.Picture
 class ItemWithPicturesRepository(private val itemWithPicturesDao: ItemWithPicturesDao) {
 
     // --- GET ---
+
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     val getItemWithPictures: LiveData<List<ItemWithPictures?>> = itemWithPicturesDao.getItemWithPictures()
 
-    fun getUpdatedItemWithPictures(updatedId: Long?): LiveData<ItemWithPictures?> {
-        return itemWithPicturesDao.getUpdatedItemWithPictures(updatedId)
+    fun getModifiedItemWithPictures(id: Long?): LiveData<ItemWithPictures?> {
+        return itemWithPicturesDao.getModifiedItemWithPictures(id)
     }
 
     // --- CREATE ---
@@ -34,6 +35,7 @@ class ItemWithPicturesRepository(private val itemWithPicturesDao: ItemWithPictur
     }
 
     // --- UPDATE ---
+
     suspend fun updateItemWithPictures(item: Item, pictureList: ArrayList<Picture?>) {
         itemWithPicturesDao.updateItemWithPictures(item, pictureList)
     }

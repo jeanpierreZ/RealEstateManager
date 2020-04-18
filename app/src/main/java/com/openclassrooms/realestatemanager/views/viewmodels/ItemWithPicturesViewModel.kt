@@ -29,7 +29,7 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
         getItemWithPictures = repository.getItemWithPictures
     }
 
-    fun getUpdatedItemWithPictures(updatedId: Long?) = repository.getUpdatedItemWithPictures(updatedId)
+    fun getModifiedItemWithPictures(id: Long?) = repository.getModifiedItemWithPictures(id)
 
     // --- CREATE ---
 
@@ -40,14 +40,6 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
      * ViewModels have a coroutine scope based on their lifecycle called
      * viewModelScope which we can use here.
      */
-
-    fun insertItem(item: Item) = viewModelScope.launch {
-        repository.insertItem(item)
-    }
-
-    fun insertPictures(pictureList: ArrayList<Picture?>) = viewModelScope.launch {
-        repository.insertPictures(pictureList)
-    }
 
     fun insertItemWithPictures(item: Item, pictureList: ArrayList<Picture?>) = viewModelScope.launch {
         repository.insertItemWithPictures(item, pictureList)

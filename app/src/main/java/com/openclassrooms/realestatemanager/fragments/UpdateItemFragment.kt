@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.activities.ItemActivity
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
-import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.utils.MyUtils
 
 /**
@@ -91,8 +90,6 @@ class UpdateItemFragment : BaseItemFragment() {
         // Set the recyclerView
         itemWithPictures?.pictures?.let { pictureList.addAll(it) }
         updatePictureList(pictureList)
-
-        // TODO check why pictures are not saved
 
         return view
     }

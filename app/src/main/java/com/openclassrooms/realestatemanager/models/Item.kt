@@ -9,7 +9,8 @@ import kotlinx.android.parcel.RawValue
 
 @Parcelize
 @Entity(tableName = "item_table")
-data class Item(@PrimaryKey(autoGenerate = true) val id: Long? = null,
+data class Item(@PrimaryKey(autoGenerate = true)
+                val id: Long? = null,
                 val type: String? = null,
                 val price: Int? = null,
                 val surface: Int? = null,

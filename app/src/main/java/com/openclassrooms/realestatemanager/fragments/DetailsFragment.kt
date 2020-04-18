@@ -99,7 +99,7 @@ class DetailsFragment : Fragment(),
         mapView!!.isClickable = false
 
         // Observe changes in the itemWithPictures retrieved with the item id stored in the bundle
-        itemWithPicturesViewModel.getUpdatedItemWithPictures(itemWithPicturesId)
+        itemWithPicturesViewModel.getModifiedItemWithPictures(itemWithPicturesId)
                 .observe(viewLifecycleOwner, Observer { itemWithPictures ->
 
                     // Put the itemWithPictures in the intent, which is used when the user want to edit data
@@ -108,12 +108,11 @@ class DetailsFragment : Fragment(),
                     // Get data to set addresses for textViews and map
                     val streetNumber = itemWithPictures?.item?.itemAddress?.streetNumber ?: ""
                     val street = itemWithPictures?.item?.itemAddress?.street ?: ""
+                    val shortAddress = String.format("$streetNumber $street ")
                     val apartmentNumber = itemWithPictures?.item?.itemAddress?.apartmentNumber
                     val postalCode = itemWithPictures?.item?.itemAddress?.postalCode
                     val city = itemWithPictures?.item?.itemAddress?.city
                     val country = itemWithPictures?.item?.itemAddress?.country
-
-                    val shortAddress = String.format("$streetNumber $street ")
 
                     // Get data to set Integers for textViews
                     val surface = itemWithPictures?.item?.surface
@@ -130,8 +129,10 @@ class DetailsFragment : Fragment(),
                     myUtils.displayIntegerProperties(bedroomsNumber, bedroomText)
 
                     streetText.text = shortAddress
-                    if (apartmentNumber != null) {
-                        apartmentText.text = String.format(getString(R.string.apt) + " $apartmentNumber")
+                    if (apartmentNumber.isNullOrBlank() || apartmentNumber == "") {
+                        apartmentText.text = apartmentNumber
+                    } else {
+                        apartmentText.text =  String.format(getString(R.string.apt) + " $apartmentNumber")
                     }
                     cityText.text = city
                     postalCodeText.text = postalCode
