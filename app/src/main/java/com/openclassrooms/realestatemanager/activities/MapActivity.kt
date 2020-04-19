@@ -1,20 +1,28 @@
 package com.openclassrooms.realestatemanager.activities
 
 import android.Manifest
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.models.Status
+import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -55,6 +63,9 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
     // A default location (New York, USA) to use when location permission is not granted.
     private val defaultLocation = LatLng(40.7127281, -74.0060152)
 
+    //    private val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+    private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -81,10 +92,21 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap
 
-        // If permissions are granted, turn on My Location and the related control on the map
-        updateLocationUI()
-    }
+        // Prevent to show the the MapToolbar
+        googleMap?.uiSettings?.isMapToolbarEnabled = false
 
+        // If permissions are granted...
+        // ...Turn on My Location...
+        updateLocationUI()
+
+        // ...Add markers at real estates
+        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPictures ->
+            for (itemWithPicture in itemWithPictures) {
+                showRealEstates(itemWithPicture?.item)
+            }
+        })
+    }
 
     //----------------------------------------------------------------------------------
     // LifeCycle of Map
@@ -195,6 +217,55 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
             @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
             Log.e("Exception: %s", e.message)
         }
+    }
+
+    //----------------------------------------------------------------------------------
+    // Methods to build and show markers on Map
+
+    // Display markers at real estates
+    @AfterPermissionGranted(LOCATION_PERMS_REQUEST_CODE)
+    private fun showRealEstates(item: Item?) {
+        if (EasyPermissions.hasPermissions(this, *LOCATION_PERMS)) {
+            val latLng = item?.itemAddress?.latitude?.let { item.itemAddress.longitude?.let { it1 -> LatLng(it, it1) } }
+            if (latLng != null) {
+                // If the real estate is sold, mark a red icon
+                if (item.status == Status.SOLD.availability) {
+                    addMarkers(latLng, R.drawable.ic_location_on_red_24dp)
+                } else {
+                    // If the real estate is available or has a null status, mark a green icon
+                    addMarkers(latLng, R.drawable.ic_location_on_green_24dp)
+                }
+            } else {
+                EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_permission_access),
+                        LOCATION_PERMS_REQUEST_CODE, *LOCATION_PERMS)
+            }
+        }
+    }
+
+    // Add different color markers depending on whether real estates are available or sold
+    private fun addMarkers(latLng: LatLng, icLocation: Int) {
+        val marker: Marker? = map?.addMarker(MarkerOptions()
+                .icon(bitmapDescriptorFromVector(icLocation))
+                .position(latLng))
+        //   marker?.tag = ----
+    }
+
+    private fun bitmapDescriptorFromVector(backgroundResId: Int): BitmapDescriptor? {
+        // Create background
+        val background: Drawable? = VectorDrawableCompat.create(resources, backgroundResId, null)
+        if (background == null) {
+            Log.e(TAG, "Requested vector resource was not found")
+            return BitmapDescriptorFactory.defaultMarker()
+        }
+        background.setBounds(0, 0,
+                background.intrinsicWidth, background.intrinsicHeight)
+
+        // Create Bitmap with background then draw it
+        val bitmap = Bitmap.createBitmap(background.intrinsicWidth,
+                background.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        background.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     //----------------------------------------------------------------------------------
