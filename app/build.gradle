@@ -91,4 +91,6 @@ dependencies {
     // Google Mobile Services
     // Maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    // Location
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 }

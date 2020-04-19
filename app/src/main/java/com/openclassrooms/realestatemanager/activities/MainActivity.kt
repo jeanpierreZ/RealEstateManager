@@ -42,11 +42,10 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
 
         // Static data for Permissions
         val PERMS = arrayOf(Manifest.permission.INTERNET, Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
 
         // Request codes
-        const val PERMS_REQUEST_CODE = 123
+        const val PERMS_REQUEST_CODE = 111
         const val ITEM_ACTIVITY_REQUEST_CODE = 1
         const val UPDATE_ITEM_ACTIVITY_REQUEST_CODE = 2
     }
@@ -67,7 +66,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         configureDrawerLayout()
         configureNavigationView()
 
-        // Request permission when starting MainActivity
+        // Request permissions when starting MainActivity
         EasyPermissions.requestPermissions(this, getString(R.string.rationale_permission_access),
                 PERMS_REQUEST_CODE, *PERMS)
 
@@ -205,13 +204,13 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         // Handle Navigation Item Click
         when (item.itemId) {
             R.id.menu_nav_drawer_main_activity -> {
-                // Get MainActivity
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
-            R.id.menu_nav_drawer_map ->
-                // Get MapActivity
-                Toast.makeText(this, getString(R.string.map), Toast.LENGTH_SHORT).show()
+            R.id.menu_nav_drawer_map_activity -> {
+                val intent = Intent(this, MapActivity::class.java)
+                startActivity(intent)
+            }
         }
         this.drawerLayout?.closeDrawer(GravityCompat.START)
         return true

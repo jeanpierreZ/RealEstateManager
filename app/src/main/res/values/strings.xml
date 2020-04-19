@@ -67,5 +67,6 @@
 
     <!-- Request Permissions -->
     <string name="rationale_permission_access">This application needs to access your external storage and internet to work.</string>
+    <string name="rationale_location_permission_access">This application needs to access your location to work.</string>
 
 </resources>

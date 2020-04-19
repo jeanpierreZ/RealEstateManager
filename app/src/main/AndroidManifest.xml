@@ -6,9 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <!-- Restrict the app visibility on Google Play to devices that have a camera -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Restrict the app visibility on Google Play to devices that have a camera -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -20,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.MapActivity" />
         <activity
             android:name=".activities.ItemActivity"
             android:parentActivityName=".activities.MainActivity">
@@ -43,16 +42,13 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
-        </provider>
-
-        <!-- The API key for Google Maps-based APIs -->
+        </provider> <!-- The API key for Google Maps-based APIs -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
     </application>
 
 </manifest>

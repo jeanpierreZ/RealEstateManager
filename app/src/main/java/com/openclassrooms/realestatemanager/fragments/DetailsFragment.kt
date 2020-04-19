@@ -88,8 +88,7 @@ class DetailsFragment : Fragment(),
         // Use the ViewModelProvider to associate the ViewModel with DetailsFragment
         val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
 
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
+        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK objects or sub-Bundles.
         var mapViewBundle: Bundle? = null
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
@@ -132,7 +131,7 @@ class DetailsFragment : Fragment(),
                     if (apartmentNumber.isNullOrBlank() || apartmentNumber == "") {
                         apartmentText.text = apartmentNumber
                     } else {
-                        apartmentText.text =  String.format(getString(R.string.apt) + " $apartmentNumber")
+                        apartmentText.text = String.format(getString(R.string.apt) + " $apartmentNumber")
                     }
                     cityText.text = city
                     postalCodeText.text = postalCode
@@ -240,8 +239,7 @@ class DetailsFragment : Fragment(),
 
     // Display the real estate on the map
     private fun addRealEstateMarker(latLng: LatLng) {
-        map.addMarker(MarkerOptions()
-                .position(latLng))
+        map.addMarker(MarkerOptions().position(latLng))
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 }
