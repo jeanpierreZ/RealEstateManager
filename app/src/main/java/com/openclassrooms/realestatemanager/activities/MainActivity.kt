@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.activities.MapActivity.Companion.INTENT_ITEM_ID
 import com.openclassrooms.realestatemanager.fragments.BaseItemFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
@@ -76,7 +77,18 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
             itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
             displayListFragment()
         }
-        displayDetailsFragment()
+        displayDetailsFragmentAtLaunch()
+
+        // Get the itemWithPictures id from the intent in MapActivity
+        val intent = intent
+        val itemWithPicturesId = intent.getLongExtra(INTENT_ITEM_ID, -1)
+
+        // If the id is different of the value by default
+        if (itemWithPicturesId != -1L) {
+            // Put the item id in a bundle and fetch it in detailsFragment
+            putIdInBundle(itemWithPicturesId)
+            displayDetailsFragment()
+        }
     }
 
     //----------------------------------------------------------------------------------
@@ -226,7 +238,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
                 .commit()
     }
 
-    private fun displayDetailsFragment() {
+    private fun displayDetailsFragmentAtLaunch() {
         // At launch, only add DetailsFragment in Tablet mode, but hide the fragment because no real estate is selected
         if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction()
@@ -236,16 +248,7 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         }
     }
 
-    //----------------------------------------------------------------------------------
-    // Implement listener from ListFragment to display DetailsFragment when click on an item
-
-    override fun onItemClicked(itemWithPicturesId: Long?) {
-
-        // Put the item id in a bundle and fetch it in detailsFragment
-        val bundleItem = Bundle()
-        itemWithPicturesId?.let { bundleItem.putLong(BUNDLE_ITEM_ID, it) }
-        detailsFragment.arguments = bundleItem
-
+    private fun displayDetailsFragment() {
         // Refresh detailsFragment in Tablet mode
         if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction().detach(detailsFragment).commit()
@@ -257,6 +260,23 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
                     .replace(R.id.activity_main_fragment_container_view, detailsFragment)
                     .commit()
         }
+    }
+
+    //----------------------------------------------------------------------------------
+    // Put the item id in a bundle and fetch it in detailsFragment
+
+    private fun putIdInBundle(itemWithPicturesId: Long?) {
+        val bundleItem = Bundle()
+        itemWithPicturesId?.let { bundleItem.putLong(BUNDLE_ITEM_ID, it) }
+        detailsFragment.arguments = bundleItem
+    }
+
+    //----------------------------------------------------------------------------------
+    // Implement listener from ListFragment to display DetailsFragment when click on an item
+
+    override fun onItemClicked(itemWithPicturesId: Long?) {
+        putIdInBundle(itemWithPicturesId)
+        displayDetailsFragment()
     }
 
     //----------------------------------------------------------------------------------

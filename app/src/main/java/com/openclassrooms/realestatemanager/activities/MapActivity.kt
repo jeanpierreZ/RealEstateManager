@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.activities
 
 import android.Manifest
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -20,7 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.models.Item
+import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -37,6 +38,9 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
         private const val MAPVIEW_BUNDLE_KEY = "MAPVIEW_BUNDLE_KEY"
         private const val KEY_LOCATION = "KEY_LOCATION"
         private const val KEY_CAMERA_POSITION = "KEY_CAMERA_POSITION"
+
+        // Key for item id
+        const val INTENT_ITEM_ID: String = "INTENT_ITEM_ID"
 
         // The default zoom for the map
         private const val DEFAULT_ZOOM = 17
@@ -93,7 +97,7 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
         map = googleMap
 
         // Prevent to show the the MapToolbar
-        googleMap?.uiSettings?.isMapToolbarEnabled = false
+        map?.uiSettings?.isMapToolbarEnabled = false
 
         // If permissions are granted...
         // ...Turn on My Location...
@@ -103,9 +107,21 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
         itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
         itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPictures ->
             for (itemWithPicture in itemWithPictures) {
-                showRealEstates(itemWithPicture?.item)
+                itemWithPicture?.let { showRealEstates(it) }
             }
         })
+
+        map?.setOnMarkerClickListener { marker: Marker ->
+            // Retrieve the data from the marker
+            val itemWithPicturesId = marker.tag as Long?
+            if (itemWithPicturesId != null) {
+                // Start MainActivity when the user click on a real estate
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(INTENT_ITEM_ID, itemWithPicturesId)
+                startActivity(intent)
+            }
+            false
+        }
     }
 
     //----------------------------------------------------------------------------------
@@ -224,16 +240,18 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
 
     // Display markers at real estates
     @AfterPermissionGranted(LOCATION_PERMS_REQUEST_CODE)
-    private fun showRealEstates(item: Item?) {
+    private fun showRealEstates(itemWithPictures: ItemWithPictures) {
         if (EasyPermissions.hasPermissions(this, *LOCATION_PERMS)) {
-            val latLng = item?.itemAddress?.latitude?.let { item.itemAddress.longitude?.let { it1 -> LatLng(it, it1) } }
+            val latLng = itemWithPictures.item.itemAddress?.latitude?.let {
+                itemWithPictures.item.itemAddress.longitude?.let { it1 -> LatLng(it, it1) }
+            }
             if (latLng != null) {
                 // If the real estate is sold, mark a red icon
-                if (item.status == Status.SOLD.availability) {
-                    addMarkers(latLng, R.drawable.ic_location_on_red_24dp)
+                if (itemWithPictures.item.status == Status.SOLD.availability) {
+                    addMarkers(latLng, R.drawable.ic_location_on_red_24dp, itemWithPictures.item.id)
                 } else {
                     // If the real estate is available or has a null status, mark a green icon
-                    addMarkers(latLng, R.drawable.ic_location_on_green_24dp)
+                    addMarkers(latLng, R.drawable.ic_location_on_green_24dp, itemWithPictures.item.id)
                 }
             } else {
                 EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_permission_access),
@@ -243,11 +261,11 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
     }
 
     // Add different color markers depending on whether real estates are available or sold
-    private fun addMarkers(latLng: LatLng, icLocation: Int) {
+    private fun addMarkers(latLng: LatLng, icLocation: Int, itemWithPicturesId: Long?) {
         val marker: Marker? = map?.addMarker(MarkerOptions()
                 .icon(bitmapDescriptorFromVector(icLocation))
                 .position(latLng))
-        //   marker?.tag = ----
+        marker?.tag = itemWithPicturesId
     }
 
     private fun bitmapDescriptorFromVector(backgroundResId: Int): BitmapDescriptor? {
