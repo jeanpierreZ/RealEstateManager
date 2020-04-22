@@ -17,10 +17,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.activities.MapActivity.Companion.INTENT_ITEM_ID
 import com.openclassrooms.realestatemanager.fragments.BaseItemFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
+import com.openclassrooms.realestatemanager.fragments.MapFragment
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemAddress
 import com.openclassrooms.realestatemanager.models.Picture
@@ -29,7 +29,10 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
 
-class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, EasyPermissions.PermissionCallbacks,
+class MainActivity : AppCompatActivity(),
+        ListFragment.OnItemClickedListener,
+        MapFragment.OnMarkerClickedListener,
+        EasyPermissions.PermissionCallbacks,
         NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
@@ -78,17 +81,6 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
             displayListFragment()
         }
         displayDetailsFragmentAtLaunch()
-
-        // Get the itemWithPictures id from the intent in MapActivity
-        val intent = intent
-        val itemWithPicturesId = intent.getLongExtra(INTENT_ITEM_ID, -1)
-
-        // If the id is different of the value by default
-        if (itemWithPicturesId != -1L) {
-            // Put the item id in a bundle and fetch it in detailsFragment
-            putIdInBundle(itemWithPicturesId)
-            displayDetailsFragment()
-        }
     }
 
     //----------------------------------------------------------------------------------
@@ -219,9 +211,8 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
-            R.id.menu_nav_drawer_map_activity -> {
-                val intent = Intent(this, MapActivity::class.java)
-                startActivity(intent)
+            R.id.menu_nav_drawer_map_fragment -> {
+                displayMapFragment()
             }
         }
         this.drawerLayout?.closeDrawer(GravityCompat.START)
@@ -262,6 +253,13 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
         }
     }
 
+    private fun displayMapFragment() {
+        val mapFragment = MapFragment()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.activity_main_fragment_container_view, mapFragment)
+                .commit()
+    }
+
     //----------------------------------------------------------------------------------
     // Put the item id in a bundle and fetch it in detailsFragment
 
@@ -272,9 +270,15 @@ class MainActivity : AppCompatActivity(), ListFragment.OnItemClickedListener, Ea
     }
 
     //----------------------------------------------------------------------------------
-    // Implement listener from ListFragment to display DetailsFragment when click on an item
 
+    // Implement listener from ListFragment to display DetailsFragment when click on an item
     override fun onItemClicked(itemWithPicturesId: Long?) {
+        putIdInBundle(itemWithPicturesId)
+        displayDetailsFragment()
+    }
+
+    // Implement listener from MapFragment to display DetailsFragment when click on a marker
+    override fun onMarkerClicked(itemWithPicturesId: Long?) {
         putIdInBundle(itemWithPicturesId)
         displayDetailsFragment()
     }

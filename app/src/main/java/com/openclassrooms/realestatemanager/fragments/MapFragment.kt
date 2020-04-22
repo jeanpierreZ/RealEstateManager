@@ -1,14 +1,17 @@
-package com.openclassrooms.realestatemanager.activities
+package com.openclassrooms.realestatemanager.fragments
 
 import android.Manifest
-import android.content.Intent
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
@@ -28,19 +31,18 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-
-class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, OnMapReadyCallback {
+/**
+ * A simple [Fragment] subclass.
+ */
+class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCallbacks {
 
     companion object {
-        private val TAG = MapActivity::class.java.simpleName
+        private val TAG = MapFragment::class.java.simpleName
 
         // Keys for storing activity state
         private const val MAPVIEW_BUNDLE_KEY = "MAPVIEW_BUNDLE_KEY"
         private const val KEY_LOCATION = "KEY_LOCATION"
         private const val KEY_CAMERA_POSITION = "KEY_CAMERA_POSITION"
-
-        // Key for item id
-        const val INTENT_ITEM_ID: String = "INTENT_ITEM_ID"
 
         // The default zoom for the map
         private const val DEFAULT_ZOOM = 17
@@ -52,8 +54,14 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
         const val LOCATION_PERMS_REQUEST_CODE = 222
     }
 
+    // View to inflate fragment
+    private lateinit var fragmentView: View
+
+    // Declare callback
+    private var callbackMarker: OnMarkerClickedListener? = null
+
     // Google Mobile Services Objects
-    private val mMapView by lazy<MapView> { findViewById(R.id.activity_map_view) }
+    private val mMapView by lazy<MapView> { fragmentView.findViewById(R.id.fragment_map_view) }
     private var map: GoogleMap? = null
     private var cameraPosition: CameraPosition? = null
 
@@ -67,12 +75,12 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
     // A default location (New York, USA) to use when location permission is not granted.
     private val defaultLocation = LatLng(40.7127281, -74.0060152)
 
-    //    private val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        fragmentView = inflater.inflate(R.layout.fragment_map, container, false)
 
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK objects or sub-Bundles.
         var mapViewBundle: Bundle? = null
@@ -90,7 +98,9 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
         }
 
         // Construct a FusedLocationProviderClient
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationProviderClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }
+
+        return fragmentView
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -103,7 +113,7 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
         // ...Turn on My Location...
         updateLocationUI()
 
-        // ...Add markers at real estates
+        // ...Add markers at real estates location
         itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
         itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPictures ->
             for (itemWithPicture in itemWithPictures) {
@@ -115,10 +125,8 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
             // Retrieve the data from the marker
             val itemWithPicturesId = marker.tag as Long?
             if (itemWithPicturesId != null) {
-                // Start MainActivity when the user click on a real estate
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(INTENT_ITEM_ID, itemWithPicturesId)
-                startActivity(intent)
+                // Spread the click to the parent activity with the item id
+                callbackMarker?.onMarkerClicked(itemWithPicturesId)
             }
             false
         }
@@ -182,25 +190,29 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
          * cases when a location is not available.
          */
         try {
-            if (EasyPermissions.hasPermissions(this, *LOCATION_PERMS)) {
-                val locationResult = fusedLocationProviderClient?.lastLocation
-                locationResult?.addOnCompleteListener(this) { task: Task<Location?> ->
-                    if (task.isSuccessful && task.result != null) {
-                        // Set the map's camera position to the current location of the device.
-                        lastKnownLocation = task.result
-                        val currentLocation = LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+            if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
 
-                        // Construct a CameraPosition focusing on the current location...
-                        // ...and animate the camera to that position.
-                        cameraPosition = CameraPosition.Builder()
-                                .target(currentLocation)
-                                .zoom(DEFAULT_ZOOM.toFloat())
-                                .build()
-                        map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-                    } else {
-                        Log.i(TAG, "Current location is null. Using defaults.")
-                        Log.e(TAG, "Exception: %s", task.exception)
-                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat()))
+                val locationResult = fusedLocationProviderClient?.lastLocation
+
+                activity?.let {
+                    locationResult?.addOnCompleteListener(it) { task: Task<Location?> ->
+                        if (task.isSuccessful && task.result != null) {
+                            // Set the map's camera position to the current location of the device.
+                            lastKnownLocation = task.result
+                            val currentLocation = LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+
+                            // Construct a CameraPosition focusing on the current location...
+                            // ...and animate the camera to that position.
+                            cameraPosition = CameraPosition.Builder()
+                                    .target(currentLocation)
+                                    .zoom(DEFAULT_ZOOM.toFloat())
+                                    .build()
+                            map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                        } else {
+                            Log.i(TAG, "Current location is null. Using defaults.")
+                            Log.e(TAG, "Exception: %s", task.exception)
+                            map?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat()))
+                        }
                     }
                 }
             } else {
@@ -208,8 +220,9 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
                         LOCATION_PERMS_REQUEST_CODE, *LOCATION_PERMS)
             }
         } catch (e: SecurityException) {
-            @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-            Log.e("Exception: %s", e.message)
+            e.message?.let {
+                Log.e("Exception: %s", it)
+            }
         }
     }
 
@@ -219,7 +232,7 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
             return
         }
         try {
-            if (EasyPermissions.hasPermissions(this, *LOCATION_PERMS)) {
+            if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
                 // Go to My Location and give the related control on the map
                 map?.isMyLocationEnabled = true
                 getDeviceLocation()
@@ -230,21 +243,23 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
                         LOCATION_PERMS_REQUEST_CODE, *LOCATION_PERMS)
             }
         } catch (e: SecurityException) {
-            @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-            Log.e("Exception: %s", e.message)
+            e.message?.let {
+                Log.e("Exception: %s", it)
+            }
         }
     }
 
     //----------------------------------------------------------------------------------
     // Methods to build and show markers on Map
 
-    // Display markers at real estates
-    @AfterPermissionGranted(LOCATION_PERMS_REQUEST_CODE)
+    // Display markers at real estates location
     private fun showRealEstates(itemWithPictures: ItemWithPictures) {
-        if (EasyPermissions.hasPermissions(this, *LOCATION_PERMS)) {
+        if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
+
             val latLng = itemWithPictures.item.itemAddress?.latitude?.let {
                 itemWithPictures.item.itemAddress.longitude?.let { it1 -> LatLng(it, it1) }
             }
+
             if (latLng != null) {
                 // If the real estate is sold, mark a red icon
                 if (itemWithPictures.item.status == Status.SOLD.availability) {
@@ -268,21 +283,21 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
         marker?.tag = itemWithPicturesId
     }
 
-    private fun bitmapDescriptorFromVector(backgroundResId: Int): BitmapDescriptor? {
+    private fun bitmapDescriptorFromVector(resId: Int): BitmapDescriptor? {
         // Create background
-        val background: Drawable? = VectorDrawableCompat.create(resources, backgroundResId, null)
-        if (background == null) {
+        val drawable: Drawable? = VectorDrawableCompat.create(resources, resId, null)
+        if (drawable == null) {
             Log.e(TAG, "Requested vector resource was not found")
             return BitmapDescriptorFactory.defaultMarker()
         }
-        background.setBounds(0, 0,
-                background.intrinsicWidth, background.intrinsicHeight)
+        drawable.setBounds(0, 0,
+                drawable.intrinsicWidth, drawable.intrinsicHeight)
 
-        // Create Bitmap with background then draw it
-        val bitmap = Bitmap.createBitmap(background.intrinsicWidth,
-                background.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        // Create Bitmap with drawable then draw it
+        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth,
+                drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        background.draw(canvas)
+        drawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
@@ -304,6 +319,30 @@ class MapActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, On
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         // If there isn't permission, wait for the user to allow permissions before starting...
         updateLocationUI()
+    }
+
+    //----------------------------------------------------------------------------------
+    // Interface for callback to parent activity and associated methods when click on a marker
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Call the method that creating callback after being attached to parent activity
+        createCallbackToParentActivity()
+    }
+
+    // Declare our interface that will be implemented by any container activity
+    interface OnMarkerClickedListener {
+        fun onMarkerClicked(itemWithPicturesId: Long?)
+    }
+
+    // Create callback to parent activity
+    private fun createCallbackToParentActivity() {
+        try {
+            // Parent activity will automatically subscribe to callback
+            callbackMarker = activity as OnMarkerClickedListener?
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$e must implement OnMarkerClickedListener")
+        }
     }
 
 }
