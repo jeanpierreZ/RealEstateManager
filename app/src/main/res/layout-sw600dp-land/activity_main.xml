@@ -26,6 +26,13 @@
             app:layout_constraintGuide_percent="0.3" />
 
         <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/activity_main_map_fragment_container_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/activity_main_fragment_container_view"
             android:layout_width="0dp"
             android:layout_height="0dp"

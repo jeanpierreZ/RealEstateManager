@@ -57,6 +57,8 @@ class MainActivity : AppCompatActivity(),
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
     private var detailsFragment = DetailsFragment()
+    private var listFragment = ListFragment()
+    private var mapFragment = MapFragment()
 
     // For design
     private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
@@ -74,13 +76,19 @@ class MainActivity : AppCompatActivity(),
         EasyPermissions.requestPermissions(this, getString(R.string.rationale_permission_access),
                 PERMS_REQUEST_CODE, *PERMS)
 
+        getRealEstates()
+        displayListFragment()
+        displayDetailsFragmentAtLaunchInTabletMode()
+    }
+
+    //----------------------------------------------------------------------------------
+
+    private fun getRealEstates() {
         // Display the list of real estates if permissions were already allowed
         if (EasyPermissions.hasPermissions(this, *PERMS)) {
             // Use the ViewModelProvider to associate the ViewModel with MainActivity
             itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
-            displayListFragment()
         }
-        displayDetailsFragmentAtLaunch()
     }
 
     //----------------------------------------------------------------------------------
@@ -208,11 +216,17 @@ class MainActivity : AppCompatActivity(),
         // Handle Navigation Item Click
         when (item.itemId) {
             R.id.menu_nav_drawer_main_activity -> {
+                // Todo Start listFragment
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
             R.id.menu_nav_drawer_map_fragment -> {
-                displayMapFragment()
+                if (mapFragment.isHidden) {
+                    hideListAndDetailsFragment()
+                    supportFragmentManager.beginTransaction().show(mapFragment).commit()
+                } else {
+                    displayMapFragment()
+                }
             }
         }
         this.drawerLayout?.closeDrawer(GravityCompat.START)
@@ -223,13 +237,14 @@ class MainActivity : AppCompatActivity(),
     // Private methods to display fragments
 
     private fun displayListFragment() {
-        val listFragment = ListFragment()
         supportFragmentManager.beginTransaction()
                 .replace(R.id.activity_main_fragment_container_view, listFragment)
+                .attach(listFragment)
+                .show(listFragment)
                 .commit()
     }
 
-    private fun displayDetailsFragmentAtLaunch() {
+    private fun displayDetailsFragmentAtLaunchInTabletMode() {
         // At launch, only add DetailsFragment in Tablet mode, but hide the fragment because no real estate is selected
         if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction()
@@ -254,10 +269,29 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun displayMapFragment() {
-        val mapFragment = MapFragment()
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_main_fragment_container_view, mapFragment)
-                .commit()
+        // Display mapFragment in Tablet mode
+        if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
+            // Hide listFragment and detailsFragment
+            hideListAndDetailsFragment()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_main_map_fragment_container_view, mapFragment)
+                    .commit()
+        } else {
+            // Display mapFragment instead of ListFragment or DetailsFragment in Phone mode
+            // Todo mapFragment is not visible
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_main_fragment_container_view, mapFragment)
+                    .commit()
+        }
+    }
+
+    private fun hideListAndDetailsFragment() {
+        supportFragmentManager.beginTransaction().hide(listFragment).commit()
+        supportFragmentManager.beginTransaction().hide(detailsFragment).commit()
+    }
+
+    private fun hideMapFragment() {
+        supportFragmentManager.beginTransaction().hide(mapFragment).commit()
     }
 
     //----------------------------------------------------------------------------------
@@ -279,6 +313,11 @@ class MainActivity : AppCompatActivity(),
 
     // Implement listener from MapFragment to display DetailsFragment when click on a marker
     override fun onMarkerClicked(itemWithPicturesId: Long?) {
+        // Check if we are in Tablet mode and adapt UI
+        if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
+            hideMapFragment()
+            displayListFragment()
+        }
         putIdInBundle(itemWithPicturesId)
         displayDetailsFragment()
     }
