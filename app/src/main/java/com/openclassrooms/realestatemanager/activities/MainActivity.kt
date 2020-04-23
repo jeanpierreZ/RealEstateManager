@@ -216,9 +216,10 @@ class MainActivity : AppCompatActivity(),
         // Handle Navigation Item Click
         when (item.itemId) {
             R.id.menu_nav_drawer_main_activity -> {
-                // Todo Start listFragment
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                hideMapFragment()
+                getRealEstates()
+                displayListFragment()
+                displayDetailsFragmentAtLaunchInTabletMode()
             }
             R.id.menu_nav_drawer_map_fragment -> {
                 if (mapFragment.isHidden) {
@@ -278,7 +279,7 @@ class MainActivity : AppCompatActivity(),
                     .commit()
         } else {
             // Display mapFragment instead of ListFragment or DetailsFragment in Phone mode
-            // Todo mapFragment is not visible
+            // Todo mapFragment is present but Blank, when click on NavDrawer Map, after a click on a marker
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_fragment_container_view, mapFragment)
                     .commit()
