@@ -54,14 +54,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         const val LOCATION_PERMS_REQUEST_CODE = 222
     }
 
-    // View to inflate fragment
-    private lateinit var fragmentView: View
-
     // Declare callback
     private var callbackMarker: OnMarkerClickedListener? = null
 
     // Google Mobile Services Objects
-    private val mMapView by lazy<MapView> { fragmentView.findViewById(R.id.fragment_map_view) }
+    private var mMapView: MapView? = null
+
     private var map: GoogleMap? = null
     private var cameraPosition: CameraPosition? = null
 
@@ -80,7 +78,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        fragmentView = inflater.inflate(R.layout.fragment_map, container, false)
+        val fragmentView = inflater.inflate(R.layout.fragment_map, container, false)
+
+        mMapView = fragmentView.findViewById(R.id.fragment_map_view)
 
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK objects or sub-Bundles.
         var mapViewBundle: Bundle? = null
@@ -88,8 +88,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY)
         }
 
-        mMapView.onCreate(mapViewBundle)
-        mMapView.getMapAsync(this)
+        mMapView!!.onCreate(mapViewBundle)
+        mMapView!!.getMapAsync(this)
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -114,6 +114,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         updateLocationUI()
 
         // ...Add markers at real estates location
+        map?.clear()
         itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
         itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPictures ->
             for (itemWithPicture in itemWithPictures) {
@@ -124,10 +125,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         map?.setOnMarkerClickListener { marker: Marker ->
             // Retrieve the data from the marker
             val itemWithPicturesId = marker.tag as Long?
-            if (itemWithPicturesId != null) {
-                // Spread the click to the parent activity with the item id
-                callbackMarker?.onMarkerClicked(itemWithPicturesId)
-            }
+            // Spread the click to the parent activity with the item id
+            callbackMarker?.onMarkerClicked(itemWithPicturesId)
             false
         }
     }
@@ -141,7 +140,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
             mapViewBundle = Bundle()
             outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle)
         }
-        mMapView.onSaveInstanceState(mapViewBundle)
+        mMapView?.onSaveInstanceState(mapViewBundle)
 
         // Saves the state of the map when the activity is paused
         if (map != null) {
@@ -153,32 +152,32 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     override fun onResume() {
         super.onResume()
-        mMapView.onResume()
+        mMapView?.onResume()
     }
 
     override fun onStart() {
         super.onStart()
-        mMapView.onStart()
+        mMapView?.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        mMapView.onStop()
+        mMapView?.onStop()
     }
 
     override fun onPause() {
-        mMapView.onPause()
+        mMapView?.onPause()
         super.onPause()
     }
 
     override fun onDestroy() {
-        mMapView.onDestroy()
+        mMapView?.onDestroy()
         super.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mMapView.onLowMemory()
+        mMapView?.onLowMemory()
     }
 
     //----------------------------------------------------------------------------------
@@ -200,6 +199,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.result
                             val currentLocation = LatLng(lastKnownLocation!!.latitude, lastKnownLocation!!.longitude)
+                            Log.i(TAG, "Current location = $currentLocation")
 
                             // Construct a CameraPosition focusing on the current location...
                             // ...and animate the camera to that position.

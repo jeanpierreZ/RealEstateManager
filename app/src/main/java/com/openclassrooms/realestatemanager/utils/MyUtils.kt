@@ -1,6 +1,9 @@
 package com.openclassrooms.realestatemanager.utils
 
+import android.content.Context
 import android.widget.TextView
+import android.widget.Toast
+import com.openclassrooms.realestatemanager.R
 
 class MyUtils {
 
@@ -10,6 +13,10 @@ class MyUtils {
         } else {
             text?.text = ""
         }
+    }
+
+    fun showRealEstateNotSaved(context: Context) {
+        Toast.makeText(context, R.string.real_estate_not_saved, Toast.LENGTH_SHORT).show()
     }
 
 }

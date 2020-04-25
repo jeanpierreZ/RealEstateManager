@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.activities
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -11,6 +12,7 @@ import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.UpdateItemFragment
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.utils.DateDialogFragment
+import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
 import java.util.*
@@ -30,6 +32,8 @@ class ItemActivity : AppCompatActivity(),
     private var title: String? = ""
     private var itemWithPictures: ItemWithPictures? = null
     private var fragment = Fragment()
+
+    private val myUtils = MyUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +75,15 @@ class ItemActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction()
                 .replace(R.id.activity_item_fragment_container_view, fragment)
                 .commit()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            // Respond to the action bar's Up/Home button
+            android.R.id.home ->
+                myUtils.showRealEstateNotSaved(applicationContext)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     //----------------------------------------------------------------------------------

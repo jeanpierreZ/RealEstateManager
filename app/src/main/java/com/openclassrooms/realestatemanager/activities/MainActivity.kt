@@ -24,6 +24,7 @@ import com.openclassrooms.realestatemanager.fragments.MapFragment
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemAddress
 import com.openclassrooms.realestatemanager.models.Picture
+import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -56,9 +57,11 @@ class MainActivity : AppCompatActivity(),
 
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
-    private var detailsFragment = DetailsFragment()
-    private var listFragment = ListFragment()
-    private var mapFragment = MapFragment()
+    private val detailsFragment = DetailsFragment()
+    private val listFragment = ListFragment()
+    private val mapFragment = MapFragment()
+
+    private val myUtils = MyUtils()
 
     // For design
     private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
@@ -114,7 +117,7 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         } else {
-            Toast.makeText(applicationContext, getString(R.string.real_estate_not_saved), Toast.LENGTH_LONG).show()
+            myUtils.showRealEstateNotSaved(applicationContext)
         }
     }
 
@@ -215,16 +218,22 @@ class MainActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle Navigation Item Click
         when (item.itemId) {
+
             R.id.menu_nav_drawer_main_activity -> {
-                hideMapFragment()
+                // Check if we are in Tablet mode and adapt UI
+                if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
+                    hideMapFragment()
+                    displayDetailsFragmentAtLaunchInTabletMode()
+                }
                 getRealEstates()
                 displayListFragment()
-                displayDetailsFragmentAtLaunchInTabletMode()
             }
+
             R.id.menu_nav_drawer_map_fragment -> {
+                // In Tablet mode, if mapFragment is already called, we adapt UI
                 if (mapFragment.isHidden) {
                     hideListAndDetailsFragment()
-                    supportFragmentManager.beginTransaction().show(mapFragment).commit()
+                    refreshMapFragment()
                 } else {
                     displayMapFragment()
                 }
@@ -238,11 +247,19 @@ class MainActivity : AppCompatActivity(),
     // Private methods to display fragments
 
     private fun displayListFragment() {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_main_fragment_container_view, listFragment)
-                .attach(listFragment)
-                .show(listFragment)
-                .commit()
+        // In Tablet mode, don't addToBackStack
+        if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_main_fragment_container_view, listFragment)
+                    .attach(listFragment)
+                    .show(listFragment)
+                    .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.activity_main_fragment_container_view, listFragment)
+                    .addToBackStack(listFragment.toString())
+                    .commit()
+        }
     }
 
     private fun displayDetailsFragmentAtLaunchInTabletMode() {
@@ -260,28 +277,32 @@ class MainActivity : AppCompatActivity(),
         if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction().detach(detailsFragment).commit()
             // show() is used because detailsFragment is hide at launch
-            supportFragmentManager.beginTransaction().attach(detailsFragment).show(detailsFragment).commit()
+            supportFragmentManager.beginTransaction().attach(detailsFragment).show(detailsFragment)
+                    .addToBackStack(detailsFragment.toString())
+                    .commit()
         } else {
             // Display detailsFragment instead of ListFragment in Phone mode
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_fragment_container_view, detailsFragment)
+                    .addToBackStack(detailsFragment.toString())
                     .commit()
         }
     }
 
     private fun displayMapFragment() {
-        // Display mapFragment in Tablet mode
+        //  In Tablet mode, display mapFragment at the 1st call
         if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
             // Hide listFragment and detailsFragment
             hideListAndDetailsFragment()
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_map_fragment_container_view, mapFragment)
+                    .addToBackStack(mapFragment.toString())
                     .commit()
         } else {
             // Display mapFragment instead of ListFragment or DetailsFragment in Phone mode
-            // Todo mapFragment is present but Blank, when click on NavDrawer Map, after a click on a marker
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_fragment_container_view, mapFragment)
+                    .addToBackStack(mapFragment.toString())
                     .commit()
         }
     }
@@ -293,6 +314,14 @@ class MainActivity : AppCompatActivity(),
 
     private fun hideMapFragment() {
         supportFragmentManager.beginTransaction().hide(mapFragment).commit()
+    }
+
+    private fun refreshMapFragment() {
+        supportFragmentManager.beginTransaction().detach(mapFragment).commit()
+        // show() is used because mapFragment is hide when Real Estate is called in NavigationDrawer
+        supportFragmentManager.beginTransaction().attach(mapFragment).show(mapFragment)
+                .addToBackStack(mapFragment.toString())
+                .commit()
     }
 
     //----------------------------------------------------------------------------------
