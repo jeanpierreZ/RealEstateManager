@@ -232,6 +232,8 @@ class DetailsFragment : Fragment(),
 
     // Clear the map
     private fun clearMap() {
+        // Clear the map and display Null Island, an imaginary island located in the Gulf of Guinea.
+        // Its particularity is that it has zero geographic coordinates (0, 0).
         val latLng = LatLng(0.0, 0.0)
         map.clear()
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng))

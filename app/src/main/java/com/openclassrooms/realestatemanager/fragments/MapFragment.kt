@@ -277,10 +277,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     // Add different color markers depending on whether real estates are available or sold
     private fun addMarkers(latLng: LatLng, icLocation: Int, itemWithPicturesId: Long?) {
-        val marker: Marker? = map?.addMarker(MarkerOptions()
-                .icon(bitmapDescriptorFromVector(icLocation))
-                .position(latLng))
-        marker?.tag = itemWithPicturesId
+        if (latLng != LatLng(0.0, 0.0)) {
+            val marker: Marker? = map?.addMarker(MarkerOptions()
+                    .icon(bitmapDescriptorFromVector(icLocation))
+                    .position(latLng))
+            marker?.tag = itemWithPicturesId
+        }
     }
 
     private fun bitmapDescriptorFromVector(resId: Int): BitmapDescriptor? {
