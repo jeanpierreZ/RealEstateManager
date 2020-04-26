@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.fragments
 
+import android.Manifest.permission.*
 import android.app.Activity
 import android.content.Intent
 import android.location.Address
@@ -34,6 +35,9 @@ import com.openclassrooms.realestatemanager.utils.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -42,7 +46,7 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-abstract class BaseItemFragment : Fragment(),
+abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         ItemPicturesAdapter.PictureListener, ItemPicturesAdapter.PictureLongClickListener {
 
     companion object {
@@ -73,7 +77,15 @@ abstract class BaseItemFragment : Fragment(),
         const val AGENT_ITEM = "AGENT_ITEM"
         const val PICTURE_LIST_ITEM = "PICTURE_LIST_ITEM"
 
-        // Request Code for picture
+        // Keys for permissions
+        val READ_PERM = arrayOf(READ_EXTERNAL_STORAGE)
+        val WRITE_EXT_STORAGE_AND_CAMERA_PERMS = arrayOf(WRITE_EXTERNAL_STORAGE, CAMERA)
+
+        // Request codes for permissions
+        const val RC_READ_PERM = 333
+        const val RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS = 444
+
+        // Request codes for picture
         const val RC_CHOOSE_PHOTO = 100
         const val RC_TAKE_PHOTO = 200
     }
@@ -360,12 +372,18 @@ abstract class BaseItemFragment : Fragment(),
     //----------------------------------------------------------------------------------
     // Private methods for Pictures and data
 
+    @AfterPermissionGranted(RC_READ_PERM)
     private fun addPicture() {
-        if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
-            activity?.let { myUtils.showMessageNoLocationForPicture(it) }
+        if (activity?.let { EasyPermissions.hasPermissions(it, *READ_PERM) }!!) {
+            if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
+                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_location) }
+            } else {
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(intent, RC_CHOOSE_PHOTO)
+            }
         } else {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, RC_CHOOSE_PHOTO)
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_read_permission_access),
+                    RC_READ_PERM, *READ_PERM)
         }
     }
 
@@ -388,34 +406,40 @@ abstract class BaseItemFragment : Fragment(),
         */
     }
 
+    @AfterPermissionGranted(RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS)
     private fun takePicture() {
-        if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
-            activity?.let { myUtils.showMessageNoLocationForPicture(it) }
-        } else {
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                // Ensure that there's a camera activity to handle the intent
-                takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
-                    // Create the File where the photo should go
-                    val photoFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException) {
-                        // Error occurred while creating the File
-                        Log.e(TAG, "$ex")
-                        null
+        if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
+            if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
+                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_location) }
+            } else {
+                Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                    // Ensure that there's a camera activity to handle the intent
+                    takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
+                        // Create the File where the photo should go
+                        val photoFile: File? = try {
+                            createImageFile()
+                        } catch (ex: IOException) {
+                            // Error occurred while creating the File
+                            Log.e(TAG, "$ex")
+                            null
+                        }
+                        // Continue only if the File was successfully created
+                        photoFile?.also {
+                            val photoURI: Uri = FileProvider.getUriForFile(
+                                    requireActivity(),
+                                    BuildConfig.APPLICATION_ID + ".fileprovider",
+                                    it)
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takePictureIntent, RC_TAKE_PHOTO)
+                        }
+                        // File use in onActivityResult
+                        mPhotoFile = photoFile
                     }
-                    // Continue only if the File was successfully created
-                    photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
-                                requireActivity(),
-                                BuildConfig.APPLICATION_ID + ".fileprovider",
-                                it)
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takePictureIntent, RC_TAKE_PHOTO)
-                    }
-                    // File use in onActivityResult
-                    mPhotoFile = photoFile
                 }
             }
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_write_and_camera_permission_access),
+                    RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS)
         }
     }
 
@@ -538,6 +562,25 @@ abstract class BaseItemFragment : Fragment(),
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    //----------------------------------------------------------------------------------
+    // Easy Permissions
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        // If there isn't permission, wait for the user to allow permissions before starting...
     }
 
 }

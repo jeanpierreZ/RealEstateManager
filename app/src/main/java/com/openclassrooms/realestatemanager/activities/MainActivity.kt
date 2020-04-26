@@ -1,6 +1,5 @@
 package com.openclassrooms.realestatemanager.activities
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -26,14 +25,11 @@ import com.openclassrooms.realestatemanager.models.ItemAddress
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
 
 
 class MainActivity : AppCompatActivity(),
         ListFragment.OnItemClickedListener,
         MapFragment.OnMarkerClickedListener,
-        EasyPermissions.PermissionCallbacks,
         NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
@@ -45,12 +41,7 @@ class MainActivity : AppCompatActivity(),
         // Key for item title
         const val TITLE_ITEM_ACTIVITY: String = "TITLE_ITEM_ACTIVITY"
 
-        // Static data for Permissions
-        val PERMS = arrayOf(Manifest.permission.INTERNET, Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-
         // Request codes
-        const val PERMS_REQUEST_CODE = 111
         const val ITEM_ACTIVITY_REQUEST_CODE = 1
         const val UPDATE_ITEM_ACTIVITY_REQUEST_CODE = 2
     }
@@ -75,10 +66,6 @@ class MainActivity : AppCompatActivity(),
         configureDrawerLayout()
         configureNavigationView()
 
-        // Request permissions when starting MainActivity
-        EasyPermissions.requestPermissions(this, getString(R.string.rationale_permission_access),
-                PERMS_REQUEST_CODE, *PERMS)
-
         getRealEstates()
         displayListFragment()
         displayDetailsFragmentAtLaunchInTabletMode()
@@ -87,11 +74,8 @@ class MainActivity : AppCompatActivity(),
     //----------------------------------------------------------------------------------
 
     private fun getRealEstates() {
-        // Display the list of real estates if permissions were already allowed
-        if (EasyPermissions.hasPermissions(this, *PERMS)) {
-            // Use the ViewModelProvider to associate the ViewModel with MainActivity
-            itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
-        }
+        // Use the ViewModelProvider to associate the ViewModel with MainActivity
+        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
     }
 
     //----------------------------------------------------------------------------------
@@ -117,7 +101,7 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         } else {
-            myUtils.showMessageRealEstateNotSaved(applicationContext)
+            myUtils.showShortToastMessage(applicationContext, R.string.real_estate_not_saved)
         }
     }
 
@@ -350,27 +334,6 @@ class MainActivity : AppCompatActivity(),
         }
         putIdInBundle(itemWithPicturesId)
         displayDetailsFragment()
-    }
-
-    //----------------------------------------------------------------------------------
-    // Easy Permissions
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            AppSettingsDialog.Builder(this).build().show()
-        }
-    }
-
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        // If there isn't permission, wait for the user to allow permissions before starting...
-        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
-        displayListFragment()
     }
 
 }

@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.fragments
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -48,10 +49,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         private const val DEFAULT_ZOOM = 17
 
         // Key for Location Permissions
-        val LOCATION_PERMS = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+        val LOCATION_PERMS = arrayOf(ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION)
 
-        // Request code fir location permission
-        const val LOCATION_PERMS_REQUEST_CODE = 222
+        // Request code for location permission
+        const val RC_LOCATION_PERMS = 222
     }
 
     // Declare callback
@@ -110,17 +111,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         map?.uiSettings?.isMapToolbarEnabled = false
 
         // If permissions are granted...
-        // ...Turn on My Location...
-        updateLocationUI()
-
-        // ...Add markers at real estates location
-        map?.clear()
-        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
-        itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPictures ->
-            for (itemWithPicture in itemWithPictures) {
-                itemWithPicture?.let { showRealEstates(it) }
-            }
-        })
+        getDeviceLocation()
+        getDataAndShowRealEstates()
 
         map?.setOnMarkerClickListener { marker: Marker ->
             // Retrieve the data from the marker
@@ -142,7 +134,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         }
         mMapView?.onSaveInstanceState(mapViewBundle)
 
-        // Saves the state of the map when the activity is paused
+        // Save the state of the map when the activity is paused
         if (map != null) {
             outState.putParcelable(KEY_LOCATION, lastKnownLocation)
             outState.putParcelable(KEY_CAMERA_POSITION, map?.cameraPosition)
@@ -181,8 +173,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     }
 
     //----------------------------------------------------------------------------------
-    // Methods for location and configure Map
-    @AfterPermissionGranted(LOCATION_PERMS_REQUEST_CODE)
+    // Method for device location
+    @AfterPermissionGranted(RC_LOCATION_PERMS)
     private fun getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -217,30 +209,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
                 }
             } else {
                 EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_permission_access),
-                        LOCATION_PERMS_REQUEST_CODE, *LOCATION_PERMS)
-            }
-        } catch (e: SecurityException) {
-            e.message?.let {
-                Log.e("Exception: %s", it)
-            }
-        }
-    }
-
-    @AfterPermissionGranted(LOCATION_PERMS_REQUEST_CODE)
-    private fun updateLocationUI() {
-        if (map == null) {
-            return
-        }
-        try {
-            if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
-                // Go to My Location and give the related control on the map
-                map?.isMyLocationEnabled = true
-                getDeviceLocation()
-            } else {
-                map?.isMyLocationEnabled = false
-                map = null
-                EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_permission_access),
-                        LOCATION_PERMS_REQUEST_CODE, *LOCATION_PERMS)
+                        RC_LOCATION_PERMS, *LOCATION_PERMS)
             }
         } catch (e: SecurityException) {
             e.message?.let {
@@ -252,10 +221,21 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     //----------------------------------------------------------------------------------
     // Methods to build and show markers on Map
 
+    private fun getDataAndShowRealEstates() {
+        // Add markers at real estates location
+        map?.clear() // clear older markers
+        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPictures ->
+            for (itemWithPicture in itemWithPictures) {
+                itemWithPicture?.let { showRealEstates(it) }
+            }
+        })
+    }
+
+
     // Display markers at real estates location
     private fun showRealEstates(itemWithPictures: ItemWithPictures) {
         if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
-
             val latLng = itemWithPictures.item.itemAddress?.latitude?.let {
                 itemWithPictures.item.itemAddress.longitude?.let { it1 -> LatLng(it, it1) }
             }
@@ -268,12 +248,10 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
                     // If the real estate is available or has a null status, mark a green icon
                     addMarkers(latLng, R.drawable.ic_location_on_green_24dp, itemWithPictures.item.id)
                 }
-            } else {
-                EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_permission_access),
-                        LOCATION_PERMS_REQUEST_CODE, *LOCATION_PERMS)
             }
         }
     }
+
 
     // Add different color markers depending on whether real estates are available or sold
     private fun addMarkers(latLng: LatLng, icLocation: Int, itemWithPicturesId: Long?) {
@@ -285,8 +263,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         }
     }
 
+    // Create icon for the map
     private fun bitmapDescriptorFromVector(resId: Int): BitmapDescriptor? {
-        // Create background
+        // Create drawable
         val drawable: Drawable? = VectorDrawableCompat.create(resources, resId, null)
         if (drawable == null) {
             Log.e(TAG, "Requested vector resource was not found")
@@ -320,7 +299,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         // If there isn't permission, wait for the user to allow permissions before starting...
-        updateLocationUI()
+        getDeviceLocation()
+        getDataAndShowRealEstates()
     }
 
     //----------------------------------------------------------------------------------
