@@ -15,8 +15,12 @@ class MyUtils {
         }
     }
 
-    fun showRealEstateNotSaved(context: Context) {
+    fun showMessageRealEstateNotSaved(context: Context) {
         Toast.makeText(context, R.string.real_estate_not_saved, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showMessageNoLocationForPicture(context: Context) {
+        Toast.makeText(context, R.string.no_picture_location, Toast.LENGTH_SHORT).show()
     }
 
 }

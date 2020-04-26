@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         } else {
-            myUtils.showRealEstateNotSaved(applicationContext)
+            myUtils.showMessageRealEstateNotSaved(applicationContext)
         }
     }
 

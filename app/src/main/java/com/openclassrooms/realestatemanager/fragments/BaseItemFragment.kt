@@ -31,6 +31,7 @@ import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
 import com.openclassrooms.realestatemanager.utils.DateDialogFragment
+import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
 import java.io.File
@@ -149,6 +150,8 @@ abstract class BaseItemFragment : Fragment(),
     // To compare the dates of entry and sale
     private var dateOfEntry: Date? = null
     private var dateOfSale: Date? = null
+
+    private val myUtils = MyUtils()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -358,11 +361,11 @@ abstract class BaseItemFragment : Fragment(),
     // Private methods for Pictures and data
 
     private fun addPicture() {
-        if (pictureLocation != null && pictureLocation?.isNotEmpty()!!) {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(intent, RC_CHOOSE_PHOTO)
+        if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
+            activity?.let { myUtils.showMessageNoLocationForPicture(it) }
         } else {
-            Toast.makeText(activity, getString(R.string.no_picture_location), Toast.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, RC_CHOOSE_PHOTO)
         }
     }
 
@@ -386,7 +389,9 @@ abstract class BaseItemFragment : Fragment(),
     }
 
     private fun takePicture() {
-        if (pictureLocation != null && pictureLocation?.isNotEmpty()!!) {
+        if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
+            activity?.let { myUtils.showMessageNoLocationForPicture(it) }
+        } else {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 // Ensure that there's a camera activity to handle the intent
                 takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
@@ -411,8 +416,6 @@ abstract class BaseItemFragment : Fragment(),
                     mPhotoFile = photoFile
                 }
             }
-        } else {
-            Toast.makeText(activity, getString(R.string.no_picture_location), Toast.LENGTH_SHORT).show()
         }
     }
 

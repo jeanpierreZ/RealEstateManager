@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <!-- Restrict the app visibility on Google Play to devices that have a camera -->
     <uses-feature
         android:name="android.hardware.camera"
@@ -44,7 +45,9 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider_paths" />
-        </provider> <!-- The API key for Google Maps-based APIs -->
+        </provider>
+
+        <!-- The API key for Google Maps-based APIs -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api_key" />

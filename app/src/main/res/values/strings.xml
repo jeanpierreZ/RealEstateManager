@@ -47,7 +47,7 @@
     <string name="image_preview">Preview of the image</string>
     <string name="picture_location">Picture location</string>
     <string name="no_image_chosen">No image chosen</string>
-    <string name="no_picture_location">Choose a location to add or take a picture</string>
+    <string name="no_picture_location">Choose a location for the picture</string>
     <string name="add_picture">Add a picture</string>
     <string name="take_picture">Take a picture</string>
     <string name="delete_picture">Delete this picture?</string>

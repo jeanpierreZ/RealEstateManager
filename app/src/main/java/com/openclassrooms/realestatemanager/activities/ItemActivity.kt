@@ -81,7 +81,7 @@ class ItemActivity : AppCompatActivity(),
         when (item.itemId) {
             // Respond to the action bar's Up/Home button
             android.R.id.home ->
-                myUtils.showRealEstateNotSaved(applicationContext)
+                myUtils.showMessageRealEstateNotSaved(applicationContext)
         }
         return super.onOptionsItemSelected(item)
     }
