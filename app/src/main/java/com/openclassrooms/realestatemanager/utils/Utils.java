@@ -1,11 +1,13 @@
 package com.openclassrooms.realestatemanager.utils;
 
 import android.content.Context;
-import android.net.wifi.WifiManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Philippe on 21/02/2018.
@@ -19,8 +21,16 @@ public class Utils {
      * @param dollars
      * @return
      */
-    public static int convertDollarToEuro(int dollars){
+/*    public static int convertDollarToEuro(int dollars){
         return (int) Math.round(dollars * 0.812);
+    }*/
+
+    public static int convertDollarToEuro(int dollars) {
+        return (int) Math.round(dollars * 0.9243);
+    }
+
+    public static int convertEuroToDollar(int euros) {
+        return (int) Math.round(euros * 1.0818);
     }
 
     /**
@@ -28,8 +38,13 @@ public class Utils {
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      * @return
      */
-    public static String getTodayDate(){
+/*    public static String getTodayDate(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        return dateFormat.format(new Date());
+    }*/
+
+    public static String getTodayDate() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return dateFormat.format(new Date());
     }
 
@@ -39,8 +54,16 @@ public class Utils {
      * @param context
      * @return
      */
-    public static Boolean isInternetAvailable(Context context){
-        WifiManager wifi = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+/*    public static Boolean isInternetAvailable(Context context) {
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         return wifi.isWifiEnabled();
+    }*/
+
+    public static Boolean isInternetAvailable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
+
 }

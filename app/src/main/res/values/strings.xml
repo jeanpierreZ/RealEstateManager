@@ -54,6 +54,9 @@
     <string name="erase">Erase</string>
     <string name="save">Save</string>
 
+    <!-- MapFragment -->
+    <string name="network_unavailable">Network unavailable</string>
+
     <!-- NavigationDrawer -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>

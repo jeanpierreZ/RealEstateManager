@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.Task
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Status
+import com.openclassrooms.realestatemanager.utils.MyUtils
+import com.openclassrooms.realestatemanager.utils.Utils.isInternetAvailable
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -76,6 +78,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
 
+    private val myUtils = MyUtils()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -110,9 +114,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         // Prevent to show the the MapToolbar
         map?.uiSettings?.isMapToolbarEnabled = false
 
-        // If permissions are granted...
-        getDeviceLocation()
-        getDataAndShowRealEstates()
+        Log.i(TAG, "isInternetAvailable = ${isInternetAvailable(activity)}")
+        if (isInternetAvailable(activity)) {
+            // If permissions are granted...
+            getDeviceLocation()
+            getDataAndShowRealEstates()
+        } else {
+            activity?.let { myUtils.showShortToastMessage(it, R.string.network_unavailable) }
+        }
 
         map?.setOnMarkerClickListener { marker: Marker ->
             // Retrieve the data from the marker
@@ -232,7 +241,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         })
     }
 
-
     // Display markers at real estates location
     private fun showRealEstates(itemWithPictures: ItemWithPictures) {
         if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
@@ -251,7 +259,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
             }
         }
     }
-
 
     // Add different color markers depending on whether real estates are available or sold
     private fun addMarkers(latLng: LatLng, icLocation: Int, itemWithPicturesId: Long?) {

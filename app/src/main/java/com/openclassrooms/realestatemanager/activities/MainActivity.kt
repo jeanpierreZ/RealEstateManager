@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         } else {
-            myUtils.showShortToastMessage(applicationContext, R.string.real_estate_not_saved)
+            myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
         }
     }
 
@@ -302,7 +302,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun refreshMapFragment() {
         supportFragmentManager.beginTransaction().detach(mapFragment).commit()
-        // show() is used because mapFragment is hide when Real Estate is called in NavigationDrawer
+        // show() is used because mapFragment is hide
         supportFragmentManager.beginTransaction().attach(mapFragment).show(mapFragment)
                 .addToBackStack(mapFragment.toString())
                 .commit()
