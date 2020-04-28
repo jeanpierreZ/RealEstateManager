@@ -8,16 +8,19 @@ import static com.openclassrooms.realestatemanager.utils.Utils.convertEuroToDoll
 import static com.openclassrooms.realestatemanager.utils.Utils.getTodayDate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class UtilsTest {
 
     private int dollars;
     private int euros;
+    private String todayFormat;
 
     @Before
     public void setForTests() {
         dollars = 100000;
         euros = 100000;
+        todayFormat = "dd/MM/yyyy";
     }
 
     @Test
@@ -33,6 +36,8 @@ public class UtilsTest {
     @Test
     public void getTodayDateTest() {
         assertNotNull(getTodayDate());
+        assertEquals(todayFormat.length(), getTodayDate().length());
+        assertTrue(getTodayDate().contains("/"));
     }
 
 }
