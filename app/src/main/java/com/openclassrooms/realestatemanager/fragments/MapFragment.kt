@@ -114,11 +114,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         // Prevent to show the the MapToolbar
         map?.uiSettings?.isMapToolbarEnabled = false
 
-        Log.i(TAG, "isInternetAvailable = ${isInternetAvailable(activity)}")
         if (isInternetAvailable(activity)) {
             // If permissions are granted...
-            getDeviceLocation()
-            getDataAndShowRealEstates()
+            updateLocationUIAndShowMarkers()
         } else {
             activity?.let { myUtils.showShortToastMessage(it, R.string.network_unavailable) }
         }
@@ -183,7 +181,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     //----------------------------------------------------------------------------------
     // Method for device location
-    @AfterPermissionGranted(RC_LOCATION_PERMS)
     private fun getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -191,7 +188,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
          */
         try {
             if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
-
                 val locationResult = fusedLocationProviderClient?.lastLocation
 
                 activity?.let {
@@ -209,14 +205,38 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
                                     .zoom(DEFAULT_ZOOM.toFloat())
                                     .build()
                             map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+
                         } else {
+                            // Else display a default location at New York and deactivate the location button
                             Log.i(TAG, "Current location is null. Using defaults.")
                             Log.e(TAG, "Exception: %s", task.exception)
                             map?.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat()))
+                            map?.uiSettings?.isMyLocationButtonEnabled = false
                         }
                     }
                 }
+            }
+        } catch (e: SecurityException) {
+            e.message?.let {
+                Log.e("Exception: %s", it)
+            }
+        }
+    }
+
+    @AfterPermissionGranted(RC_LOCATION_PERMS)
+    private fun updateLocationUIAndShowMarkers() {
+        if (map == null) {
+            return
+        }
+        try {
+            if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
+                // Go to My Location and give the related control on the map
+                map?.isMyLocationEnabled = true
+                getDeviceLocation()
+                getDataAndShowRealEstates()
             } else {
+                map?.isMyLocationEnabled = false
+                map = null
                 EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_permission_access),
                         RC_LOCATION_PERMS, *LOCATION_PERMS)
             }
@@ -226,6 +246,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
             }
         }
     }
+
 
     //----------------------------------------------------------------------------------
     // Methods to build and show markers on Map
@@ -306,8 +327,12 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         // If there isn't permission, wait for the user to allow permissions before starting...
-        getDeviceLocation()
-        getDataAndShowRealEstates()
+        if (isInternetAvailable(activity)) {
+            // If permissions are granted...
+            updateLocationUIAndShowMarkers()
+        } else {
+            activity?.let { myUtils.showShortToastMessage(it, R.string.network_unavailable) }
+        }
     }
 
     //----------------------------------------------------------------------------------
