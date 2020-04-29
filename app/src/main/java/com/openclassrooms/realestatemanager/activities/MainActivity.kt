@@ -206,7 +206,9 @@ class MainActivity : AppCompatActivity(),
             R.id.menu_nav_drawer_main_activity -> {
                 // Check if we are in Tablet mode and adapt UI
                 if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
-                    hideMapFragment()
+                    if (mapFragment.isVisible) {
+                        hideMapFragment()
+                    }
                     displayDetailsFragmentAtLaunchInTabletMode()
                 }
                 getRealEstates()
@@ -237,6 +239,7 @@ class MainActivity : AppCompatActivity(),
                     .replace(R.id.activity_main_fragment_container_view, listFragment)
                     .attach(listFragment)
                     .show(listFragment)
+                    .addToBackStack(listFragment.toString())
                     .commit()
         } else {
             supportFragmentManager.beginTransaction()
