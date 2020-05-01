@@ -33,7 +33,7 @@ class ItemPicturesViewHolder(pictureView: View) : RecyclerView.ViewHolder(pictur
     fun updatePictures(picture: Picture?, glide: RequestManager,
                        callback: ItemPicturesAdapter.PictureListener, callbackLongClick: ItemPicturesAdapter.PictureLongClickListener) {
         // Update widgets
-        textPicture?.text = picture?.pictureLocation
+        textPicture?.text = picture?.pictureDescription
         imagePicture?.let { glide.load(picture?.roomPicture).into(it) }
 
         // Create news weak References to our Listeners and implement listeners

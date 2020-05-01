@@ -27,18 +27,17 @@ abstract class ItemWithPicturesRoomDatabase : RoomDatabase() {
         private var INSTANCE: ItemWithPicturesRoomDatabase? = null
 
         fun getDatabase(context: Context): ItemWithPicturesRoomDatabase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
+            // if the INSTANCE is not null, then return it,
+            // if it is, then create the database
+            return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                         context.applicationContext,
                         ItemWithPicturesRoomDatabase::class.java,
                         "item_with_pictures_database")
                         .build()
                 INSTANCE = instance
-                return instance
+                // return instance
+                instance
             }
         }
     }

@@ -117,7 +117,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
     // Properties of a real estate, Picture Model
     protected var pictureList: ArrayList<Picture?> = arrayListOf()
-    private var pictureLocation: String? = null
+    private var pictureDescription: String? = null
 
     // File use when user take a photo with the camera
     private var mPhotoFile: File? = null
@@ -143,7 +143,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     protected lateinit var editEntryDate: EditText
     protected lateinit var editSaleDate: EditText
     protected lateinit var editAgent: EditText
-    private lateinit var editPictureLocation: EditText
+    private lateinit var editPictureDescription: EditText
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemPicturesAdapter: ItemPicturesAdapter
@@ -191,7 +191,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         editEntryDate = fragmentView.findViewById(R.id.fragment_base_item_edit_entry_date)
         editSaleDate = fragmentView.findViewById(R.id.fragment_base_item_edit_sale_date)
         editAgent = fragmentView.findViewById(R.id.fragment_base_item_edit_agent)
-        editPictureLocation = fragmentView.findViewById(R.id.fragment_base_item_edit_picture_location)
+        editPictureDescription = fragmentView.findViewById(R.id.fragment_base_item_edit_picture_description)
         val addPictureButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_add_picture)
         val takePictureButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_take_picture)
         val saveButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_save)
@@ -285,8 +285,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
             agent = text.toString()
         }
 
-        editPictureLocation.doOnTextChanged { text, _, _, _ ->
-            pictureLocation = text.toString()
+        editPictureDescription.doOnTextChanged { text, _, _, _ ->
+            pictureDescription = text.toString()
         }
 
         addPictureButton.setOnClickListener {
@@ -316,7 +316,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
                     // Granting temporary permissions to the Uri
                     activity?.grantUriPermission(BuildConfig.APPLICATION_ID, uriPictureSelected, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     // Create a Picture model with data
-                    val picture = Picture(null, pictureLocation, uriPictureSelected, null)
+                    val picture = Picture(null, pictureDescription, uriPictureSelected, null)
                     // Add Picture to a list
                     pictureList.add(picture)
                     Log.d(TAG, "ON ACTIVITY RESULT pictureList = $pictureList")
@@ -325,7 +325,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
                 RC_TAKE_PHOTO -> {
                     // Create a Picture model with the file created
-                    val pictureTaken = Picture(null, pictureLocation, mPhotoFile?.toUri(), null)
+                    val pictureTaken = Picture(null, pictureDescription, mPhotoFile?.toUri(), null)
                     // Add Picture to a list
                     pictureList.add(pictureTaken)
                     Log.d(TAG, "ON ACTIVITY RESULT pictureList = $pictureList")
@@ -375,8 +375,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     @AfterPermissionGranted(RC_READ_PERM)
     private fun addPicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *READ_PERM) }!!) {
-            if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
-                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_location) }
+            if (pictureDescription.isNullOrEmpty() || pictureDescription.isNullOrBlank()) {
+                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_description) }
             } else {
                 val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(intent, RC_CHOOSE_PHOTO)
@@ -409,8 +409,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     @AfterPermissionGranted(RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS)
     private fun takePicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
-            if (pictureLocation.isNullOrEmpty() || pictureLocation.isNullOrBlank()) {
-                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_location) }
+            if (pictureDescription.isNullOrEmpty() || pictureDescription.isNullOrBlank()) {
+                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_description) }
             } else {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     // Ensure that there's a camera activity to handle the intent

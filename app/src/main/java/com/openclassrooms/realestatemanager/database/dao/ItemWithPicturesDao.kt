@@ -6,6 +6,7 @@ import androidx.room.*
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
+import org.jetbrains.annotations.TestOnly
 
 
 @Dao
@@ -19,19 +20,24 @@ interface ItemWithPicturesDao {
 
     @Transaction
     @Query("SELECT * FROM item_table WHERE id = :id")
-    fun modifiedItemWithPictures(id: Long?): LiveData<ItemWithPictures?>
+    fun getItemWithPicturesFromId(id: Long?): LiveData<ItemWithPictures?>
 
     // Avoid false positive notifications for observable queries
     fun getModifiedItemWithPictures(updatedId: Long?): LiveData<ItemWithPictures?> =
-            Transformations.distinctUntilChanged(modifiedItemWithPictures(updatedId))
+            Transformations.distinctUntilChanged(getItemWithPicturesFromId(updatedId))
 
     @Query("SELECT * FROM picture_table WHERE itemId= :itemId")
     fun getPictureList(itemId: Long?): List<Picture?>
 
     // --- CREATE ---
 
+    // This method is used in ItemWithPicturesAndroidTest()
+    @TestOnly
     @Insert
+    fun createItemWithPicture(item: Item, pictureList: ArrayList<Picture?>)
+
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
+    @Insert
     suspend fun insertItem(item: Item): Long
 
     @Insert
@@ -52,6 +58,11 @@ interface ItemWithPicturesDao {
     suspend fun deletePictures(pictureList: ArrayList<Picture?>)
 
     // --- UPDATE ---
+
+    // This method is used in ItemWithPicturesAndroidTest()
+    @TestOnly
+    @Update
+    fun modifyItemWithPictures(item: Item, pictureList: ArrayList<Picture?>)
 
     @Update
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)

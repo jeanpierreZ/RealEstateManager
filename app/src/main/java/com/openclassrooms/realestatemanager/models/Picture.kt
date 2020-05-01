@@ -13,7 +13,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "picture_table")
 data class Picture(@PrimaryKey(autoGenerate = true)
                    val pictureId: Long? = null,
-                   val pictureLocation: String? = null,
+                   val pictureDescription: String? = null,
                    val roomPicture: Uri? = null,
                    @ColumnInfo(index = true)
                    var itemId: Long? = null) : Parcelable

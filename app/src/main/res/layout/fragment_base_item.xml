@@ -450,32 +450,32 @@
             android:hint="@string/real_estate_agent"
             android:inputType="text"
             android:ellipsize="end"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_base_item_text_location"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_item_text_picture_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fragment_base_item_guideline"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_text_agent"
             tools:ignore="Autofill" />
 
         <TextView
-            android:id="@+id/fragment_base_item_text_location"
+            android:id="@+id/fragment_base_item_text_picture_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/picture_location"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_base_item_edit_picture_location"
+            android:text="@string/picture_description"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_item_edit_picture_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fragment_base_item_guideline"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_edit_agent" />
 
         <EditText
-            android:id="@+id/fragment_base_item_edit_picture_location"
+            android:id="@+id/fragment_base_item_edit_picture_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/picture_location"
+            android:hint="@string/picture_description"
             android:inputType="text"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_item_button_add_picture"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fragment_base_item_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_text_location"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_text_picture_description"
             tools:ignore="Autofill" />
 
         <Button
@@ -486,7 +486,7 @@
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_item_recycler_view"
             app:layout_constraintEnd_toStartOf="@+id/fragment_base_item_button_take_picture"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_edit_picture_location" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_edit_picture_description" />
 
         <Button
             android:id="@+id/fragment_base_item_button_take_picture"
@@ -496,7 +496,7 @@
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_item_recycler_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fragment_base_item_button_add_picture"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_edit_picture_location" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_item_edit_picture_description" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_base_item_recycler_view"

@@ -232,11 +232,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
             if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
                 // Go to My Location and give the related control on the map
                 map?.isMyLocationEnabled = true
+                map?.uiSettings?.isMyLocationButtonEnabled = true
                 getDeviceLocation()
                 getDataAndShowRealEstates()
             } else {
                 map?.isMyLocationEnabled = false
-                map = null
+                map?.uiSettings?.isMyLocationButtonEnabled = false
+                lastKnownLocation = null
                 EasyPermissions.requestPermissions(this, getString(R.string.rationale_location_permission_access),
                         RC_LOCATION_PERMS, *LOCATION_PERMS)
             }
@@ -326,13 +328,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        // If there isn't permission, wait for the user to allow permissions before starting...
-        if (isInternetAvailable(activity)) {
-            // If permissions are granted...
-            updateLocationUIAndShowMarkers()
-        } else {
-            activity?.let { myUtils.showShortToastMessage(it, R.string.network_unavailable) }
-        }
+        onMapReady(map)
     }
 
     //----------------------------------------------------------------------------------
