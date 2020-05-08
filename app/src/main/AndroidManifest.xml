@@ -52,6 +52,13 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
+        <provider
+            android:name=".provider.ItemWithPicturesContentProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider">
+        </provider>
+
         <!-- The API key for Google Maps-based APIs -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -268,7 +268,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     private fun showRealEstates(itemWithPictures: ItemWithPictures) {
         if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
             val latLng = itemWithPictures.item.itemAddress?.latitude?.let {
-                itemWithPictures.item.itemAddress.longitude?.let { it1 -> LatLng(it, it1) }
+                itemWithPictures.item.itemAddress?.longitude?.let { it1 -> LatLng(it, it1) }
             }
 
             if (latLng != null) {

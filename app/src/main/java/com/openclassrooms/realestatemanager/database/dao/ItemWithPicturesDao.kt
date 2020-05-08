@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.database.dao
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.room.*
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.TestOnly
 @Dao
 interface ItemWithPicturesDao {
 
+    //----------------------------------------------------------------------------------
     // --- GET ---
 
     @Transaction
@@ -29,12 +31,34 @@ interface ItemWithPicturesDao {
     @Query("SELECT * FROM picture_table WHERE itemId= :itemId")
     fun getPictureList(itemId: Long?): List<Picture?>
 
+    // This method is used in ItemWithPicturesContentProvider
+    @Query("SELECT * FROM item_table JOIN picture_table ON itemId = id WHERE id = :id")
+    fun getItemWithPicturesCursor(id: Long): Cursor?
+
+    //----------------------------------------------------------------------------------
     // --- CREATE ---
 
-    // This method is used in ItemWithPicturesAndroidTest()
+    // This method is used in ItemWithPicturesAndroidTest
     @TestOnly
     @Insert
-    fun createItemWithPicture(item: Item, pictureList: ArrayList<Picture?>)
+    fun createItemWithPicturesForTest(item: Item, pictureList: ArrayList<Picture?>)
+
+    // This method is used in ItemWithPicturesContentProvider
+    @Insert
+    fun createItemWithPicturesForContentProvider(item: Item, pictureList: ArrayList<Picture?>): Long? {
+        val id = createItemForTest(item)
+        for (picture in pictureList) {
+            picture?.itemId = id
+        }
+        createPicturesForContentProvider(pictureList)
+        return item.id
+    }
+
+    @Insert
+    fun createItemForTest(item: Item): Long
+
+    @Insert
+    fun createPicturesForContentProvider(pictureList: ArrayList<Picture?>)
 
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
     @Insert
@@ -52,17 +76,19 @@ interface ItemWithPicturesDao {
         insertPictures(pictureList)
     }
 
+    //----------------------------------------------------------------------------------
     // --- DELETE ---
 
     @Delete
     suspend fun deletePictures(pictureList: ArrayList<Picture?>)
 
+    //----------------------------------------------------------------------------------
     // --- UPDATE ---
 
-    // This method is used in ItemWithPicturesAndroidTest()
+    // This method is used in ItemWithPicturesAndroidTest
     @TestOnly
     @Update
-    fun modifyItemWithPictures(item: Item, pictureList: ArrayList<Picture?>)
+    fun modifyItemWithPicturesForTest(item: Item, pictureList: ArrayList<Picture?>)
 
     @Update
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)

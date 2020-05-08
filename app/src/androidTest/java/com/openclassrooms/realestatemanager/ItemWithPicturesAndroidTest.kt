@@ -53,7 +53,7 @@ class ItemWithPicturesAndroidTest {
         itemWithPicturesDaoTest = db.itemWithPicturesDao()
 
         // Create the data to test
-        itemWithPicturesDaoTest.createItemWithPicture(ITEM_TEST, arrayListOf(PICTURE_TEST))
+        itemWithPicturesDaoTest.createItemWithPicturesForTest(ITEM_TEST, arrayListOf(PICTURE_TEST))
     }
 
     @After
@@ -86,7 +86,7 @@ class ItemWithPicturesAndroidTest {
     @Throws(Exception::class)
     fun getModifiedItemWithPicturesTest() {
         // Create the modified data to test
-        itemWithPicturesDaoTest.modifyItemWithPictures(UPDATE_ITEM_TEST, arrayListOf(PICTURE_TEST))
+        itemWithPicturesDaoTest.modifyItemWithPicturesForTest(UPDATE_ITEM_TEST, arrayListOf(PICTURE_TEST))
 
         // Test the modified data (the agent)
         val getItemWithPicturesId = liveDataTestUtil.getValue(itemWithPicturesDaoTest.getModifiedItemWithPictures(UPDATE_ITEM_TEST.id))

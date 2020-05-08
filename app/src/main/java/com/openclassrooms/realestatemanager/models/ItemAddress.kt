@@ -4,12 +4,12 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ItemAddress(val streetNumber: String? = null,
-                       val street: String? = null,
-                       val apartmentNumber: String? = null,
-                       val district: String? = null,
-                       val city: String? = null,
-                       val postalCode: String? = null,
-                       val country: String? = null,
-                       val latitude: Double? = null,
-                       val longitude: Double? = null) : Parcelable
+data class ItemAddress(var streetNumber: String? = null,
+                       var street: String? = null,
+                       var apartmentNumber: String? = null,
+                       var district: String? = null,
+                       var city: String? = null,
+                       var postalCode: String? = null,
+                       var country: String? = null,
+                       var latitude: Double? = null,
+                       var longitude: Double? = null) : Parcelable

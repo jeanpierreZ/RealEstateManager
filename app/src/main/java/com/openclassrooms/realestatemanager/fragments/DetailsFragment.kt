@@ -148,7 +148,7 @@ class DetailsFragment : Fragment(),
                     // Display the real estate on the map
                     clearMap()
                     val realEstateLatLng = itemWithPictures?.item?.itemAddress?.latitude?.let {
-                        itemWithPictures.item.itemAddress.longitude?.let { it1 ->
+                        itemWithPictures.item.itemAddress?.longitude?.let { it1 ->
                             LatLng(it, it1)
                         }
                     }
