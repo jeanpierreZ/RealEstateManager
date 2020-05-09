@@ -1,6 +1,9 @@
 package com.openclassrooms.realestatemanager.activities
 
 import android.app.Activity
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -10,12 +13,14 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.application.MyApplication
 import com.openclassrooms.realestatemanager.fragments.BaseItemFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
@@ -42,7 +47,7 @@ class MainActivity : AppCompatActivity(),
         const val TITLE_ITEM_ACTIVITY: String = "TITLE_ITEM_ACTIVITY"
 
         // Request codes
-        const val ITEM_ACTIVITY_REQUEST_CODE = 1
+        const val ADD_ITEM_ACTIVITY_REQUEST_CODE = 1
         const val UPDATE_ITEM_ACTIVITY_REQUEST_CODE = 2
     }
 
@@ -86,10 +91,11 @@ class MainActivity : AppCompatActivity(),
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
 
-                ITEM_ACTIVITY_REQUEST_CODE -> {
+                ADD_ITEM_ACTIVITY_REQUEST_CODE -> {
                     // Insert itemWithPictures in database
                     itemWithPicturesViewModel
                             .insertItemWithPictures(itemData(data, null), pictureData(data))
+                    sendNotification()
                 }
 
                 UPDATE_ITEM_ACTIVITY_REQUEST_CODE -> {
@@ -156,7 +162,7 @@ class MainActivity : AppCompatActivity(),
             R.id.menu_toolbar_add -> {
                 val intent = Intent(this, ItemActivity::class.java)
                 intent.putExtra(TITLE_ITEM_ACTIVITY, getString(R.string.create_real_estate))
-                startActivityForResult(intent, ITEM_ACTIVITY_REQUEST_CODE)
+                startActivityForResult(intent, ADD_ITEM_ACTIVITY_REQUEST_CODE)
             }
             R.id.menu_toolbar_search -> {
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show()
@@ -318,6 +324,25 @@ class MainActivity : AppCompatActivity(),
         val bundleItem = Bundle()
         itemWithPicturesId?.let { bundleItem.putLong(BUNDLE_ITEM_ID, it) }
         detailsFragment.arguments = bundleItem
+    }
+
+    //----------------------------------------------------------------------------------
+    // Display a notification when a new real estate is added
+    private fun sendNotification() {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val text = getString(R.string.notification_text)
+        val dismissPendingIntent = PendingIntent.getActivity(this, 0, Intent(), 0)
+        // Set the content and channel of the notification
+        val notification = NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_event_note_black_24dp)
+                .setContentText(text)
+                .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(dismissPendingIntent)
+                .setAutoCancel(true)
+                .build()
+        // Notify the builder
+        notificationManager.notify(0, notification)
     }
 
     //----------------------------------------------------------------------------------

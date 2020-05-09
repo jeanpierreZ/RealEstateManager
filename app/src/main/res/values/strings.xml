@@ -73,4 +73,9 @@
     <string name="rationale_write_and_camera_permission_access">This app needs to use the camera and write to your external storage.</string>
     <string name="rationale_location_permission_access">This app needs to access your location.</string>
 
+    <!-- Channel Notifications -->
+    <string name="channel_name">"Channel</string>
+    <string name="channel_description">Channel for notifications</string>
+    <string name="notification_text"> New real estate added!</string>
+
 </resources>
