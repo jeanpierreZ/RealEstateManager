@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SearchActivity">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/activity_search_guideline_ten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/activity_search_guideline_ninety"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <TextView
+        android:id="@+id/activity_search_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/search_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_type"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+
+    <TextView
+        android:id="@+id/activity_search_text_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_type"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_type"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_title" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:hint="@string/real_estate_type"
+        android:inputType="none"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_price"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_type"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_search_text_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_price"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_price_min"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_type" />
+
+    <TextView
+        android:id="@+id/activity_search_text_price_between"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_between"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_price_min"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_price_min"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:focusable="false"
+        android:hint="@string/search_minimum"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_text_price_and"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_text_price_between"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_search_text_price_and"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/search_and"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_price_max"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_edit_price_min"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_price_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:focusable="false"
+        android:hint="@string/search_maximum"
+        android:inputType="number"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_text_price_and"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_search_text_surface"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_surface"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_surface_min"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_price_min" />
+
+    <TextView
+        android:id="@+id/activity_search_text_surface_between"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_between"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_surface_min"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_surface_min"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:focusable="false"
+        android:hint="@string/search_minimum"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_text_surface_and"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_text_surface_between"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_search_text_surface_and"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/search_and"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_surface_max"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_edit_surface_min"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_surface_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:focusable="false"
+        android:hint="@string/search_maximum"
+        android:inputType="none"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_text_surface_and"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_search_text_poi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_poi"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_poi"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_surface_min" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_poi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:hint="@string/real_estate_points_of_interest"
+        android:inputType="none"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_district"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_poi"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_search_text_district"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_district"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_district"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_poi" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_district"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:hint="@string/real_estate_district"
+        android:inputType="none"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_entry_date"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_district"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/activity_search_text_entry_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_entry_date"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_entry_date"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_district" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_entry_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:hint="@string/real_estate_entry_date"
+        android:inputType="none"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_sale_date"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_entry_date"
+        tools:ignore="Autofill,TextFields" />
+
+    <TextView
+        android:id="@+id/activity_search_text_sale_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_sale_date"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_sale_date"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_entry_date" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_sale_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:hint="@string/real_estate_sale_date"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_sale_date"
+        tools:ignore="Autofill,TextFields" />
+
+    <TextView
+        android:id="@+id/activity_search_text_picture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/search_picture"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_picture"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_sale_date" />
+
+    <EditText
+        android:id="@+id/activity_search_edit_picture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:hint="@string/search_picture_number"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_button"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_picture"
+        tools:ignore="Autofill" />
+
+    <Button
+        android:id="@+id/activity_search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:text="@string/search_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_picture" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

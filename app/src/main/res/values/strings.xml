@@ -58,8 +58,8 @@
     <string name="search_type">What type of property are you looking for?</string>
     <string name="search_price">At what price?</string>
     <string name="search_between">Between</string>
-    <string name="search_minimum">minimum</string>
-    <string name="search_maximum">maximum</string>
+    <string name="search_minimum">min</string>
+    <string name="search_maximum">max</string>
     <string name="search_and">and</string>
     <string name="search_surface">From what surface?</string>
     <string name="search_poi">With which points of interest?</string>
@@ -68,6 +68,7 @@
     <string name="search_sale_date">Sold from?</string>
     <string name="search_picture">With how many photos minimum?</string>
     <string name="search_picture_number">Minimum number of pictures?</string>
+    <string name="search_button">Search</string>
 
     <!-- MapFragment -->
     <string name="network_unavailable">Network unavailable</string>

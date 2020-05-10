@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -160,12 +159,13 @@ class MainActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_toolbar_add -> {
-                val intent = Intent(this, ItemActivity::class.java)
-                intent.putExtra(TITLE_ITEM_ACTIVITY, getString(R.string.create_real_estate))
-                startActivityForResult(intent, ADD_ITEM_ACTIVITY_REQUEST_CODE)
+                val intentItem = Intent(this, ItemActivity::class.java)
+                intentItem.putExtra(TITLE_ITEM_ACTIVITY, getString(R.string.create_real_estate))
+                startActivityForResult(intentItem, ADD_ITEM_ACTIVITY_REQUEST_CODE)
             }
             R.id.menu_toolbar_search -> {
-                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show()
+                val intentSearch = Intent(this, SearchActivity::class.java)
+                startActivity(intentSearch)
             }
         }
         return super.onOptionsItemSelected(item)
