@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
-    <!-- Main Activity -->
+    <!-- Main Activity and Item Activity -->
     <string name="real_estate_not_saved">Real estate not saved</string>
 
     <!-- Details Fragment -->
@@ -20,7 +20,7 @@
     <string name="apt">Apt</string>
     <string name="address_not_available">Address not available to display the map</string>
 
-    <!-- Item Activity and Search Fragment -->
+    <!-- Item Activity and Search Activity -->
     <string name="create_real_estate">Create a real estate</string>
     <string name="update_real_estate">Update a real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
@@ -69,6 +69,8 @@
     <string name="search_picture">With how many photos minimum?</string>
     <string name="search_picture_number">Minimum number of pictures?</string>
     <string name="search_button">Search</string>
+
+    <string name="search_canceled">Search canceled</string>
 
     <!-- MapFragment -->
     <string name="network_unavailable">Network unavailable</string>

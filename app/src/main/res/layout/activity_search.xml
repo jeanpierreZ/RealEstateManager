@@ -12,18 +12,18 @@
         android:layout_height="wrap_content" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/activity_search_guideline_ten"
+        android:id="@+id/activity_search_guideline_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/activity_search_guideline_ninety"
+        android:id="@+id/activity_search_guideline_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.95" />
 
     <TextView
         android:id="@+id/activity_search_title"
@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:text="@string/search_type"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_type"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_title" />
 
     <EditText
@@ -54,8 +54,8 @@
         android:hint="@string/real_estate_type"
         android:inputType="none"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_price"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_type"
         tools:ignore="Autofill" />
 
@@ -65,8 +65,8 @@
         android:layout_height="wrap_content"
         android:text="@string/search_price"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_price_min"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_type" />
 
     <TextView
@@ -74,9 +74,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/search_between"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_price_min"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price" />
 
     <EditText
@@ -84,9 +85,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:focusable="false"
         android:hint="@string/search_minimum"
         android:inputType="number"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_text_price_and"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_price_between"
@@ -99,6 +100,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/search_and"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_price_max"
         app:layout_constraintStart_toEndOf="@+id/activity_search_edit_price_min"
@@ -109,12 +111,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:focusable="false"
         android:hint="@string/search_maximum"
         android:inputType="number"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_price_and"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price"
         tools:ignore="Autofill" />
@@ -125,8 +127,8 @@
         android:layout_height="wrap_content"
         android:text="@string/search_surface"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_surface_min"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_price_min" />
 
     <TextView
@@ -134,9 +136,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/search_between"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_surface_min"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface" />
 
     <EditText
@@ -144,9 +147,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:focusable="false"
         android:hint="@string/search_minimum"
         android:inputType="number"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_text_surface_and"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_surface_between"
@@ -159,6 +162,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/search_and"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_edit_surface_max"
         app:layout_constraintStart_toEndOf="@+id/activity_search_edit_surface_min"
@@ -169,11 +173,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:focusable="false"
         android:hint="@string/search_maximum"
-        android:inputType="none"
+        android:inputType="number"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_poi"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_surface_and"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface"
         tools:ignore="Autofill" />
@@ -184,8 +188,8 @@
         android:layout_height="wrap_content"
         android:text="@string/search_poi"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_poi"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_surface_min" />
 
     <EditText
@@ -196,8 +200,8 @@
         android:hint="@string/real_estate_points_of_interest"
         android:inputType="none"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_district"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_poi"
         tools:ignore="Autofill" />
 
@@ -207,20 +211,19 @@
         android:layout_height="wrap_content"
         android:text="@string/search_district"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_district"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_poi" />
 
     <EditText
         android:id="@+id/activity_search_edit_district"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:focusable="false"
         android:hint="@string/real_estate_district"
-        android:inputType="none"
+        android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_entry_date"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_district"
         tools:ignore="Autofill" />
 
@@ -230,8 +233,8 @@
         android:layout_height="wrap_content"
         android:text="@string/search_entry_date"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_entry_date"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_district" />
 
     <EditText
@@ -242,8 +245,8 @@
         android:hint="@string/real_estate_entry_date"
         android:inputType="none"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_sale_date"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_entry_date"
         tools:ignore="Autofill,TextFields" />
 
@@ -253,8 +256,8 @@
         android:layout_height="wrap_content"
         android:text="@string/search_sale_date"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_sale_date"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_entry_date" />
 
     <EditText
@@ -263,10 +266,10 @@
         android:layout_height="wrap_content"
         android:focusable="false"
         android:hint="@string/real_estate_sale_date"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_picture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_sale_date"
         tools:ignore="Autofill,TextFields" />
 
@@ -276,20 +279,19 @@
         android:layout_height="wrap_content"
         android:text="@string/search_picture"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_picture"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_sale_date" />
 
     <EditText
         android:id="@+id/activity_search_edit_picture"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:focusable="false"
         android:hint="@string/search_picture_number"
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_button"
-        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_ninety"
-        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_ten"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_picture"
         tools:ignore="Autofill" />
 

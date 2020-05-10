@@ -31,10 +31,7 @@ import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
-import com.openclassrooms.realestatemanager.utils.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.MyUtils
-import com.openclassrooms.realestatemanager.utils.POIDialogFragment
-import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -159,10 +156,6 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
             arrayOf(Status.AVAILABLE.availability, Status.SOLD.availability)
     private val statusTitle = R.string.real_estate_status
 
-    // To compare the dates of entry and sale
-    private var dateOfEntry: Date? = null
-    private var dateOfSale: Date? = null
-
     private val myUtils = MyUtils()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -206,7 +199,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
         // Show the AlertDialog to choose the type of the real estate
         editType?.setOnClickListener {
-            openPropertyDialogFragment(editType!!, typeTitle, types)
+            myUtils.openPropertyDialogFragment(editType!!, typeTitle, types, requireActivity().supportFragmentManager)
         }
 
         editPrice.doOnTextChanged { text, _, _, _ ->
@@ -231,7 +224,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
         // Show the AlertDialog to choose the points of interest of the real estate
         editPOI.setOnClickListener {
-            openPOIDialogFragment()
+            myUtils.openPOIDialogFragment(editPOI, requireActivity().supportFragmentManager)
         }
 
         editStreetNumber.doOnTextChanged { text, _, _, _ ->
@@ -268,17 +261,17 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
         // Show the AlertDialog to choose the status of the real estate
         editStatus.setOnClickListener {
-            openPropertyDialogFragment(editStatus, statusTitle, statutes)
+            myUtils.openPropertyDialogFragment(editStatus, statusTitle, statutes, requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the entry date of the real estate
         editEntryDate.setOnClickListener {
-            openDateDialogFragment(editEntryDate)
+            myUtils.openDateDialogFragment(editEntryDate, requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the sale date of the real estate
         editSaleDate.setOnClickListener {
-            openDateDialogFragment(editSaleDate)
+            myUtils. openDateDialogFragment(editSaleDate, requireActivity().supportFragmentManager)
         }
 
         editAgent.doOnTextChanged { text, _, _, _ ->
@@ -349,24 +342,6 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
     protected fun updatePictureList(updateList: ArrayList<Picture?>) {
         itemPicturesAdapter.setPictures(updateList)
-    }
-
-    //----------------------------------------------------------------------------------
-    // Configure DialogFragments
-
-    private fun openPOIDialogFragment() {
-        val pOIDialogFragment = POIDialogFragment(editPOI)
-        pOIDialogFragment.show(requireActivity().supportFragmentManager, "pOIDialogFragment")
-    }
-
-    private fun openPropertyDialogFragment(editText: EditText, title: Int, list: Array<CharSequence>) {
-        val propertyDialogFragment = PropertyDialogFragment(editText, title, list)
-        propertyDialogFragment.show(requireActivity().supportFragmentManager, "propertyDialogFragment")
-    }
-
-    private fun openDateDialogFragment(editDate: EditText) {
-        val dateDialogFragment = DateDialogFragment(editDate)
-        dateDialogFragment.show(requireActivity().supportFragmentManager, "dateDialogFragment")
     }
 
     //----------------------------------------------------------------------------------
@@ -509,6 +484,10 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     }
 
     fun setDateChosen(editTextChosen: EditText?) {
+        // To compare the dates of entry and sale
+        val dateOfEntry: Date?
+        val dateOfSale: Date?
+
         if (editTextChosen?.text.toString() != "") {
             when (editTextChosen) {
                 editEntryDate -> entryDate = editTextChosen.text.toString()
