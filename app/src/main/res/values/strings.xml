@@ -20,7 +20,7 @@
     <string name="apt">Apt</string>
     <string name="address_not_available">Address not available to display the map</string>
 
-    <!-- Item Activity -->
+    <!-- Item Activity and Search Fragment -->
     <string name="create_real_estate">Create a real estate</string>
     <string name="update_real_estate">Update a real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
@@ -53,6 +53,21 @@
     <string name="delete_picture">Delete this picture?</string>
     <string name="erase">Erase</string>
     <string name="save">Save</string>
+
+    <string name="search_title">Search for real estate</string>
+    <string name="search_type">What type of property are you looking for?</string>
+    <string name="search_price">At what price?</string>
+    <string name="search_between">Between</string>
+    <string name="search_minimum">minimum</string>
+    <string name="search_maximum">maximum</string>
+    <string name="search_and">and</string>
+    <string name="search_surface">From what surface?</string>
+    <string name="search_poi">With which points of interest?</string>
+    <string name="search_district">In which district?</string>
+    <string name="search_entry_date">On the market since?</string>
+    <string name="search_sale_date">Sold from?</string>
+    <string name="search_picture">With how many photos minimum?</string>
+    <string name="search_picture_number">Minimum number of pictures?</string>
 
     <!-- MapFragment -->
     <string name="network_unavailable">Network unavailable</string>

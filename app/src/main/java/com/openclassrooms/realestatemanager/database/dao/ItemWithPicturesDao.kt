@@ -38,12 +38,12 @@ interface ItemWithPicturesDao {
     //----------------------------------------------------------------------------------
     // --- CREATE ---
 
-    // This method is used in ItemWithPicturesAndroidTest
+    // --- This method is used in ItemWithPicturesAndroidTest
     @TestOnly
     @Insert
     fun createItemWithPicturesForTest(item: Item, pictureList: ArrayList<Picture?>)
 
-    // This method is used in ItemWithPicturesContentProvider
+    // These methods are used in ItemWithPicturesContentProvider
     @Insert
     fun createItemWithPicturesForContentProvider(item: Item, pictureList: ArrayList<Picture?>): Long? {
         val id = createItemForTest(item)
@@ -59,6 +59,8 @@ interface ItemWithPicturesDao {
 
     @Insert
     fun createPicturesForContentProvider(pictureList: ArrayList<Picture?>)
+
+    // ---
 
     // "suspend" to the DAO methods to make them asynchronous (Kotlin coroutines functionality)
     @Insert
