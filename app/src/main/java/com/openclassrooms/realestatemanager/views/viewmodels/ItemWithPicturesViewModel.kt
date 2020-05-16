@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.realestatemanager.database.ItemWithPicturesRoomDatabase
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
@@ -30,6 +31,8 @@ class ItemWithPicturesViewModel(application: Application) : AndroidViewModel(app
     }
 
     fun getModifiedItemWithPictures(id: Long?) = repository.getModifiedItemWithPictures(id)
+
+    fun getItemWithPicturesFromSearch(query: SupportSQLiteQuery) = repository.getItemWithPicturesFromSearch(query)
 
     // --- CREATE ---
 

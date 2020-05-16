@@ -4,6 +4,7 @@ import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
@@ -34,6 +35,9 @@ interface ItemWithPicturesDao {
     // This method is used in ItemWithPicturesContentProvider
     @Query("SELECT * FROM item_table JOIN picture_table ON itemId = id WHERE id = :id")
     fun getItemWithPicturesCursor(id: Long): Cursor?
+
+    @RawQuery(observedEntities = [ItemWithPictures::class])
+    fun getItemWithPicturesFromSearch(query: SupportSQLiteQuery): LiveData<List<ItemWithPictures>>
 
     //----------------------------------------------------------------------------------
     // --- CREATE ---

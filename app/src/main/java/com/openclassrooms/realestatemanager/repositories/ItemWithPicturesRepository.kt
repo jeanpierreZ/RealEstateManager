@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.realestatemanager.database.dao.ItemWithPicturesDao
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
@@ -18,6 +19,10 @@ class ItemWithPicturesRepository(private val itemWithPicturesDao: ItemWithPictur
 
     fun getModifiedItemWithPictures(id: Long?): LiveData<ItemWithPictures?> {
         return itemWithPicturesDao.getModifiedItemWithPictures(id)
+    }
+
+    fun getItemWithPicturesFromSearch(query: SupportSQLiteQuery): LiveData<List<ItemWithPictures>> {
+        return itemWithPicturesDao.getItemWithPicturesFromSearch(query)
     }
 
     // --- CREATE ---

@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -7,15 +9,19 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModelProvider
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Type
 import com.openclassrooms.realestatemanager.utils.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
+import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchActivity : AppCompatActivity(),
         PropertyDialogFragment.OnPropertyChosenListener,
@@ -24,6 +30,8 @@ class SearchActivity : AppCompatActivity(),
 
     companion object {
         private val TAG = SearchActivity::class.java.simpleName
+
+        const val SEARCH_LIST_ITEMWITHPICTURES = "SEARCH_LIST_ITEMWITHPICTURES"
     }
 
     private val myUtils = MyUtils()
@@ -55,7 +63,8 @@ class SearchActivity : AppCompatActivity(),
 
         // Show the AlertDialog to choose the type of the real estate
         activity_search_edit_type.setOnClickListener {
-            myUtils.openPropertyDialogFragment(activity_search_edit_type, R.string.real_estate_type, types, supportFragmentManager)
+            myUtils.openPropertyDialogFragment(activity_search_edit_type, R.string.real_estate_type,
+                    types, supportFragmentManager)
         }
 
         activity_search_edit_price_min.doOnTextChanged { text, _, _, _ ->
@@ -172,8 +181,144 @@ class SearchActivity : AppCompatActivity(),
 
     private fun searchItemWithPictures() {
         Log.i(TAG, "type = $type, minPrice = $minPrice, maxPrice = $maxPrice, minSurface = $minSurface," +
-                "maxSurface = $maxSurface, pointsOfInterest = $pointsOfInterest, district = $district," +
+                " maxSurface = $maxSurface, pointsOfInterest = $pointsOfInterest, district = $district," +
                 " entryDate = $entryDate, saleDate = $saleDate, pictureNumber = $pictureNumber")
+
+        // Parameters to query the dao
+        var baseQuery = "SELECT * FROM item_table JOIN picture_table ON itemId = id"
+        val bindArgs = arrayListOf<Any>()
+        // To check if the base query already contains "WHEN"
+        var queryContainsWhere = false
+
+        if (!type.isNullOrEmpty()) {
+            baseQuery = baseQuery.plus(" WHERE type = ?")
+            queryContainsWhere = true
+            bindArgs.add(type!!)
+        }
+
+        if (minPrice != null) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+            baseQuery = baseQuery.plus(" price >= ?")
+            bindArgs.add(minPrice!!)
+        }
+
+        if (maxPrice != null) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+            baseQuery = baseQuery.plus(" price <= ?")
+            bindArgs.add(maxPrice!!)
+        }
+
+        if (minSurface != null) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+            baseQuery = baseQuery.plus(" surface >= ?")
+            bindArgs.add(minSurface!!)
+        }
+
+        if (maxSurface != null) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+            baseQuery = baseQuery.plus(" surface <= ?")
+            bindArgs.add(maxSurface!!)
+        }
+
+        if (pointsOfInterest != null) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+
+            for (poi in pointsOfInterest!!) {
+                baseQuery = baseQuery.plus(" pointsOfInterest LIKE ? AND")
+                val likePoi = "%$poi%"
+                bindArgs.add(likePoi)
+            }
+            baseQuery = baseQuery.removeSuffix(" AND")
+        }
+
+        if (!district.isNullOrEmpty() || !district.isNullOrBlank()) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+            baseQuery = baseQuery.plus(" district = ?")
+            bindArgs.add(district!!)
+        }
+
+        if (!entryDate.isNullOrEmpty()) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+            baseQuery = baseQuery.plus(" entryDate >= ?")
+            bindArgs.add(entryDate!!)
+        }
+
+        if (!saleDate.isNullOrEmpty()) {
+            if (queryContainsWhere) {
+                baseQuery += " AND"
+            } else {
+                baseQuery += " WHERE"
+                queryContainsWhere = true
+            }
+            baseQuery = baseQuery.plus(" saleDate >= ?")
+            bindArgs.add(saleDate!!)
+        }
+
+        if (pictureNumber != null) {
+            baseQuery += if (queryContainsWhere) {
+                " AND"
+            } else {
+                " WHERE"
+            }
+            // todo you have to count the pictures for each item
+//            baseQuery = baseQuery.plus(" pictureNumber >= ?")
+            bindArgs.add(pictureNumber!!)
+        }
+
+        Log.i(TAG, "baseQuery = $baseQuery")
+        val query = SimpleSQLiteQuery(baseQuery, bindArgs.toArray())
+
+        val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        val searchIntent = Intent()
+
+        itemWithPicturesViewModel.getItemWithPicturesFromSearch(query).observe(
+                this, androidx.lifecycle.Observer { itemWithPictures ->
+            Log.i(TAG, "search result = $itemWithPictures")
+
+            if (!itemWithPictures.isNullOrEmpty()) {
+                searchIntent.putParcelableArrayListExtra(SEARCH_LIST_ITEMWITHPICTURES, itemWithPictures as ArrayList)
+                this.setResult(Activity.RESULT_OK, searchIntent)
+                this.finish()
+
+            } else {
+                myUtils.showShortToastMessage(this, R.string.no_results_search)
+            }
+        })
     }
 
 }

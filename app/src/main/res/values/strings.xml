@@ -71,6 +71,7 @@
     <string name="search_button">Search</string>
 
     <string name="search_canceled">Search canceled</string>
+    <string name="no_results_search">No results for the search</string>
 
     <!-- MapFragment -->
     <string name="network_unavailable">Network unavailable</string>

@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -26,6 +27,7 @@ import com.openclassrooms.realestatemanager.fragments.ListFragment
 import com.openclassrooms.realestatemanager.fragments.MapFragment
 import com.openclassrooms.realestatemanager.models.Item
 import com.openclassrooms.realestatemanager.models.ItemAddress
+import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
@@ -39,8 +41,9 @@ class MainActivity : AppCompatActivity(),
     companion object {
         private val TAG = MainActivity::class.java.simpleName
 
-        // Key for item id
-        const val BUNDLE_ITEM_ID: String = "BUNDLE_ITEM_ID"
+        // Keys for bundle
+        const val ITEM_ID_FOR_DETAIL: String = "ITEM_ID_FOR_DETAIL"
+        const val LIST_ITEMWITHPICTURES: String = "LIST_ITEMWITHPICTURES"
 
         // Key for item title
         const val TITLE_ITEM_ACTIVITY: String = "TITLE_ITEM_ACTIVITY"
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity(),
         // Request codes
         const val ADD_ITEM_ACTIVITY_REQUEST_CODE = 1
         const val UPDATE_ITEM_ACTIVITY_REQUEST_CODE = 2
+        const val SEARCH_ACTIVITY_REQUEST_CODE = 3
     }
 
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
@@ -104,9 +108,35 @@ class MainActivity : AppCompatActivity(),
                                     data?.getLongExtra(BaseItemFragment.ID_ITEM, 0)),
                                     pictureData(data))
                 }
+
+                SEARCH_ACTIVITY_REQUEST_CODE -> {
+                    val intentFromSearch = data?.getParcelableArrayListExtra<ItemWithPictures>(SearchActivity.SEARCH_LIST_ITEMWITHPICTURES)
+                    Log.d(TAG, "intentFromSearch = ${intentFromSearch.toString()}")
+
+                    // Add a bundle to listFragment with list of ItemWithPictures from SearchActivity
+                    val bundleListFragment = Bundle()
+                    bundleListFragment.putParcelableArrayList(LIST_ITEMWITHPICTURES, intentFromSearch)
+                    listFragment.arguments = bundleListFragment
+
+                    // To refresh listFragment because it's display when onCreate is called
+                    // todo = name fun to refresh listFragment ?
+                    supportFragmentManager.beginTransaction().detach(listFragment).commit()
+                    supportFragmentManager.beginTransaction().attach(listFragment).show(listFragment).commit()
+                }
             }
         } else {
-            myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
+            // If resultCode is canceled show the appropriate message
+            when (requestCode) {
+                ADD_ITEM_ACTIVITY_REQUEST_CODE -> {
+                    myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
+                }
+                UPDATE_ITEM_ACTIVITY_REQUEST_CODE -> {
+                    myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
+                }
+                SEARCH_ACTIVITY_REQUEST_CODE -> {
+                    myUtils.showShortToastMessage(this, R.string.search_canceled)
+                }
+            }
         }
     }
 
@@ -165,7 +195,7 @@ class MainActivity : AppCompatActivity(),
             }
             R.id.menu_toolbar_search -> {
                 val intentSearch = Intent(this, SearchActivity::class.java)
-                startActivity(intentSearch)
+                startActivityForResult(intentSearch, SEARCH_ACTIVITY_REQUEST_CODE)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -218,6 +248,7 @@ class MainActivity : AppCompatActivity(),
                     displayDetailsFragmentAtLaunchInTabletMode()
                 }
                 getRealEstates()
+                // todo refresh the listFragment because of search UI
                 displayListFragment()
             }
 
@@ -322,7 +353,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun putIdInBundle(itemWithPicturesId: Long?) {
         val bundleItem = Bundle()
-        itemWithPicturesId?.let { bundleItem.putLong(BUNDLE_ITEM_ID, it) }
+        itemWithPicturesId?.let { bundleItem.putLong(ITEM_ID_FOR_DETAIL, it) }
         detailsFragment.arguments = bundleItem
     }
 

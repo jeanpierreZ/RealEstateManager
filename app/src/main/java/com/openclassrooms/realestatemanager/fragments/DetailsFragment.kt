@@ -83,7 +83,7 @@ class DetailsFragment : Fragment(),
         editIntent = Intent(activity, ItemActivity::class.java)
 
         // Get the identifier of the itemWithPictures from the bundle
-        val itemWithPicturesId: Long? = arguments?.getLong(MainActivity.BUNDLE_ITEM_ID, -1)
+        val itemWithPicturesId: Long? = arguments?.getLong(MainActivity.ITEM_ID_FOR_DETAIL, -1)
 
         // Use the ViewModelProvider to associate the ViewModel with DetailsFragment
         val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)

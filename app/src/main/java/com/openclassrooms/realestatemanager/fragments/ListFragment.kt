@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.ItemAdapter
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
@@ -48,14 +49,21 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
         configureRecyclerView()
 
-        // Use the ViewModelProvider to associate the ViewModel with ListFragment
-        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        val list: ArrayList<ItemWithPictures>
+        if (arguments != null) {
+            list = arguments?.getParcelableArrayList<ItemWithPictures>(MainActivity.LIST_ITEMWITHPICTURES) as ArrayList<ItemWithPictures>
+            Log.w(TAG, "list = $list")
+            updateUI(list)
+        } else {
+            // Use the ViewModelProvider to associate the ViewModel with ListFragment
+            itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
 
-        // Get the itemWithPicturesList
-        itemWithPicturesViewModel.getItemWithPictures.observe(viewLifecycleOwner, Observer { itemWithPicturesList ->
-            Log.d(TAG, "itemWithPicturesList = $itemWithPicturesList")
-            updateUI(itemWithPicturesList)
-        })
+            // Get the itemWithPicturesList
+            itemWithPicturesViewModel.getItemWithPictures.observe(viewLifecycleOwner, Observer { itemWithPicturesList ->
+                Log.d(TAG, "itemWithPicturesList = $itemWithPicturesList")
+                updateUI(itemWithPicturesList)
+            })
+        }
 
         return fragmentView
     }
