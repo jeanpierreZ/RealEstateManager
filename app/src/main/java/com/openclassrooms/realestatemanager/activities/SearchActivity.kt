@@ -21,7 +21,6 @@ import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesVie
 import kotlinx.android.synthetic.main.activity_search.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SearchActivity : AppCompatActivity(),
         PropertyDialogFragment.OnPropertyChosenListener,
@@ -102,12 +101,12 @@ class SearchActivity : AppCompatActivity(),
             myUtils.openDateDialogFragment(activity_search_edit_sale_date, supportFragmentManager)
         }
 
-        activity_search_button.setOnClickListener {
-            searchItemWithPictures()
-        }
-
         activity_search_edit_picture.doOnTextChanged { text, _, _, _ ->
             pictureNumber = text.toString().toIntOrNull()
+        }
+
+        activity_search_button.setOnClickListener {
+            searchItemWithPictures()
         }
 
     }
@@ -185,7 +184,7 @@ class SearchActivity : AppCompatActivity(),
                 " entryDate = $entryDate, saleDate = $saleDate, pictureNumber = $pictureNumber")
 
         // Parameters to query the dao
-        var baseQuery = "SELECT * FROM item_table JOIN picture_table ON itemId = id"
+        var baseQuery = "SELECT * , COUNT(pictureId) AS pictureNumber FROM item_table JOIN picture_table ON itemId = id"
         val bindArgs = arrayListOf<Any>()
         // To check if the base query already contains "WHEN"
         var queryContainsWhere = false
@@ -279,28 +278,28 @@ class SearchActivity : AppCompatActivity(),
         }
 
         if (!saleDate.isNullOrEmpty()) {
-            if (queryContainsWhere) {
-                baseQuery += " AND"
+            baseQuery += if (queryContainsWhere) {
+                " AND"
             } else {
-                baseQuery += " WHERE"
-                queryContainsWhere = true
+                " WHERE"
             }
             baseQuery = baseQuery.plus(" saleDate >= ?")
             bindArgs.add(saleDate!!)
         }
 
         if (pictureNumber != null) {
-            baseQuery += if (queryContainsWhere) {
-                " AND"
-            } else {
-                " WHERE"
-            }
-            // todo you have to count the pictures for each item
-//            baseQuery = baseQuery.plus(" pictureNumber >= ?")
+            baseQuery = baseQuery.plus(" GROUP BY id HAVING pictureNumber >= ?")
+            bindArgs.add(pictureNumber!!)
+        } else {
+            pictureNumber = 0
+            baseQuery = baseQuery.plus(" GROUP BY id HAVING pictureNumber >= ?")
             bindArgs.add(pictureNumber!!)
         }
 
-        Log.i(TAG, "baseQuery = $baseQuery")
+        // Sort the query according to the last properties added
+        baseQuery = baseQuery.plus(" ORDER BY id DESC")
+        Log.d(TAG, "baseQuery = $baseQuery")
+
         val query = SimpleSQLiteQuery(baseQuery, bindArgs.toArray())
 
         val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
@@ -308,7 +307,7 @@ class SearchActivity : AppCompatActivity(),
 
         itemWithPicturesViewModel.getItemWithPicturesFromSearch(query).observe(
                 this, androidx.lifecycle.Observer { itemWithPictures ->
-            Log.i(TAG, "search result = $itemWithPictures")
+            Log.d(TAG, "search result = $itemWithPictures")
 
             if (!itemWithPictures.isNullOrEmpty()) {
                 searchIntent.putParcelableArrayListExtra(SEARCH_LIST_ITEMWITHPICTURES, itemWithPictures as ArrayList)

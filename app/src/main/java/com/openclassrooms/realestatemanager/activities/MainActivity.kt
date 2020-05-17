@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -111,13 +110,13 @@ class MainActivity : AppCompatActivity(),
 
                 SEARCH_ACTIVITY_REQUEST_CODE -> {
                     val intentFromSearch = data?.getParcelableArrayListExtra<ItemWithPictures>(SearchActivity.SEARCH_LIST_ITEMWITHPICTURES)
-                    Log.d(TAG, "intentFromSearch = ${intentFromSearch.toString()}")
 
                     // Add a bundle to listFragment with list of ItemWithPictures from SearchActivity
                     val bundleListFragment = Bundle()
                     bundleListFragment.putParcelableArrayList(LIST_ITEMWITHPICTURES, intentFromSearch)
                     listFragment.arguments = bundleListFragment
 
+                    // todo add listFragment because its hidden by map and details fragments
                     // To refresh listFragment because it's display when onCreate is called
                     // todo = name fun to refresh listFragment ?
                     supportFragmentManager.beginTransaction().detach(listFragment).commit()
