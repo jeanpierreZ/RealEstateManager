@@ -111,8 +111,17 @@ class MainActivity : AppCompatActivity(),
                     val bundleListFragment = Bundle()
                     bundleListFragment.putParcelableArrayList(LIST_FROM_SEARCH, intentFromSearch)
                     listFragment.arguments = bundleListFragment
+
+                    // Manage UI for tablet mode
+                    if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
+                        if (mapFragment.isVisible) {
+                            hideMapFragment()
+                        }
+                        if (detailsFragment.isVisible) {
+                            hideDetailsFragment()
+                        }
+                    }
                     displayOrRefreshListFragment()
-                    // todo manage UI for tablet mode
                 }
             }
         } else {
@@ -321,6 +330,10 @@ class MainActivity : AppCompatActivity(),
 
     private fun hideListAndDetailsFragment() {
         supportFragmentManager.beginTransaction().hide(listFragment).commit()
+        supportFragmentManager.beginTransaction().hide(detailsFragment).commit()
+    }
+
+    private fun hideDetailsFragment() {
         supportFragmentManager.beginTransaction().hide(detailsFragment).commit()
     }
 
