@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(),
 
         // Keys for bundle
         const val ITEM_ID_FOR_DETAIL: String = "ITEM_ID_FOR_DETAIL"
-        const val LIST_ITEMWITHPICTURES: String = "LIST_ITEMWITHPICTURES"
+        const val LIST_FROM_SEARCH: String = "LIST_FROM_SEARCH"
 
         // Key for item title
         const val TITLE_ITEM_ACTIVITY: String = "TITLE_ITEM_ACTIVITY"
@@ -73,16 +74,11 @@ class MainActivity : AppCompatActivity(),
         configureDrawerLayout()
         configureNavigationView()
 
-        getRealEstates()
-        displayListFragment()
-        displayDetailsFragmentAtLaunchInTabletMode()
-    }
-
-    //----------------------------------------------------------------------------------
-
-    private fun getRealEstates() {
         // Use the ViewModelProvider to associate the ViewModel with MainActivity
         itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+
+        displayListFragment()
+        displayDetailsFragmentAtLaunchInTabletMode()
     }
 
     //----------------------------------------------------------------------------------
@@ -109,18 +105,14 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 SEARCH_ACTIVITY_REQUEST_CODE -> {
-                    val intentFromSearch = data?.getParcelableArrayListExtra<ItemWithPictures>(SearchActivity.SEARCH_LIST_ITEMWITHPICTURES)
+                    val intentFromSearch = data?.getParcelableArrayListExtra<ItemWithPictures>(SearchActivity.SEARCH_LIST)
 
-                    // Add a bundle to listFragment with list of ItemWithPictures from SearchActivity
+                    // Add a bundle to listFragment with the list from SearchActivity
                     val bundleListFragment = Bundle()
-                    bundleListFragment.putParcelableArrayList(LIST_ITEMWITHPICTURES, intentFromSearch)
+                    bundleListFragment.putParcelableArrayList(LIST_FROM_SEARCH, intentFromSearch)
                     listFragment.arguments = bundleListFragment
-
-                    // todo add listFragment because its hidden by map and details fragments
-                    // To refresh listFragment because it's display when onCreate is called
-                    // todo = name fun to refresh listFragment ?
-                    supportFragmentManager.beginTransaction().detach(listFragment).commit()
-                    supportFragmentManager.beginTransaction().attach(listFragment).show(listFragment).commit()
+                    displayOrRefreshListFragment()
+                    // todo manage UI for tablet mode
                 }
             }
         } else {
@@ -246,9 +238,7 @@ class MainActivity : AppCompatActivity(),
                     }
                     displayDetailsFragmentAtLaunchInTabletMode()
                 }
-                getRealEstates()
-                // todo refresh the listFragment because of search UI
-                displayListFragment()
+                displayOrRefreshListFragment()
             }
 
             R.id.menu_nav_drawer_map_fragment -> {
@@ -269,7 +259,6 @@ class MainActivity : AppCompatActivity(),
     // Private methods to display fragments
 
     private fun displayListFragment() {
-        // In Tablet mode, don't addToBackStack
         if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_fragment_container_view, listFragment)
@@ -345,6 +334,21 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction().attach(mapFragment).show(mapFragment)
                 .addToBackStack(mapFragment.toString())
                 .commit()
+    }
+
+    private fun refreshListFragment() {
+        // show() is used because listFragment is hide
+        supportFragmentManager.beginTransaction().detach(listFragment).commit()
+        supportFragmentManager.beginTransaction().attach(listFragment).show(listFragment).commit()
+    }
+
+    private fun displayOrRefreshListFragment() {
+        val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.activity_main_fragment_container_view)
+        if (currentFragment is ListFragment) {
+            refreshListFragment()
+        } else {
+            displayListFragment()
+        }
     }
 
     //----------------------------------------------------------------------------------

@@ -30,7 +30,7 @@ class SearchActivity : AppCompatActivity(),
     companion object {
         private val TAG = SearchActivity::class.java.simpleName
 
-        const val SEARCH_LIST_ITEMWITHPICTURES = "SEARCH_LIST_ITEMWITHPICTURES"
+        const val SEARCH_LIST = "SEARCH_LIST"
     }
 
     private val myUtils = MyUtils()
@@ -310,7 +310,7 @@ class SearchActivity : AppCompatActivity(),
             Log.d(TAG, "search result = $itemWithPictures")
 
             if (!itemWithPictures.isNullOrEmpty()) {
-                searchIntent.putParcelableArrayListExtra(SEARCH_LIST_ITEMWITHPICTURES, itemWithPictures as ArrayList)
+                searchIntent.putParcelableArrayListExtra(SEARCH_LIST, itemWithPictures as ArrayList)
                 this.setResult(Activity.RESULT_OK, searchIntent)
                 this.finish()
 

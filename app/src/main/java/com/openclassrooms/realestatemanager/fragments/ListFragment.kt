@@ -49,11 +49,14 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
         configureRecyclerView()
 
-        val list: ArrayList<ItemWithPictures>
-        if (arguments != null) {
-            list = arguments?.getParcelableArrayList<ItemWithPictures>(MainActivity.LIST_ITEMWITHPICTURES) as ArrayList<ItemWithPictures>
-            Log.w(TAG, "list = $list")
-            updateUI(list)
+        // UpdateUI either with the search list or with the list of all properties
+        val listFromSearch: ArrayList<ItemWithPictures>
+        if (arguments != null && !requireArguments().isEmpty) {
+            listFromSearch = arguments?.getParcelableArrayList<ItemWithPictures>(MainActivity.LIST_FROM_SEARCH)
+                    as ArrayList<ItemWithPictures>
+            Log.w(TAG, "listFromSearch = $listFromSearch")
+            updateUI(listFromSearch)
+            arguments?.remove(MainActivity.LIST_FROM_SEARCH)
         } else {
             // Use the ViewModelProvider to associate the ViewModel with ListFragment
             itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
