@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.utils
+package com.openclassrooms.realestatemanager.utils.dialogfragments
 
 import android.app.Dialog
 import android.content.Context
@@ -9,7 +9,8 @@ import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.PointsOfInterest
 
-class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
+class POIDialogFragment(private var editPOI: EditText,
+                        private val previouslySelectedItems: ArrayList<String>?) : DialogFragment() {
 
     // Declare callback
     private var callbackPOI: OnPOIChosenListener? = null
@@ -17,6 +18,7 @@ class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
+            // Points of interest chosen to attach to the callback
             val pointsOfInterestChosen: ArrayList<String>? = arrayListOf()
 
             // Create a charSequence array of the PointsOfInterest Enum
@@ -30,12 +32,38 @@ class POIDialogFragment(private var editPOI: EditText) : DialogFragment() {
             // Where we track the selected items in MultiChoiceItems
             val selectedItems = ArrayList<Int>()
 
+            // List of preselected items to pass for dialog UI
+            val preSelectedItems = booleanArrayOf(false, false, false, false, false)
+
+            // Check true if an item was previously selected for UI and add it to the selected items
+            if (!previouslySelectedItems.isNullOrEmpty()) {
+                for (item in previouslySelectedItems) {
+                    when (item) {
+                        PointsOfInterest.PARK.type -> {
+                            preSelectedItems[0] = true; selectedItems.add(0)
+                        }
+                        PointsOfInterest.RESTAURANT.type -> {
+                            preSelectedItems[1] = true; selectedItems.add(1)
+                        }
+                        PointsOfInterest.SCHOOL.type -> {
+                            preSelectedItems[2] = true; selectedItems.add(2)
+                        }
+                        PointsOfInterest.SHOP.type -> {
+                            preSelectedItems[3] = true; selectedItems.add(3)
+                        }
+                        PointsOfInterest.TRAIN_STATION.type -> {
+                            preSelectedItems[4] = true; selectedItems.add(4)
+                        }
+                    }
+                }
+            }
+
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
             builder.setTitle(R.string.real_estate_points_of_interest)
                     // Specify the list array, the items to be selected by default (null for none),
                     // and the listener through which to receive callbacks when items are selected
-                    .setMultiChoiceItems(pointsOfInterest, null)
+                    .setMultiChoiceItems(pointsOfInterest, preSelectedItems)
                     { _, which, isChecked ->
                         if (isChecked) {
                             // If the user checked the item, add it to the selected items

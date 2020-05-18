@@ -11,10 +11,10 @@ import com.openclassrooms.realestatemanager.fragments.AddItemFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.UpdateItemFragment
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
-import com.openclassrooms.realestatemanager.utils.DateDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.MyUtils
-import com.openclassrooms.realestatemanager.utils.POIDialogFragment
-import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
 import java.util.*
 
 

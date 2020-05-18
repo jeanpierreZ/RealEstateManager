@@ -224,7 +224,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
         // Show the AlertDialog to choose the points of interest of the real estate
         editPOI.setOnClickListener {
-            myUtils.openPOIDialogFragment(editPOI, requireActivity().supportFragmentManager)
+            myUtils.openPOIDialogFragment(editPOI, pointsOfInterest, requireActivity().supportFragmentManager)
         }
 
         editStreetNumber.doOnTextChanged { text, _, _, _ ->

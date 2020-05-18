@@ -13,10 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Type
-import com.openclassrooms.realestatemanager.utils.DateDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.MyUtils
-import com.openclassrooms.realestatemanager.utils.POIDialogFragment
-import com.openclassrooms.realestatemanager.utils.PropertyDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 import java.text.SimpleDateFormat
@@ -84,7 +84,7 @@ class SearchActivity : AppCompatActivity(),
 
         // Show the AlertDialog to choose the points of interest of the real estate
         activity_search_edit_poi.setOnClickListener {
-            myUtils.openPOIDialogFragment(activity_search_edit_poi, supportFragmentManager)
+            myUtils.openPOIDialogFragment(activity_search_edit_poi, pointsOfInterest, supportFragmentManager)
         }
 
         activity_search_edit_district.doOnTextChanged { text, _, _, _ ->

@@ -5,6 +5,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
+import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
+import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
 
 class MyUtils {
 
@@ -23,8 +26,8 @@ class MyUtils {
     //----------------------------------------------------------------------------------
     // Configure DialogFragments
 
-    fun openPOIDialogFragment(editText: EditText, fragmentManager: FragmentManager) {
-        val pOIDialogFragment = POIDialogFragment(editText)
+    fun openPOIDialogFragment(editText: EditText, previouslySelectedItems: ArrayList<String>?, fragmentManager: FragmentManager) {
+        val pOIDialogFragment = POIDialogFragment(editText, previouslySelectedItems)
         pOIDialogFragment.show(fragmentManager, "pOIDialogFragment")
     }
 

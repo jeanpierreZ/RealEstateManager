@@ -68,8 +68,7 @@ class UpdateItemFragment : BaseItemFragment() {
         myUtils.displayIntegerProperties(bathroomsNumber, editBathrooms)
         myUtils.displayIntegerProperties(bedroomsNumber, editBedrooms)
 
-        val pointsOfInterestList = pointsOfInterest
-        val displayPOI = pointsOfInterestList?.joinToString { it -> it }
+        val displayPOI = pointsOfInterest?.joinToString { it -> it }
         editPOI.setText(displayPOI)
 
         editStreetNumber.setText(streetNumber)
