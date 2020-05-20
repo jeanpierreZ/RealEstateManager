@@ -54,7 +54,6 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         if (arguments != null && !requireArguments().isEmpty) {
             listFromSearch = arguments?.getParcelableArrayList<ItemWithPictures>(MainActivity.LIST_FROM_SEARCH)
                     as ArrayList<ItemWithPictures>
-            Log.w(TAG, "listFromSearch = $listFromSearch")
             updateUI(listFromSearch)
             arguments?.remove(MainActivity.LIST_FROM_SEARCH)
         } else {

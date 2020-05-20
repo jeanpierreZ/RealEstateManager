@@ -33,9 +33,8 @@ class PropertyDialogFragment(private var editText: EditText,
                     // Set the negative action button
                     .setNegativeButton(getString(R.string.erase)) { _, _ ->
                         // Save a null value for the property of the item
-                        callbackProperty?.onPropertyChosen(null)
-                        // Set hint text by default
-                        editText.setText(getString(title))
+                        editText.text = null
+                        callbackProperty?.onPropertyChosen(editText)
                     }
             // Create the AlertDialog object and return it
             builder.create()

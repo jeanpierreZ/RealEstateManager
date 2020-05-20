@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_type"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/activity_search_text_price"
@@ -92,7 +92,7 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_text_price_and"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_price_between"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/activity_search_text_price_and"
@@ -114,12 +114,11 @@
         android:hint="@string/search_maximum"
         android:inputType="number"
         app:layout_constraintHorizontal_weight="2"
-        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_text_surface"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_price_and"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_price"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/activity_search_text_surface"
@@ -154,7 +153,7 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_text_surface_and"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_surface_between"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/activity_search_text_surface_and"
@@ -180,7 +179,7 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_text_surface_and"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_surface"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/activity_search_text_poi"
@@ -203,7 +202,7 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_poi"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/activity_search_text_district"
@@ -225,7 +224,7 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_district"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/activity_search_text_entry_date"
@@ -248,7 +247,8 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_entry_date"
-        tools:ignore="Autofill,TextFields" />
+        android:importantForAutofill="no"
+        tools:ignore="TextFields" />
 
     <TextView
         android:id="@+id/activity_search_text_sale_date"
@@ -271,7 +271,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_sale_date"
-        tools:ignore="Autofill,TextFields" />
+        android:importantForAutofill="no"
+        tools:ignore="TextFields" />
 
     <TextView
         android:id="@+id/activity_search_text_picture"
@@ -293,7 +294,7 @@
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_picture"
-        tools:ignore="Autofill" />
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/activity_search_button"

@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Type
-import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.MyUtils
+import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
@@ -239,7 +239,7 @@ class SearchActivity : AppCompatActivity(),
             bindArgs.add(maxSurface!!)
         }
 
-        if (pointsOfInterest != null) {
+        if (!pointsOfInterest.isNullOrEmpty()) {
             if (queryContainsWhere) {
                 baseQuery += " AND"
             } else {
@@ -287,14 +287,9 @@ class SearchActivity : AppCompatActivity(),
             bindArgs.add(saleDate!!)
         }
 
-        if (pictureNumber != null) {
-            baseQuery = baseQuery.plus(" GROUP BY id HAVING pictureNumber >= ?")
-            bindArgs.add(pictureNumber!!)
-        } else {
-            pictureNumber = 0
-            baseQuery = baseQuery.plus(" GROUP BY id HAVING pictureNumber >= ?")
-            bindArgs.add(pictureNumber!!)
-        }
+        pictureNumber = pictureNumber ?: 0
+        baseQuery = baseQuery.plus(" GROUP BY id HAVING pictureNumber >= ?")
+        bindArgs.add(pictureNumber!!)
 
         // Sort the query according to the last properties added
         baseQuery = baseQuery.plus(" ORDER BY id DESC")

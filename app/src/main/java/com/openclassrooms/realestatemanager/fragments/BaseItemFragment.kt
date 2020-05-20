@@ -121,7 +121,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
     // Widget
     protected lateinit var titleText: TextView
-    protected var editType: EditText? = null
+    protected lateinit var editType: EditText
     protected lateinit var editPrice: EditText
     protected lateinit var editSurface: EditText
     protected lateinit var editRooms: EditText
@@ -198,8 +198,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         // Get data
 
         // Show the AlertDialog to choose the type of the real estate
-        editType?.setOnClickListener {
-            myUtils.openPropertyDialogFragment(editType!!, typeTitle, types, requireActivity().supportFragmentManager)
+        editType.setOnClickListener {
+            myUtils.openPropertyDialogFragment(editType, typeTitle, types, requireActivity().supportFragmentManager)
         }
 
         editPrice.doOnTextChanged { text, _, _, _ ->
