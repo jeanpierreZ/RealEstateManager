@@ -8,19 +8,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.application.MyApplication
+import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.fragments.BaseItemFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
@@ -31,6 +29,7 @@ import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
+import kotlinx.android.synthetic.main.toolbar.*
 
 
 class MainActivity : AppCompatActivity(),
@@ -62,13 +61,15 @@ class MainActivity : AppCompatActivity(),
 
     private val myUtils = MyUtils()
 
-    // For design
-    private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
-    private val drawerLayout by lazy { findViewById<DrawerLayout>(R.id.drawer_layout) }
+    // View binding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         configureToolbar()
         configureDrawerLayout()
@@ -113,7 +114,7 @@ class MainActivity : AppCompatActivity(),
                     listFragment.arguments = bundleListFragment
 
                     // Manage UI for tablet mode
-                    if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
+                    if (binding.activityMainDetailsFragmentContainerView != null) {
                         if (mapFragment.isVisible) {
                             hideMapFragment()
                         }
@@ -210,17 +211,16 @@ class MainActivity : AppCompatActivity(),
 
     private fun configureDrawerLayout() {
         // "Hamburger icon"
-        val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
+        val toggle = ActionBarDrawerToggle(this, binding.drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, android.R.color.white)
-        drawerLayout?.addDrawerListener(toggle)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
     }
 
     private fun configureNavigationView() {
-        val navigationView: NavigationView = findViewById(R.id.activity_main_nav_view)
         // For Menu Item
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.activityMainNavView.setNavigationItemSelectedListener(this)
     }
 
     //----------------------------------------------------------------------------------
@@ -228,8 +228,8 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         // Handle back click to close menu
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity(),
 
             R.id.menu_nav_drawer_main_activity -> {
                 // Check if we are in Tablet mode and adapt UI
-                if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
+                if (binding.activityMainMapFragmentContainerView != null) {
                     if (mapFragment.isVisible) {
                         hideMapFragment()
                     }
@@ -260,7 +260,7 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         }
-        this.drawerLayout?.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -268,7 +268,7 @@ class MainActivity : AppCompatActivity(),
     // Private methods to display fragments
 
     private fun displayListFragment() {
-        if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
+        if (binding.activityMainDetailsFragmentContainerView != null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_fragment_container_view, listFragment)
                     .attach(listFragment)
@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun displayDetailsFragmentAtLaunchInTabletMode() {
         // At launch, only add DetailsFragment in Tablet mode, but hide the fragment because no real estate is selected
-        if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
+        if (binding.activityMainDetailsFragmentContainerView != null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_details_fragment_container_view, detailsFragment)
                     .hide(detailsFragment)
@@ -295,7 +295,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun displayDetailsFragment() {
         // Refresh detailsFragment in Tablet mode
-        if (findViewById<View>(R.id.activity_main_details_fragment_container_view) != null) {
+        if (binding.activityMainDetailsFragmentContainerView != null) {
             supportFragmentManager.beginTransaction().detach(detailsFragment).commit()
             // show() is used because detailsFragment is hide at launch
             supportFragmentManager.beginTransaction().attach(detailsFragment).show(detailsFragment)
@@ -312,7 +312,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun displayMapFragment() {
         //  In Tablet mode, display mapFragment at the 1st call
-        if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
+        if (binding.activityMainMapFragmentContainerView != null) {
             // Hide listFragment and detailsFragment
             hideListAndDetailsFragment()
             supportFragmentManager.beginTransaction()
@@ -403,7 +403,7 @@ class MainActivity : AppCompatActivity(),
     // Implement listener from MapFragment to display DetailsFragment when click on a marker
     override fun onMarkerClicked(itemWithPicturesId: Long?) {
         // Check if we are in Tablet mode and adapt UI
-        if (findViewById<View>(R.id.activity_main_map_fragment_container_view) != null) {
+        if (binding.activityMainMapFragmentContainerView != null) {
             hideMapFragment()
             displayListFragment()
         }

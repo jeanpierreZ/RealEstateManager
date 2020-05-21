@@ -11,11 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.ItemAdapter
+import com.openclassrooms.realestatemanager.databinding.FragmentListBinding
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
 
@@ -29,7 +28,6 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         private val TAG = ListFragment::class.java.simpleName
     }
 
-    private var recyclerView: RecyclerView? = null
     private var itemAdapter: ItemAdapter? = null
 
     private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
@@ -39,13 +37,18 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     // Declare callback
     private var callbackItem: OnItemClickedListener? = null
 
+    // View binding
+    private var _binding: FragmentListBinding? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        val fragmentView: View = inflater.inflate(R.layout.fragment_list, container, false)
 
-        // Get RecyclerView from layout and serialise it
-        recyclerView = fragmentView.findViewById(R.id.fragment_list_recycler_view)
+        // Inflate the layout for this fragment
+        _binding = FragmentListBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         configureRecyclerView()
 
@@ -67,7 +70,12 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
             })
         }
 
-        return fragmentView
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     //----------------------------------------------------------------------------------
@@ -77,9 +85,9 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         // Create the adapter by passing the list of items
         itemAdapter = ItemAdapter(itemWithPicturesList, Glide.with(this), this)
         // Attach the adapter to the recyclerView to populate items
-        recyclerView?.adapter = itemAdapter
+        binding.fragmentListRecyclerView.adapter = itemAdapter
         // Set layout manager to position the items
-        recyclerView?.layoutManager = LinearLayoutManager(activity)
+        binding.fragmentListRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun updateUI(updateList: List<ItemWithPictures?>) {
