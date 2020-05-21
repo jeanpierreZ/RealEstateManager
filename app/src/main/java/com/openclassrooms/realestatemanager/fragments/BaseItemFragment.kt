@@ -13,9 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -23,11 +21,11 @@ import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
+import com.openclassrooms.realestatemanager.databinding.FragmentBaseItemBinding
 import com.openclassrooms.realestatemanager.models.Picture
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
@@ -119,30 +117,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     // File use when user take a photo with the camera
     private var mPhotoFile: File? = null
 
-    // Widget
-    protected lateinit var titleText: TextView
-    protected lateinit var editType: EditText
-    protected lateinit var editPrice: EditText
-    protected lateinit var editSurface: EditText
-    protected lateinit var editRooms: EditText
-    protected lateinit var editBathrooms: EditText
-    protected lateinit var editBedrooms: EditText
-    protected lateinit var editPOI: EditText
-    protected lateinit var editStreetNumber: EditText
-    protected lateinit var editStreet: EditText
-    protected lateinit var editApartmentNumber: EditText
-    protected lateinit var editDistrict: EditText
-    protected lateinit var editCity: EditText
-    protected lateinit var editPostalCode: EditText
-    protected lateinit var editCountry: EditText
-    protected lateinit var editDescription: EditText
-    protected lateinit var editStatus: EditText
-    protected lateinit var editEntryDate: EditText
-    protected lateinit var editSaleDate: EditText
-    protected lateinit var editAgent: EditText
-    private lateinit var editPictureDescription: EditText
-
-    private lateinit var recyclerView: RecyclerView
+    // Adapter for recycler view
     private lateinit var itemPicturesAdapter: ItemPicturesAdapter
 
     // Create a charSequence array of the Type Enum and a title
@@ -158,37 +133,18 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
     private val myUtils = MyUtils()
 
+    // View binding
+    private var _binding: FragmentBaseItemBinding? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    protected val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val fragmentView: View = inflater.inflate(R.layout.fragment_base_item, container, false)
-
-        titleText = fragmentView.findViewById(R.id.fragment_base_item_title)
-        editType = fragmentView.findViewById(R.id.fragment_base_item_edit_type)
-        editPrice = fragmentView.findViewById(R.id.fragment_base_item_edit_price)
-        editSurface = fragmentView.findViewById(R.id.fragment_base_item_edit_surface)
-        editRooms = fragmentView.findViewById(R.id.fragment_base_item_edit_rooms)
-        editBathrooms = fragmentView.findViewById(R.id.fragment_base_item_edit_bathrooms)
-        editBedrooms = fragmentView.findViewById(R.id.fragment_base_item_edit_bedrooms)
-        editPOI = fragmentView.findViewById(R.id.fragment_base_item_edit_poi)
-        editStreetNumber = fragmentView.findViewById(R.id.fragment_base_item_edit_street_number)
-        editStreet = fragmentView.findViewById(R.id.fragment_base_item_edit_street)
-        editApartmentNumber = fragmentView.findViewById(R.id.fragment_base_item_edit_apartment_number)
-        editDistrict = fragmentView.findViewById(R.id.fragment_base_item_edit_district)
-        editCity = fragmentView.findViewById(R.id.fragment_base_item_edit_city)
-        editPostalCode = fragmentView.findViewById(R.id.fragment_base_item_edit_postal_code)
-        editCountry = fragmentView.findViewById(R.id.fragment_base_item_edit_country)
-        editDescription = fragmentView.findViewById(R.id.fragment_base_item_edit_description)
-        editStatus = fragmentView.findViewById(R.id.fragment_base_item_edit_status)
-        editEntryDate = fragmentView.findViewById(R.id.fragment_base_item_edit_entry_date)
-        editSaleDate = fragmentView.findViewById(R.id.fragment_base_item_edit_sale_date)
-        editAgent = fragmentView.findViewById(R.id.fragment_base_item_edit_agent)
-        editPictureDescription = fragmentView.findViewById(R.id.fragment_base_item_edit_picture_description)
-        val addPictureButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_add_picture)
-        val takePictureButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_take_picture)
-        val saveButton = fragmentView.findViewById<Button>(R.id.fragment_base_item_button_save)
-        recyclerView = fragmentView.findViewById(R.id.fragment_base_item_recycler_view)
+        _binding = FragmentBaseItemBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         configureRecyclerView()
 
@@ -198,103 +154,108 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         // Get data
 
         // Show the AlertDialog to choose the type of the real estate
-        editType.setOnClickListener {
-            myUtils.openPropertyDialogFragment(editType, typeTitle, types, requireActivity().supportFragmentManager)
+        binding.fragmentBaseItemEditType.setOnClickListener {
+            myUtils.openPropertyDialogFragment(binding.fragmentBaseItemEditType, typeTitle, types,
+                    requireActivity().supportFragmentManager)
         }
 
-        editPrice.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditPrice.doOnTextChanged { text, _, _, _ ->
             price = text.toString().toIntOrNull()
         }
 
-        editSurface.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditSurface.doOnTextChanged { text, _, _, _ ->
             surface = text.toString().toIntOrNull()
         }
 
-        editRooms.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditRooms.doOnTextChanged { text, _, _, _ ->
             roomsNumber = text.toString().toIntOrNull()
         }
 
-        editBathrooms.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditBathrooms.doOnTextChanged { text, _, _, _ ->
             bathroomsNumber = text.toString().toIntOrNull()
         }
 
-        editBedrooms.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditBedrooms.doOnTextChanged { text, _, _, _ ->
             bedroomsNumber = text.toString().toIntOrNull()
         }
 
         // Show the AlertDialog to choose the points of interest of the real estate
-        editPOI.setOnClickListener {
-            myUtils.openPOIDialogFragment(editPOI, pointsOfInterest, requireActivity().supportFragmentManager)
+        binding.fragmentBaseItemEditPoi.setOnClickListener {
+            myUtils.openPOIDialogFragment(binding.fragmentBaseItemEditPoi, pointsOfInterest,
+                    requireActivity().supportFragmentManager)
         }
 
-        editStreetNumber.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditStreetNumber.doOnTextChanged { text, _, _, _ ->
             streetNumber = text.toString()
         }
 
-        editStreet.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditStreet.doOnTextChanged { text, _, _, _ ->
             street = text.toString()
         }
 
-        editApartmentNumber.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditApartmentNumber.doOnTextChanged { text, _, _, _ ->
             apartmentNumber = text.toString()
         }
 
-        editDistrict.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditDistrict.doOnTextChanged { text, _, _, _ ->
             district = text.toString()
         }
 
-        editCity.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditCity.doOnTextChanged { text, _, _, _ ->
             city = text.toString()
         }
 
-        editPostalCode.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditPostalCode.doOnTextChanged { text, _, _, _ ->
             postalCode = text.toString()
         }
 
-        editCountry.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditCountry.doOnTextChanged { text, _, _, _ ->
             country = text.toString()
         }
 
-        editDescription.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditDescription.doOnTextChanged { text, _, _, _ ->
             description = text.toString()
         }
 
         // Show the AlertDialog to choose the status of the real estate
-        editStatus.setOnClickListener {
-            myUtils.openPropertyDialogFragment(editStatus, statusTitle, statutes, requireActivity().supportFragmentManager)
+        binding.fragmentBaseItemEditStatus.setOnClickListener {
+            myUtils.openPropertyDialogFragment(binding.fragmentBaseItemEditStatus, statusTitle, statutes,
+                    requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the entry date of the real estate
-        editEntryDate.setOnClickListener {
-            myUtils.openDateDialogFragment(editEntryDate, requireActivity().supportFragmentManager)
+        binding.fragmentBaseItemEditEntryDate.setOnClickListener {
+            myUtils.openDateDialogFragment(binding.fragmentBaseItemEditEntryDate,
+                    requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the sale date of the real estate
-        editSaleDate.setOnClickListener {
-            myUtils.openDateDialogFragment(editSaleDate, requireActivity().supportFragmentManager)
+        binding.fragmentBaseItemEditSaleDate.setOnClickListener {
+            myUtils.openDateDialogFragment(binding.fragmentBaseItemEditSaleDate,
+                    requireActivity().supportFragmentManager)
         }
 
-        editAgent.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditAgent.doOnTextChanged { text, _, _, _ ->
             agent = text.toString()
         }
 
-        editPictureDescription.doOnTextChanged { text, _, _, _ ->
+        binding.fragmentBaseItemEditPictureDescription.doOnTextChanged { text, _, _, _ ->
             pictureDescription = text.toString()
         }
 
-        addPictureButton.setOnClickListener {
+        binding.fragmentBaseItemButtonAddPicture.setOnClickListener {
             addPicture()
         }
 
-        takePictureButton.setOnClickListener {
+        binding.fragmentBaseItemButtonTakePicture.setOnClickListener {
             takePicture()
         }
 
-        saveButton.setOnClickListener {
+        binding.fragmentBaseItemButtonSave.setOnClickListener {
             saveItemWithPictures()
         }
 
-        return fragmentView
+        return view
     }
 
     //----------------------------------------------------------------------------------
@@ -307,7 +268,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
                     // Uri of picture selected by user
                     val uriPictureSelected = data?.data
                     // Granting temporary permissions to the Uri
-                    activity?.grantUriPermission(BuildConfig.APPLICATION_ID, uriPictureSelected, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    activity?.grantUriPermission(BuildConfig.APPLICATION_ID, uriPictureSelected,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     // Create a Picture model with data
                     val picture = Picture(null, pictureDescription, uriPictureSelected, null)
                     // Add Picture to a list
@@ -328,6 +290,11 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     //----------------------------------------------------------------------------------
     // Configure RecyclerView, Adapter & LayoutManager
 
@@ -335,9 +302,10 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         // Create the adapter by passing the list of pictures
         itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this, this)
         // Attach the adapter to the recyclerView to populate pictures
-        recyclerView.adapter = itemPicturesAdapter
+        binding.fragmentBaseItemRecyclerView.adapter = itemPicturesAdapter
         // Set layout manager to position the pictures
-        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.fragmentBaseItemRecyclerView.layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
     }
 
     protected fun updatePictureList(updateList: ArrayList<Picture?>) {
@@ -425,7 +393,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         val postalCodeFormat = postalCode ?: ""
         val cityFormat = city ?: ""
         val countryFormat = country ?: ""
-        val fullAddress = String.format("$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat")
+        val fullAddress = "$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat"
+        //String.format("$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat")
         val geocoder = Geocoder(activity)
         val addresses: List<Address>
         addresses = geocoder.getFromLocationName(fullAddress, 1)
@@ -471,7 +440,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
     fun setPropertyChosen(propertyChosen: EditText?) {
         if (propertyChosen != null) {
-            if (editType == propertyChosen) {
+            if (binding.fragmentBaseItemEditType == propertyChosen) {
                 type = propertyChosen.text.toString()
             } else {
                 status = propertyChosen.text.toString()
@@ -490,13 +459,13 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
         if (editTextChosen?.text.toString() != "") {
             when (editTextChosen) {
-                editEntryDate -> entryDate = editTextChosen.text.toString()
-                editSaleDate -> saleDate = editTextChosen.text.toString()
+                binding.fragmentBaseItemEditEntryDate -> entryDate = editTextChosen.text.toString()
+                binding.fragmentBaseItemEditSaleDate -> saleDate = editTextChosen.text.toString()
             }
         } else {
             when (editTextChosen) {
-                editEntryDate -> entryDate = null
-                editSaleDate -> saleDate = null
+                binding.fragmentBaseItemEditEntryDate -> entryDate = null
+                binding.fragmentBaseItemEditSaleDate -> saleDate = null
             }
         }
 
@@ -509,8 +478,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
             // The sale date cannot be earlier than the entry date
             if (dateOfSale!!.before(dateOfEntry)) {
                 Toast.makeText(activity, getString(R.string.sale_date_earlier_entry_date), Toast.LENGTH_LONG).show()
-                editEntryDate.text.clear()
-                editSaleDate.text.clear()
+                binding.fragmentBaseItemEditEntryDate.text.clear()
+                binding.fragmentBaseItemEditSaleDate.text.clear()
                 entryDate = null
                 saleDate = null
             }

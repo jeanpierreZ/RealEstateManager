@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.fragments.AddItemFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.UpdateItemFragment
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
-import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.MyUtils
+import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
+import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
 
@@ -51,7 +51,6 @@ class ItemActivity : AppCompatActivity(),
     // Configure design
 
     private fun configureToolbar() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         // Set the Toolbar
         setSupportActionBar(toolbar)
         // Get a support ActionBar corresponding to this toolbar

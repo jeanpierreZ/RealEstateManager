@@ -18,7 +18,7 @@ class AddItemFragment : BaseItemFragment() {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         val title = arguments?.getString(ItemActivity.TITLE)
-        titleText.text = title
+        binding.fragmentBaseItemTitle.text = title
 
         return view
     }
