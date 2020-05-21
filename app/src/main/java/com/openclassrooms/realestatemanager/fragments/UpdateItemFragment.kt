@@ -60,30 +60,33 @@ class UpdateItemFragment : BaseItemFragment() {
 
         //----------------------------------------------------------------------------------
         // Set data in editTexts
-        binding.fragmentBaseItemEditType.setText(type)
 
-        myUtils.displayIntegerProperties(price, binding.fragmentBaseItemEditPrice)
-        myUtils.displayIntegerProperties(surface, binding.fragmentBaseItemEditSurface)
-        myUtils.displayIntegerProperties(roomsNumber, binding.fragmentBaseItemEditRooms)
-        myUtils.displayIntegerProperties(bathroomsNumber, binding.fragmentBaseItemEditBathrooms)
-        myUtils.displayIntegerProperties(bedroomsNumber, binding.fragmentBaseItemEditBedrooms)
+        with(binding) {
+            fragmentBaseItemEditType.setText(type)
 
-        val displayPOI = pointsOfInterest?.joinToString { it -> it }
-        binding.fragmentBaseItemEditPoi.setText(displayPOI)
+            myUtils.displayIntegerProperties(price, fragmentBaseItemEditPrice)
+            myUtils.displayIntegerProperties(surface, fragmentBaseItemEditSurface)
+            myUtils.displayIntegerProperties(roomsNumber, fragmentBaseItemEditRooms)
+            myUtils.displayIntegerProperties(bathroomsNumber, fragmentBaseItemEditBathrooms)
+            myUtils.displayIntegerProperties(bedroomsNumber, fragmentBaseItemEditBedrooms)
 
-        binding.fragmentBaseItemEditStreetNumber.setText(streetNumber)
-        binding.fragmentBaseItemEditStreet.setText(street)
-        binding.fragmentBaseItemEditApartmentNumber.setText(apartmentNumber)
-        binding.fragmentBaseItemEditDistrict.setText(district)
-        binding.fragmentBaseItemEditCity.setText(city)
-        binding.fragmentBaseItemEditPostalCode.setText(postalCode)
-        binding.fragmentBaseItemEditCountry.setText(country)
+            val displayPOI = pointsOfInterest?.joinToString { it -> it }
+            fragmentBaseItemEditPoi.setText(displayPOI)
 
-        binding.fragmentBaseItemEditDescription.setText(description)
-        binding.fragmentBaseItemEditStatus.setText(status)
-        binding.fragmentBaseItemEditEntryDate.setText(entryDate)
-        binding.fragmentBaseItemEditSaleDate.setText(saleDate)
-        binding.fragmentBaseItemEditAgent.setText(agent)
+            fragmentBaseItemEditStreetNumber.setText(streetNumber)
+            fragmentBaseItemEditStreet.setText(street)
+            fragmentBaseItemEditApartmentNumber.setText(apartmentNumber)
+            fragmentBaseItemEditDistrict.setText(district)
+            fragmentBaseItemEditCity.setText(city)
+            fragmentBaseItemEditPostalCode.setText(postalCode)
+            fragmentBaseItemEditCountry.setText(country)
+
+            fragmentBaseItemEditDescription.setText(description)
+            fragmentBaseItemEditStatus.setText(status)
+            fragmentBaseItemEditEntryDate.setText(entryDate)
+            fragmentBaseItemEditSaleDate.setText(saleDate)
+            fragmentBaseItemEditAgent.setText(agent)
+        }
 
         //----------------------------------------------------------------------------------
         // Set the recyclerView

@@ -66,55 +66,57 @@ class SearchActivity : AppCompatActivity(),
         //----------------------------------------------------------------------------------
         // Get data
 
-        // Show the AlertDialog to choose the type of the real estate
-        binding.activitySearchEditType.setOnClickListener {
-            myUtils.openPropertyDialogFragment(binding.activitySearchEditType, R.string.real_estate_type,
-                    types, supportFragmentManager)
-        }
+        with(binding) {
 
-        binding.activitySearchEditPriceMin.doOnTextChanged { text, _, _, _ ->
-            minPrice = text.toString().toIntOrNull()
-        }
+            // Show the AlertDialog to choose the type of the real estate
+            activitySearchEditType.setOnClickListener {
+                myUtils.openPropertyDialogFragment(activitySearchEditType, R.string.real_estate_type,
+                        types, supportFragmentManager)
+            }
 
-        binding.activitySearchEditPriceMax.doOnTextChanged { text, _, _, _ ->
-            maxPrice = text.toString().toIntOrNull()
-        }
+            activitySearchEditPriceMin.doOnTextChanged { text, _, _, _ ->
+                minPrice = text.toString().toIntOrNull()
+            }
 
-        binding.activitySearchEditSurfaceMin.doOnTextChanged { text, _, _, _ ->
-            minSurface = text.toString().toIntOrNull()
-        }
+            activitySearchEditPriceMax.doOnTextChanged { text, _, _, _ ->
+                maxPrice = text.toString().toIntOrNull()
+            }
 
-        binding.activitySearchEditSurfaceMax.doOnTextChanged { text, _, _, _ ->
-            maxSurface = text.toString().toIntOrNull()
-        }
+            activitySearchEditSurfaceMin.doOnTextChanged { text, _, _, _ ->
+                minSurface = text.toString().toIntOrNull()
+            }
 
-        // Show the AlertDialog to choose the points of interest of the real estate
-        binding.activitySearchEditPoi.setOnClickListener {
-            myUtils.openPOIDialogFragment(binding.activitySearchEditPoi, pointsOfInterest, supportFragmentManager)
-        }
+            activitySearchEditSurfaceMax.doOnTextChanged { text, _, _, _ ->
+                maxSurface = text.toString().toIntOrNull()
+            }
 
-        binding.activitySearchEditDistrict.doOnTextChanged { text, _, _, _ ->
-            district = text.toString()
-        }
+            // Show the AlertDialog to choose the points of interest of the real estate
+            activitySearchEditPoi.setOnClickListener {
+                myUtils.openPOIDialogFragment(activitySearchEditPoi, pointsOfInterest, supportFragmentManager)
+            }
 
-        // Show the AlertDialog to choose the entry date of the real estate
-        binding.activitySearchEditEntryDate.setOnClickListener {
-            myUtils.openDateDialogFragment(binding.activitySearchEditEntryDate, supportFragmentManager)
-        }
+            activitySearchEditDistrict.doOnTextChanged { text, _, _, _ ->
+                district = text.toString()
+            }
 
-        // Show the AlertDialog to choose the sale date of the real estate
-        binding.activitySearchEditSaleDate.setOnClickListener {
-            myUtils.openDateDialogFragment(binding.activitySearchEditSaleDate, supportFragmentManager)
-        }
+            // Show the AlertDialog to choose the entry date of the real estate
+            activitySearchEditEntryDate.setOnClickListener {
+                myUtils.openDateDialogFragment(activitySearchEditEntryDate, supportFragmentManager)
+            }
 
-        binding.activitySearchEditPicture.doOnTextChanged { text, _, _, _ ->
-            pictureNumber = text.toString().toIntOrNull()
-        }
+            // Show the AlertDialog to choose the sale date of the real estate
+            activitySearchEditSaleDate.setOnClickListener {
+                myUtils.openDateDialogFragment(activitySearchEditSaleDate, supportFragmentManager)
+            }
 
-        binding.activitySearchButton.setOnClickListener {
-            searchItemWithPictures()
-        }
+            activitySearchEditPicture.doOnTextChanged { text, _, _, _ ->
+                pictureNumber = text.toString().toIntOrNull()
+            }
 
+            activitySearchButton.setOnClickListener {
+                searchItemWithPictures()
+            }
+        }
     }
 
     //----------------------------------------------------------------------------------

@@ -153,106 +153,109 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         //----------------------------------------------------------------------------------
         // Get data
 
-        // Show the AlertDialog to choose the type of the real estate
-        binding.fragmentBaseItemEditType.setOnClickListener {
-            myUtils.openPropertyDialogFragment(binding.fragmentBaseItemEditType, typeTitle, types,
-                    requireActivity().supportFragmentManager)
-        }
+        with(binding) {
 
-        binding.fragmentBaseItemEditPrice.doOnTextChanged { text, _, _, _ ->
-            price = text.toString().toIntOrNull()
-        }
+            // Show the AlertDialog to choose the type of the real estate
+            fragmentBaseItemEditType.setOnClickListener {
+                myUtils.openPropertyDialogFragment(fragmentBaseItemEditType, typeTitle, types,
+                        requireActivity().supportFragmentManager)
+            }
 
-        binding.fragmentBaseItemEditSurface.doOnTextChanged { text, _, _, _ ->
-            surface = text.toString().toIntOrNull()
-        }
+            fragmentBaseItemEditPrice.doOnTextChanged { text, _, _, _ ->
+                price = text.toString().toIntOrNull()
+            }
 
-        binding.fragmentBaseItemEditRooms.doOnTextChanged { text, _, _, _ ->
-            roomsNumber = text.toString().toIntOrNull()
-        }
+            fragmentBaseItemEditSurface.doOnTextChanged { text, _, _, _ ->
+                surface = text.toString().toIntOrNull()
+            }
 
-        binding.fragmentBaseItemEditBathrooms.doOnTextChanged { text, _, _, _ ->
-            bathroomsNumber = text.toString().toIntOrNull()
-        }
+            fragmentBaseItemEditRooms.doOnTextChanged { text, _, _, _ ->
+                roomsNumber = text.toString().toIntOrNull()
+            }
 
-        binding.fragmentBaseItemEditBedrooms.doOnTextChanged { text, _, _, _ ->
-            bedroomsNumber = text.toString().toIntOrNull()
-        }
+            fragmentBaseItemEditBathrooms.doOnTextChanged { text, _, _, _ ->
+                bathroomsNumber = text.toString().toIntOrNull()
+            }
 
-        // Show the AlertDialog to choose the points of interest of the real estate
-        binding.fragmentBaseItemEditPoi.setOnClickListener {
-            myUtils.openPOIDialogFragment(binding.fragmentBaseItemEditPoi, pointsOfInterest,
-                    requireActivity().supportFragmentManager)
-        }
+            fragmentBaseItemEditBedrooms.doOnTextChanged { text, _, _, _ ->
+                bedroomsNumber = text.toString().toIntOrNull()
+            }
 
-        binding.fragmentBaseItemEditStreetNumber.doOnTextChanged { text, _, _, _ ->
-            streetNumber = text.toString()
-        }
+            // Show the AlertDialog to choose the points of interest of the real estate
+            fragmentBaseItemEditPoi.setOnClickListener {
+                myUtils.openPOIDialogFragment(fragmentBaseItemEditPoi, pointsOfInterest,
+                        requireActivity().supportFragmentManager)
+            }
 
-        binding.fragmentBaseItemEditStreet.doOnTextChanged { text, _, _, _ ->
-            street = text.toString()
-        }
+            fragmentBaseItemEditStreetNumber.doOnTextChanged { text, _, _, _ ->
+                streetNumber = text.toString()
+            }
 
-        binding.fragmentBaseItemEditApartmentNumber.doOnTextChanged { text, _, _, _ ->
-            apartmentNumber = text.toString()
-        }
+            fragmentBaseItemEditStreet.doOnTextChanged { text, _, _, _ ->
+                street = text.toString()
+            }
 
-        binding.fragmentBaseItemEditDistrict.doOnTextChanged { text, _, _, _ ->
-            district = text.toString()
-        }
+            fragmentBaseItemEditApartmentNumber.doOnTextChanged { text, _, _, _ ->
+                apartmentNumber = text.toString()
+            }
 
-        binding.fragmentBaseItemEditCity.doOnTextChanged { text, _, _, _ ->
-            city = text.toString()
-        }
+            fragmentBaseItemEditDistrict.doOnTextChanged { text, _, _, _ ->
+                district = text.toString()
+            }
 
-        binding.fragmentBaseItemEditPostalCode.doOnTextChanged { text, _, _, _ ->
-            postalCode = text.toString()
-        }
+            fragmentBaseItemEditCity.doOnTextChanged { text, _, _, _ ->
+                city = text.toString()
+            }
 
-        binding.fragmentBaseItemEditCountry.doOnTextChanged { text, _, _, _ ->
-            country = text.toString()
-        }
+            fragmentBaseItemEditPostalCode.doOnTextChanged { text, _, _, _ ->
+                postalCode = text.toString()
+            }
 
-        binding.fragmentBaseItemEditDescription.doOnTextChanged { text, _, _, _ ->
-            description = text.toString()
-        }
+            fragmentBaseItemEditCountry.doOnTextChanged { text, _, _, _ ->
+                country = text.toString()
+            }
 
-        // Show the AlertDialog to choose the status of the real estate
-        binding.fragmentBaseItemEditStatus.setOnClickListener {
-            myUtils.openPropertyDialogFragment(binding.fragmentBaseItemEditStatus, statusTitle, statutes,
-                    requireActivity().supportFragmentManager)
-        }
+            fragmentBaseItemEditDescription.doOnTextChanged { text, _, _, _ ->
+                description = text.toString()
+            }
 
-        // Show the AlertDialog to choose the entry date of the real estate
-        binding.fragmentBaseItemEditEntryDate.setOnClickListener {
-            myUtils.openDateDialogFragment(binding.fragmentBaseItemEditEntryDate,
-                    requireActivity().supportFragmentManager)
-        }
+            // Show the AlertDialog to choose the status of the real estate
+            fragmentBaseItemEditStatus.setOnClickListener {
+                myUtils.openPropertyDialogFragment(fragmentBaseItemEditStatus, statusTitle, statutes,
+                        requireActivity().supportFragmentManager)
+            }
 
-        // Show the AlertDialog to choose the sale date of the real estate
-        binding.fragmentBaseItemEditSaleDate.setOnClickListener {
-            myUtils.openDateDialogFragment(binding.fragmentBaseItemEditSaleDate,
-                    requireActivity().supportFragmentManager)
-        }
+            // Show the AlertDialog to choose the entry date of the real estate
+            fragmentBaseItemEditEntryDate.setOnClickListener {
+                myUtils.openDateDialogFragment(fragmentBaseItemEditEntryDate,
+                        requireActivity().supportFragmentManager)
+            }
 
-        binding.fragmentBaseItemEditAgent.doOnTextChanged { text, _, _, _ ->
-            agent = text.toString()
-        }
+            // Show the AlertDialog to choose the sale date of the real estate
+            fragmentBaseItemEditSaleDate.setOnClickListener {
+                myUtils.openDateDialogFragment(fragmentBaseItemEditSaleDate,
+                        requireActivity().supportFragmentManager)
+            }
 
-        binding.fragmentBaseItemEditPictureDescription.doOnTextChanged { text, _, _, _ ->
-            pictureDescription = text.toString()
-        }
+            fragmentBaseItemEditAgent.doOnTextChanged { text, _, _, _ ->
+                agent = text.toString()
+            }
 
-        binding.fragmentBaseItemButtonAddPicture.setOnClickListener {
-            addPicture()
-        }
+            fragmentBaseItemEditPictureDescription.doOnTextChanged { text, _, _, _ ->
+                pictureDescription = text.toString()
+            }
 
-        binding.fragmentBaseItemButtonTakePicture.setOnClickListener {
-            takePicture()
-        }
+            fragmentBaseItemButtonAddPicture.setOnClickListener {
+                addPicture()
+            }
 
-        binding.fragmentBaseItemButtonSave.setOnClickListener {
-            saveItemWithPictures()
+            fragmentBaseItemButtonTakePicture.setOnClickListener {
+                takePicture()
+            }
+
+            fragmentBaseItemButtonSave.setOnClickListener {
+                saveItemWithPictures()
+            }
         }
 
         return view
@@ -394,7 +397,6 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         val cityFormat = city ?: ""
         val countryFormat = country ?: ""
         val fullAddress = "$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat"
-        //String.format("$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat")
         val geocoder = Geocoder(activity)
         val addresses: List<Address>
         addresses = geocoder.getFromLocationName(fullAddress, 1)

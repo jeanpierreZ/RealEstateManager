@@ -115,23 +115,25 @@ class DetailsFragment : Fragment(),
                     val bathroomsNumber = itemWithPictures?.item?.bathroomsNumber
                     val bedroomsNumber = itemWithPictures?.item?.bedroomsNumber
 
-                    // Set the editTexts
-                    binding.detailsFragmentDescription.text = itemWithPictures?.item?.description
+                    with(binding) {
+                        // Set the editTexts
+                        detailsFragmentDescription.text = itemWithPictures?.item?.description
 
-                    myUtils.displayIntegerProperties(surface, binding.detailsFragmentSurface)
-                    myUtils.displayIntegerProperties(roomsNumber, binding.detailsFragmentRooms)
-                    myUtils.displayIntegerProperties(bathroomsNumber, binding.detailsFragmentBathrooms)
-                    myUtils.displayIntegerProperties(bedroomsNumber, binding.detailsFragmentBedrooms)
+                        myUtils.displayIntegerProperties(surface, detailsFragmentSurface)
+                        myUtils.displayIntegerProperties(roomsNumber, detailsFragmentRooms)
+                        myUtils.displayIntegerProperties(bathroomsNumber, detailsFragmentBathrooms)
+                        myUtils.displayIntegerProperties(bedroomsNumber, detailsFragmentBedrooms)
 
-                    binding.detailsFragmentStreet.text = shortAddress
-                    if (apartmentNumber.isNullOrBlank() || apartmentNumber == "") {
-                        binding.detailsFragmentApartment.text = apartmentNumber
-                    } else {
-                        binding.detailsFragmentApartment.text = String.format(getString(R.string.apt) + " $apartmentNumber")
+                        detailsFragmentStreet.text = shortAddress
+                        if (apartmentNumber.isNullOrBlank() || apartmentNumber == "") {
+                            detailsFragmentApartment.text = apartmentNumber
+                        } else {
+                            detailsFragmentApartment.text = String.format(getString(R.string.apt) + " $apartmentNumber")
+                        }
+                        detailsFragmentCity.text = city
+                        detailsFragmentPostalCode.text = postalCode
+                        detailsFragmentCountry.text = country
                     }
-                    binding.detailsFragmentCity.text = city
-                    binding.detailsFragmentPostalCode.text = postalCode
-                    binding.detailsFragmentCountry.text = country
 
                     configureRecyclerView()
                     // Clear the pictureList in case of reuse it

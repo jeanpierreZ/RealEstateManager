@@ -1,31 +1,21 @@
 package com.openclassrooms.realestatemanager.views.viewholders
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.ItemAdapter
+import com.openclassrooms.realestatemanager.databinding.ItemBinding
 import com.openclassrooms.realestatemanager.models.ItemWithPictures
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import java.lang.ref.WeakReference
 
 
-class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+class ItemViewHolder(val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
     // Represent an item (line) of a real estate property in the RecyclerView
 
-    companion object {
-        private val TAG = ItemViewHolder::class.java.simpleName
-    }
-
-    private var textViewType: TextView? = null
-    private var textViewDistrict: TextView? = null
-    private var textViewPrice: TextView? = null
-    private var imageItem: ImageView? = null
     private val myUtils = MyUtils()
 
-    // FOR DATA
+    // For data
     private var callbackWeakRef: WeakReference<ItemAdapter.Listener>? = null
 
     override fun onClick(view: View?) {
@@ -34,24 +24,17 @@ class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.O
         callback?.onClickItem(adapterPosition)
     }
 
-    init {
-        textViewType = itemView.findViewById(R.id.item_type)
-        textViewDistrict = itemView.findViewById(R.id.item_district)
-        textViewPrice = itemView.findViewById(R.id.item_price)
-        imageItem = itemView.findViewById(R.id.item_image)
-    }
-
     fun updateItems(itemWithPictures: ItemWithPictures?, glide: RequestManager, callback: ItemAdapter.Listener) {
         // Update widgets
-        textViewType?.text = itemWithPictures?.item?.type
-        textViewDistrict?.text = itemWithPictures?.item?.itemAddress?.district
-        myUtils.displayIntegerProperties(itemWithPictures?.item?.price, textViewPrice)
+        binding.itemType.text = itemWithPictures?.item?.type
+        binding.itemDistrict.text = itemWithPictures?.item?.itemAddress?.district
+        myUtils.displayIntegerProperties(itemWithPictures?.item?.price, binding.itemPrice)
 
         if (itemWithPictures?.pictures?.size != 0) {
-            imageItem?.let { glide.load(itemWithPictures?.pictures?.get(0)?.roomPicture).into(it) }
+            binding.itemImage.let { glide.load(itemWithPictures?.pictures?.get(0)?.roomPicture).into(it) }
         }
         // Create a new weak Reference to our Listener
-        this.callbackWeakRef = WeakReference(callback)
+        callbackWeakRef = WeakReference(callback)
         // Implement Listener
         itemView.setOnClickListener(this)
     }
