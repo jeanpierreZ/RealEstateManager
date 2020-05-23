@@ -7,11 +7,11 @@ import kotlinx.android.parcel.Parcelize
 import java.util.ArrayList
 
 @Parcelize
-data class ItemWithPictures(
-        @Embedded val item: Item,
+data class RealEstateWithMedias(
+        @Embedded val realEstate: RealEstate,
         @Relation(
                 parentColumn = "id",
-                entityColumn = "itemId"
+                entityColumn = "realEstateId"
         )
-        val pictures: List<Picture> = ArrayList()
+        val medias: List<Media> = ArrayList()
 ) : Parcelable

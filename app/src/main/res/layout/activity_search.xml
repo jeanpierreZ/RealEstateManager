@@ -267,7 +267,7 @@
         android:focusable="false"
         android:hint="@string/real_estate_sale_date"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
-        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_picture"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_text_media"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_text_sale_date"
@@ -275,25 +275,25 @@
         tools:ignore="TextFields" />
 
     <TextView
-        android:id="@+id/activity_search_text_picture"
+        android:id="@+id/activity_search_text_media"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/search_picture"
-        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_picture"
+        android:text="@string/search_media"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_edit_media"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_sale_date" />
 
     <EditText
-        android:id="@+id/activity_search_edit_picture"
+        android:id="@+id/activity_search_edit_media"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/search_picture_number"
+        android:hint="@string/search_media_number"
         android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_button"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_guideline_end"
         app:layout_constraintStart_toEndOf="@+id/activity_search_guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_picture"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_text_media"
         android:importantForAutofill="no" />
 
     <Button
@@ -305,6 +305,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_edit_media" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

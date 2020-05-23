@@ -12,11 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/media_guideline_seventy_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
         <ImageView
-            android:id="@+id/item_picture_image"
+            android:id="@+id/media_image"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:contentDescription="property_picture"
+            android:contentDescription="@string/property_media"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,26 +31,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/item_picture_text"
+            android:id="@+id/media_text"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#33000000"
             android:gravity="center"
-            android:text="Text"
+            android:text="@string/text"
             android:textAlignment="gravity"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/picture_guideline_seventy_horizontal" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/picture_guideline_seventy_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
+            app:layout_constraintTop_toBottomOf="@+id/media_guideline_seventy_horizontal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

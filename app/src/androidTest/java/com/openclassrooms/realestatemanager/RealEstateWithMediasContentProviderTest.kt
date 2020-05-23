@@ -10,8 +10,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.openclassrooms.realestatemanager.database.ItemWithPicturesRoomDatabase
-import com.openclassrooms.realestatemanager.provider.ItemWithPicturesContentProvider.Companion.URI_ITEM
+import com.openclassrooms.realestatemanager.database.RealEstateWithMediasRoomDatabase
+import com.openclassrooms.realestatemanager.provider.RealEstateWithMediasContentProvider.Companion.URI_ITEM
 import junit.framework.TestCase.assertNull
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.notNullValue
@@ -21,18 +21,18 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class ItemWithPicturesContentProviderTest {
+class RealEstateWithMediasContentProviderTest {
 
     companion object {
         // Data set for test
-        private const val ITEM_ID: Long = 999999
+        private const val REAL_ESTATE_ID: Long = 999999
     }
 
     private var mContentResolver: ContentResolver? = null
 
-    private fun generateItem(): ContentValues {
+    private fun generateRealEstate(): ContentValues {
         val values = ContentValues()
-        values.put("id", ITEM_ID)
+        values.put("id", REAL_ESTATE_ID)
         values.put("type", "Duplex")
         values.put("price", 700000)
         values.put("surface", 80)
@@ -46,14 +46,14 @@ class ItemWithPicturesContentProviderTest {
         values.put("entryDate", "05/04/2020")
         values.put("saleDate", "null")
         values.put("agent", "Test Agent")
-        values.put("pictureDescription", "room")
+        values.put("mediaDescription", "room")
         return values
     }
 
     @Before
     fun setUp() {
         val context: Context = ApplicationProvider.getApplicationContext()
-        Room.inMemoryDatabaseBuilder(context, ItemWithPicturesRoomDatabase::class.java)
+        Room.inMemoryDatabaseBuilder(context, RealEstateWithMediasRoomDatabase::class.java)
                 .allowMainThreadQueries()
                 .build()
         mContentResolver = context.contentResolver
@@ -61,7 +61,7 @@ class ItemWithPicturesContentProviderTest {
 
     @Test
     fun numberOfItemsWhenNoItemInserted() {
-        val cursor: Cursor? = mContentResolver?.query(ContentUris.withAppendedId(URI_ITEM, ITEM_ID), null, null, null, null)
+        val cursor: Cursor? = mContentResolver?.query(ContentUris.withAppendedId(URI_ITEM, REAL_ESTATE_ID), null, null, null, null)
         assertThat(cursor, notNullValue())
         assertThat(cursor?.count, `is`(0))
         cursor?.close()
@@ -70,14 +70,14 @@ class ItemWithPicturesContentProviderTest {
     @Test
     fun insertAndGetItem() {
         // Before : Add test item
-        val userUri: Uri? = mContentResolver?.insert(URI_ITEM, generateItem())
+        val userUri: Uri? = mContentResolver?.insert(URI_ITEM, generateRealEstate())
 
         // Test
-        val cursor: Cursor? = mContentResolver?.query(ContentUris.withAppendedId(URI_ITEM, ITEM_ID), null, null, null, null)
+        val cursor: Cursor? = mContentResolver?.query(ContentUris.withAppendedId(URI_ITEM, REAL_ESTATE_ID), null, null, null, null)
         assertThat(cursor, notNullValue())
         assertThat(cursor?.count, `is`(1))
         assertThat(cursor?.moveToFirst(), `is`(true))
-        assertThat(cursor?.getLong(cursor.getColumnIndexOrThrow("id")), `is`(ITEM_ID))
+        assertThat(cursor?.getLong(cursor.getColumnIndexOrThrow("id")), `is`(REAL_ESTATE_ID))
         assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("type")), `is`("Duplex"))
         assertThat(cursor?.getInt(cursor.getColumnIndexOrThrow("price")), `is`(700000))
         assertThat(cursor?.getInt(cursor.getColumnIndexOrThrow("surface")), `is`(80))
@@ -91,7 +91,7 @@ class ItemWithPicturesContentProviderTest {
         assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("entryDate")), `is`("05/04/2020"))
         assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("saleDate")), `is`("null"))
         assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("agent")), `is`("Test Agent"))
-        assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("pictureDescription")), `is`("room"))
+        assertThat(cursor?.getString(cursor.getColumnIndexOrThrow("mediaDescription")), `is`("room"))
         cursor?.close()
     }
 

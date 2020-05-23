@@ -24,9 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
-import com.openclassrooms.realestatemanager.databinding.FragmentBaseItemBinding
-import com.openclassrooms.realestatemanager.models.Picture
+import com.openclassrooms.realestatemanager.adapters.MediaAdapter
+import com.openclassrooms.realestatemanager.databinding.FragmentBaseRealEstateBinding
+import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
 import com.openclassrooms.realestatemanager.utils.MyUtils
@@ -41,36 +41,36 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallbacks,
-        ItemPicturesAdapter.PictureListener, ItemPicturesAdapter.PictureLongClickListener {
+abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCallbacks,
+        MediaAdapter.MediaListener, MediaAdapter.MediaLongClickListener {
 
     companion object {
-        private val TAG = BaseItemFragment::class.java.simpleName
+        private val TAG = BaseRealEstateFragment::class.java.simpleName
 
-        // Keys for item attributes
-        const val ID_ITEM = "ID_ITEM"
-        const val TYPE_ITEM = "TYPE_ITEM"
-        const val PRICE_ITEM = "PRICE_ITEM"
-        const val SURFACE_ITEM = "SURFACE_ITEM"
-        const val ROOMS_ITEM = "ROOMS_ITEM"
-        const val BATHROOMS_ITEM = "BATHROOMS_ITEM"
-        const val BEDROOMS_ITEM = "BEDROOMS_ITEM"
-        const val POI_ITEM = "POI_ITEM"
-        const val STREET_NUMBER_ITEM = "STREET_NUMBER_ITEM"
-        const val STREET_ITEM = "STREET_ITEM"
-        const val APARTMENT_NUMBER_ITEM = "APARTMENT_NUMBER_ITEM"
-        const val DISTRICT_ITEM = "DISTRICT_ITEM"
-        const val CITY_ITEM = "CITY_ITEM"
-        const val POSTAL_CODE_ITEM = "POSTAL_CODE_ITEM"
-        const val COUNTRY_ITEM = "COUNTRY_ITEM"
-        const val LATITUDE_ITEM = "LATITUDE_ITEM"
-        const val LONGITUDE_ITEM = "LONGITUDE_ITEM"
-        const val DESCRIPTION_ITEM = "DESCRIPTION_ITEM"
-        const val STATUS_ITEM = "STATUS_ITEM"
-        const val ENTRY_DATE_ITEM = "ENTRY_DATE_ITEM"
-        const val SALE_DATE_ITEM = "SALE_DATE_ITEM"
-        const val AGENT_ITEM = "AGENT_ITEM"
-        const val PICTURE_LIST_ITEM = "PICTURE_LIST_ITEM"
+        // Keys for real estate attributes
+        const val ID_REAL_ESTATE = "ID_REAL_ESTATE"
+        const val TYPE_REAL_ESTATE = "TYPE_REAL_ESTATE"
+        const val PRICE_REAL_ESTATE = "PRICE_REAL_ESTATE"
+        const val SURFACE_REAL_ESTATE = "SURFACE_REAL_ESTATE"
+        const val ROOMS_REAL_ESTATE = "ROOMS_REAL_ESTATE"
+        const val BATHROOMS_REAL_ESTATE = "BATHROOMS_REAL_ESTATE"
+        const val BEDROOMS_REAL_ESTATE = "BEDROOMS_REAL_ESTATE"
+        const val POI_REAL_ESTATE = "POI_REAL_ESTATE"
+        const val STREET_NUMBER_REAL_ESTATE = "STREET_NUMBER_REAL_ESTATE"
+        const val STREET_REAL_ESTATE = "STREET_REAL_ESTATE"
+        const val APARTMENT_NUMBER_REAL_ESTATE = "APARTMENT_NUMBER_REAL_ESTATE"
+        const val DISTRICT_REAL_ESTATE = "DISTRICT_REAL_ESTATE"
+        const val CITY_REAL_ESTATE = "CITY_REAL_ESTATE"
+        const val POSTAL_CODE_REAL_ESTATE = "POSTAL_CODE_REAL_ESTATE"
+        const val COUNTRY_REAL_ESTATE = "COUNTRY_REAL_ESTATE"
+        const val LATITUDE_REAL_ESTATE = "LATITUDE_REAL_ESTATE"
+        const val LONGITUDE_REAL_ESTATE = "LONGITUDE_REAL_ESTATE"
+        const val DESCRIPTION_REAL_ESTATE = "DESCRIPTION_REAL_ESTATE"
+        const val STATUS_REAL_ESTATE = "STATUS_REAL_ESTATE"
+        const val ENTRY_DATE_REAL_ESTATE = "ENTRY_DATE_REAL_ESTATE"
+        const val SALE_DATE_REAL_ESTATE = "SALE_DATE_REAL_ESTATE"
+        const val AGENT_REAL_ESTATE = "AGENT_REAL_ESTATE"
+        const val MEDIA_LIST_REAL_ESTATE = "MEDIA_LIST_REAL_ESTATE"
 
         // Keys for permissions
         val READ_PERM = arrayOf(READ_EXTERNAL_STORAGE)
@@ -85,9 +85,9 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         const val RC_TAKE_PHOTO = 200
     }
 
-    // Properties of a real estate, Item Model with Address, PointsOfInterest, Status and Type
-    private val saveItemIntent = Intent()
-    protected var itemId: Long? = null
+    // Properties of a RealEstate with Address, PointsOfInterest, Status and Type
+    private val saveRealEstateIntent = Intent()
+    protected var id: Long? = null
     protected var type: String? = null
     protected var price: Int? = null
     protected var surface: Int? = null
@@ -110,20 +110,20 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     protected var saleDate: String? = null
     protected var agent: String? = null
 
-    // Properties of a real estate, Picture Model
-    protected var pictureList: ArrayList<Picture?> = arrayListOf()
-    private var pictureDescription: String? = null
+    // Media properties associated with real estate
+    protected var mediaList: ArrayList<Media?> = arrayListOf()
+    private var mediaDescription: String? = null
 
-    // File use when user take a photo with the camera
+    // File used when user take a photo with the camera
     private var mPhotoFile: File? = null
 
     // Adapter for recycler view
-    private lateinit var itemPicturesAdapter: ItemPicturesAdapter
+    private lateinit var mediaAdapter: MediaAdapter
 
     // Create a charSequence array of the Type Enum and a title
     private val types: Array<CharSequence> =
-            arrayOf(Type.DUPLEX.itemType, Type.FLAT.itemType, Type.LOFT.itemType,
-                    Type.MANOR.itemType, Type.PENTHOUSE.itemType)
+            arrayOf(Type.DUPLEX.realEstateType, Type.FLAT.realEstateType, Type.LOFT.realEstateType,
+                    Type.MANOR.realEstateType, Type.PENTHOUSE.realEstateType)
     private val typeTitle = R.string.real_estate_type
 
     // Create a charSequence array of the Status Enum and a title
@@ -134,7 +134,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     private val myUtils = MyUtils()
 
     // View binding
-    private var _binding: FragmentBaseItemBinding? = null
+    private var _binding: FragmentBaseRealEstateBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
     protected val binding get() = _binding!!
@@ -143,12 +143,12 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        _binding = FragmentBaseItemBinding.inflate(inflater, container, false)
+        _binding = FragmentBaseRealEstateBinding.inflate(inflater, container, false)
         val view = binding.root
 
         configureRecyclerView()
 
-        Log.d(TAG, "ON CREATE pictureList = $pictureList")
+        Log.d(TAG, "ON CREATE pictureList = $mediaList")
 
         //----------------------------------------------------------------------------------
         // Get data
@@ -156,105 +156,105 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
         with(binding) {
 
             // Show the AlertDialog to choose the type of the real estate
-            fragmentBaseItemEditType.setOnClickListener {
-                myUtils.openPropertyDialogFragment(fragmentBaseItemEditType, typeTitle, types,
+            fragmentBaseRealEstateEditType.setOnClickListener {
+                myUtils.openPropertyDialogFragment(fragmentBaseRealEstateEditType, typeTitle, types,
                         requireActivity().supportFragmentManager)
             }
 
-            fragmentBaseItemEditPrice.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditPrice.doOnTextChanged { text, _, _, _ ->
                 price = text.toString().toIntOrNull()
             }
 
-            fragmentBaseItemEditSurface.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditSurface.doOnTextChanged { text, _, _, _ ->
                 surface = text.toString().toIntOrNull()
             }
 
-            fragmentBaseItemEditRooms.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditRooms.doOnTextChanged { text, _, _, _ ->
                 roomsNumber = text.toString().toIntOrNull()
             }
 
-            fragmentBaseItemEditBathrooms.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditBathrooms.doOnTextChanged { text, _, _, _ ->
                 bathroomsNumber = text.toString().toIntOrNull()
             }
 
-            fragmentBaseItemEditBedrooms.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditBedrooms.doOnTextChanged { text, _, _, _ ->
                 bedroomsNumber = text.toString().toIntOrNull()
             }
 
             // Show the AlertDialog to choose the points of interest of the real estate
-            fragmentBaseItemEditPoi.setOnClickListener {
-                myUtils.openPOIDialogFragment(fragmentBaseItemEditPoi, pointsOfInterest,
+            fragmentBaseRealEstateEditPoi.setOnClickListener {
+                myUtils.openPOIDialogFragment(fragmentBaseRealEstateEditPoi, pointsOfInterest,
                         requireActivity().supportFragmentManager)
             }
 
-            fragmentBaseItemEditStreetNumber.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditStreetNumber.doOnTextChanged { text, _, _, _ ->
                 streetNumber = text.toString()
             }
 
-            fragmentBaseItemEditStreet.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditStreet.doOnTextChanged { text, _, _, _ ->
                 street = text.toString()
             }
 
-            fragmentBaseItemEditApartmentNumber.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditApartmentNumber.doOnTextChanged { text, _, _, _ ->
                 apartmentNumber = text.toString()
             }
 
-            fragmentBaseItemEditDistrict.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditDistrict.doOnTextChanged { text, _, _, _ ->
                 district = text.toString()
             }
 
-            fragmentBaseItemEditCity.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditCity.doOnTextChanged { text, _, _, _ ->
                 city = text.toString()
             }
 
-            fragmentBaseItemEditPostalCode.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditPostalCode.doOnTextChanged { text, _, _, _ ->
                 postalCode = text.toString()
             }
 
-            fragmentBaseItemEditCountry.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditCountry.doOnTextChanged { text, _, _, _ ->
                 country = text.toString()
             }
 
-            fragmentBaseItemEditDescription.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditDescription.doOnTextChanged { text, _, _, _ ->
                 description = text.toString()
             }
 
             // Show the AlertDialog to choose the status of the real estate
-            fragmentBaseItemEditStatus.setOnClickListener {
-                myUtils.openPropertyDialogFragment(fragmentBaseItemEditStatus, statusTitle, statutes,
+            fragmentBaseRealEstateEditStatus.setOnClickListener {
+                myUtils.openPropertyDialogFragment(fragmentBaseRealEstateEditStatus, statusTitle, statutes,
                         requireActivity().supportFragmentManager)
             }
 
             // Show the AlertDialog to choose the entry date of the real estate
-            fragmentBaseItemEditEntryDate.setOnClickListener {
-                myUtils.openDateDialogFragment(fragmentBaseItemEditEntryDate,
+            fragmentBaseRealEstateEditEntryDate.setOnClickListener {
+                myUtils.openDateDialogFragment(fragmentBaseRealEstateEditEntryDate,
                         requireActivity().supportFragmentManager)
             }
 
             // Show the AlertDialog to choose the sale date of the real estate
-            fragmentBaseItemEditSaleDate.setOnClickListener {
-                myUtils.openDateDialogFragment(fragmentBaseItemEditSaleDate,
+            fragmentBaseRealEstateEditSaleDate.setOnClickListener {
+                myUtils.openDateDialogFragment(fragmentBaseRealEstateEditSaleDate,
                         requireActivity().supportFragmentManager)
             }
 
-            fragmentBaseItemEditAgent.doOnTextChanged { text, _, _, _ ->
+            fragmentBaseRealEstateEditAgent.doOnTextChanged { text, _, _, _ ->
                 agent = text.toString()
             }
 
-            fragmentBaseItemEditPictureDescription.doOnTextChanged { text, _, _, _ ->
-                pictureDescription = text.toString()
+            fragmentBaseRealEstateEditMediaDescription.doOnTextChanged { text, _, _, _ ->
+                mediaDescription = text.toString()
             }
 
-            fragmentBaseItemButtonAddPicture.setOnClickListener {
+            fragmentBaseRealEstateButtonAddPicture.setOnClickListener {
                 addPicture()
             }
 
-            fragmentBaseItemButtonTakePicture.setOnClickListener {
+            fragmentBaseRealEstateButtonTakePicture.setOnClickListener {
                 takePicture()
             }
 
-            fragmentBaseItemButtonSave.setOnClickListener {
-                saveItemWithPictures()
+            fragmentBaseRealEstateButtonSave.setOnClickListener {
+                saveRealEstateWithMedias()
             }
         }
 
@@ -273,21 +273,21 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
                     // Granting temporary permissions to the Uri
                     activity?.grantUriPermission(BuildConfig.APPLICATION_ID, uriPictureSelected,
                             Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    // Create a Picture model with data
-                    val picture = Picture(null, pictureDescription, uriPictureSelected, null)
+                    // Create a Media model with data
+                    val picture = Media(null, mediaDescription, uriPictureSelected, null, null)
                     // Add Picture to a list
-                    pictureList.add(picture)
-                    Log.d(TAG, "ON ACTIVITY RESULT pictureList = $pictureList")
-                    updatePictureList(pictureList)
+                    mediaList.add(picture)
+                    Log.d(TAG, "ON ACTIVITY RESULT pictureList = $mediaList")
+                    updatePictureList(mediaList)
                 }
 
                 RC_TAKE_PHOTO -> {
-                    // Create a Picture model with the file created
-                    val pictureTaken = Picture(null, pictureDescription, mPhotoFile?.toUri(), null)
-                    // Add Picture to a list
-                    pictureList.add(pictureTaken)
-                    Log.d(TAG, "ON ACTIVITY RESULT pictureList = $pictureList")
-                    updatePictureList(pictureList)
+                    // Create a Media model with the file created
+                    val pictureTaken = Media(null, mediaDescription, mPhotoFile?.toUri(), null, null)
+                    // Add Media to a list
+                    mediaList.add(pictureTaken)
+                    Log.d(TAG, "ON ACTIVITY RESULT pictureList = $mediaList")
+                    updatePictureList(mediaList)
                 }
             }
         }
@@ -303,16 +303,16 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of pictures
-        itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this, this)
+        mediaAdapter = MediaAdapter(mediaList, Glide.with(this), this, this)
         // Attach the adapter to the recyclerView to populate pictures
-        binding.fragmentBaseItemRecyclerView.adapter = itemPicturesAdapter
+        binding.fragmentBaseRealEstateRecyclerView.adapter = mediaAdapter
         // Set layout manager to position the pictures
-        binding.fragmentBaseItemRecyclerView.layoutManager =
+        binding.fragmentBaseRealEstateRecyclerView.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    protected fun updatePictureList(updateList: ArrayList<Picture?>) {
-        itemPicturesAdapter.setPictures(updateList)
+    protected fun updatePictureList(updateList: ArrayList<Media?>) {
+        mediaAdapter.setMedias(updateList)
     }
 
     //----------------------------------------------------------------------------------
@@ -321,7 +321,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     @AfterPermissionGranted(RC_READ_PERM)
     private fun addPicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *READ_PERM) }!!) {
-            if (pictureDescription.isNullOrEmpty() || pictureDescription.isNullOrBlank()) {
+            if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
                 activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_description) }
             } else {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -355,7 +355,7 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     @AfterPermissionGranted(RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS)
     private fun takePicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
-            if (pictureDescription.isNullOrEmpty() || pictureDescription.isNullOrBlank()) {
+            if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
                 activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_description) }
             } else {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -405,44 +405,44 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
             latitude = addresses[0].latitude
             longitude = addresses[0].longitude
         }
-        saveItemIntent.putExtra(LATITUDE_ITEM, latitude)
-        saveItemIntent.putExtra(LONGITUDE_ITEM, longitude)
+        saveRealEstateIntent.putExtra(LATITUDE_REAL_ESTATE, latitude)
+        saveRealEstateIntent.putExtra(LONGITUDE_REAL_ESTATE, longitude)
     }
 
-    private fun saveItemWithPictures() {
+    private fun saveRealEstateWithMedias() {
         storeLatLng()
-        saveItemIntent.putExtra(ID_ITEM, itemId)
-        saveItemIntent.putExtra(TYPE_ITEM, type)
-        saveItemIntent.putExtra(PRICE_ITEM, price)
-        saveItemIntent.putExtra(SURFACE_ITEM, surface)
-        saveItemIntent.putExtra(ROOMS_ITEM, roomsNumber)
-        saveItemIntent.putExtra(BATHROOMS_ITEM, bathroomsNumber)
-        saveItemIntent.putExtra(BEDROOMS_ITEM, bedroomsNumber)
-        saveItemIntent.putStringArrayListExtra(POI_ITEM, pointsOfInterest)
-        saveItemIntent.putExtra(STREET_NUMBER_ITEM, streetNumber)
-        saveItemIntent.putExtra(STREET_ITEM, street)
-        saveItemIntent.putExtra(APARTMENT_NUMBER_ITEM, apartmentNumber)
-        saveItemIntent.putExtra(DISTRICT_ITEM, district)
-        saveItemIntent.putExtra(CITY_ITEM, city)
-        saveItemIntent.putExtra(POSTAL_CODE_ITEM, postalCode)
-        saveItemIntent.putExtra(COUNTRY_ITEM, country)
-        saveItemIntent.putExtra(DESCRIPTION_ITEM, description)
-        saveItemIntent.putExtra(STATUS_ITEM, status)
-        saveItemIntent.putExtra(ENTRY_DATE_ITEM, entryDate)
-        saveItemIntent.putExtra(SALE_DATE_ITEM, saleDate)
-        saveItemIntent.putExtra(AGENT_ITEM, agent)
-        saveItemIntent.putParcelableArrayListExtra(PICTURE_LIST_ITEM, pictureList)
+        saveRealEstateIntent.putExtra(ID_REAL_ESTATE, id)
+        saveRealEstateIntent.putExtra(TYPE_REAL_ESTATE, type)
+        saveRealEstateIntent.putExtra(PRICE_REAL_ESTATE, price)
+        saveRealEstateIntent.putExtra(SURFACE_REAL_ESTATE, surface)
+        saveRealEstateIntent.putExtra(ROOMS_REAL_ESTATE, roomsNumber)
+        saveRealEstateIntent.putExtra(BATHROOMS_REAL_ESTATE, bathroomsNumber)
+        saveRealEstateIntent.putExtra(BEDROOMS_REAL_ESTATE, bedroomsNumber)
+        saveRealEstateIntent.putStringArrayListExtra(POI_REAL_ESTATE, pointsOfInterest)
+        saveRealEstateIntent.putExtra(STREET_NUMBER_REAL_ESTATE, streetNumber)
+        saveRealEstateIntent.putExtra(STREET_REAL_ESTATE, street)
+        saveRealEstateIntent.putExtra(APARTMENT_NUMBER_REAL_ESTATE, apartmentNumber)
+        saveRealEstateIntent.putExtra(DISTRICT_REAL_ESTATE, district)
+        saveRealEstateIntent.putExtra(CITY_REAL_ESTATE, city)
+        saveRealEstateIntent.putExtra(POSTAL_CODE_REAL_ESTATE, postalCode)
+        saveRealEstateIntent.putExtra(COUNTRY_REAL_ESTATE, country)
+        saveRealEstateIntent.putExtra(DESCRIPTION_REAL_ESTATE, description)
+        saveRealEstateIntent.putExtra(STATUS_REAL_ESTATE, status)
+        saveRealEstateIntent.putExtra(ENTRY_DATE_REAL_ESTATE, entryDate)
+        saveRealEstateIntent.putExtra(SALE_DATE_REAL_ESTATE, saleDate)
+        saveRealEstateIntent.putExtra(AGENT_REAL_ESTATE, agent)
+        saveRealEstateIntent.putParcelableArrayListExtra(MEDIA_LIST_REAL_ESTATE, mediaList)
 
-        activity?.setResult(Activity.RESULT_OK, saveItemIntent)
+        activity?.setResult(Activity.RESULT_OK, saveRealEstateIntent)
         activity?.finish()
     }
 
     //----------------------------------------------------------------------------------
-    // Use DialogFragments data received in ItemActivity
+    // Use DialogFragments data received in RealEstateActivity
 
     fun setPropertyChosen(propertyChosen: EditText?) {
         if (propertyChosen != null) {
-            if (binding.fragmentBaseItemEditType == propertyChosen) {
+            if (binding.fragmentBaseRealEstateEditType == propertyChosen) {
                 type = propertyChosen.text.toString()
             } else {
                 status = propertyChosen.text.toString()
@@ -461,13 +461,13 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
 
         if (editTextChosen?.text.toString() != "") {
             when (editTextChosen) {
-                binding.fragmentBaseItemEditEntryDate -> entryDate = editTextChosen.text.toString()
-                binding.fragmentBaseItemEditSaleDate -> saleDate = editTextChosen.text.toString()
+                binding.fragmentBaseRealEstateEditEntryDate -> entryDate = editTextChosen.text.toString()
+                binding.fragmentBaseRealEstateEditSaleDate -> saleDate = editTextChosen.text.toString()
             }
         } else {
             when (editTextChosen) {
-                binding.fragmentBaseItemEditEntryDate -> entryDate = null
-                binding.fragmentBaseItemEditSaleDate -> saleDate = null
+                binding.fragmentBaseRealEstateEditEntryDate -> entryDate = null
+                binding.fragmentBaseRealEstateEditSaleDate -> saleDate = null
             }
         }
 
@@ -480,8 +480,8 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
             // The sale date cannot be earlier than the entry date
             if (dateOfSale!!.before(dateOfEntry)) {
                 Toast.makeText(activity, getString(R.string.sale_date_earlier_entry_date), Toast.LENGTH_LONG).show()
-                binding.fragmentBaseItemEditEntryDate.text.clear()
-                binding.fragmentBaseItemEditSaleDate.text.clear()
+                binding.fragmentBaseRealEstateEditEntryDate.text.clear()
+                binding.fragmentBaseRealEstateEditSaleDate.text.clear()
                 entryDate = null
                 saleDate = null
             }
@@ -489,25 +489,25 @@ abstract class BaseItemFragment : Fragment(), EasyPermissions.PermissionCallback
     }
 
     //----------------------------------------------------------------------------------
-    // Listeners in ItemPicturesAdapter
+    // Listeners in RealEstateMediasAdapter
 
-    override fun onClickPicture(position: Int) {
+    override fun onClickMedia(position: Int) {
         // Do nothing
     }
 
-    override fun onLongClickItem(position: Int) {
-        // Get the picture object with the position in the RecyclerView
-        val picture: Picture? = itemPicturesAdapter.getPosition(position)
+    override fun onLongClickMedia(position: Int) {
+        // Get the media object with the position in the RecyclerView
+        val media: Media? = mediaAdapter.getPosition(position)
 
-        // Create an AlertDialog to request deletion of the picture
+        // Create an AlertDialog to request deletion of the media
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         builder.setMessage(getString(R.string.delete_picture))
         builder.apply {
             setPositiveButton(android.R.string.ok) { _, _ ->
-                // Remove the picture object from the list to save
-                pictureList.remove(picture)
-                // Use notifyItemRemoved instead of the updatePictureList() method to enjoy animation
-                itemPicturesAdapter.notifyItemRemoved(position)
+                // Remove the media object from the list to save
+                mediaList.remove(media)
+                // Use notifyItemRemoved instead of the updateMediaList() method to enjoy animation
+                mediaAdapter.notifyItemRemoved(position)
             }
         }
         val dialog: AlertDialog = builder.create()

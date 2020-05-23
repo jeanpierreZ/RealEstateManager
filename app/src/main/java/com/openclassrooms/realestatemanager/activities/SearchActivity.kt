@@ -17,7 +17,7 @@ import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
-import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
+import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
 import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,8 +40,8 @@ class SearchActivity : AppCompatActivity(),
 
     // Create a charSequence array of the Type Enum
     private val types: Array<CharSequence> =
-            arrayOf(Type.DUPLEX.itemType, Type.FLAT.itemType, Type.LOFT.itemType,
-                    Type.MANOR.itemType, Type.PENTHOUSE.itemType)
+            arrayOf(Type.DUPLEX.realEstateType, Type.FLAT.realEstateType, Type.LOFT.realEstateType,
+                    Type.MANOR.realEstateType, Type.PENTHOUSE.realEstateType)
 
     private var type: String? = null
     private var minPrice: Int? = null
@@ -52,7 +52,7 @@ class SearchActivity : AppCompatActivity(),
     private var district: String? = null
     private var entryDate: String? = null
     private var saleDate: String? = null
-    private var pictureNumber: Int? = null
+    private var mediaNumber: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,12 +109,12 @@ class SearchActivity : AppCompatActivity(),
                 myUtils.openDateDialogFragment(activitySearchEditSaleDate, supportFragmentManager)
             }
 
-            activitySearchEditPicture.doOnTextChanged { text, _, _, _ ->
-                pictureNumber = text.toString().toIntOrNull()
+            activitySearchEditMedia.doOnTextChanged { text, _, _, _ ->
+                mediaNumber = text.toString().toIntOrNull()
             }
 
             activitySearchButton.setOnClickListener {
-                searchItemWithPictures()
+                searchRealEstateWithMedias()
             }
         }
     }
@@ -185,13 +185,13 @@ class SearchActivity : AppCompatActivity(),
 
     //----------------------------------------------------------------------------------
 
-    private fun searchItemWithPictures() {
+    private fun searchRealEstateWithMedias() {
         Log.i(TAG, "type = $type, minPrice = $minPrice, maxPrice = $maxPrice, minSurface = $minSurface," +
                 " maxSurface = $maxSurface, pointsOfInterest = $pointsOfInterest, district = $district," +
-                " entryDate = $entryDate, saleDate = $saleDate, pictureNumber = $pictureNumber")
+                " entryDate = $entryDate, saleDate = $saleDate, pictureNumber = $mediaNumber")
 
         // Parameters to query the dao
-        var baseQuery = "SELECT * , COUNT(pictureId) AS pictureNumber FROM item_table JOIN picture_table ON itemId = id"
+        var baseQuery = "SELECT * , COUNT(mediaId) AS mediaNumber FROM real_estate_table JOIN media_table ON realEstateId = id"
         val bindArgs = arrayListOf<Any>()
         // To check if the base query already contains "WHEN"
         var queryContainsWhere = false
@@ -294,9 +294,9 @@ class SearchActivity : AppCompatActivity(),
             bindArgs.add(saleDate!!)
         }
 
-        pictureNumber = pictureNumber ?: 0
-        baseQuery = baseQuery.plus(" GROUP BY id HAVING pictureNumber >= ?")
-        bindArgs.add(pictureNumber!!)
+        mediaNumber = mediaNumber ?: 0
+        baseQuery = baseQuery.plus(" GROUP BY id HAVING mediaNumber >= ?")
+        bindArgs.add(mediaNumber!!)
 
         // Sort the query according to the last properties added
         baseQuery = baseQuery.plus(" ORDER BY id DESC")
@@ -304,15 +304,15 @@ class SearchActivity : AppCompatActivity(),
 
         val query = SimpleSQLiteQuery(baseQuery, bindArgs.toArray())
 
-        val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        val realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
         val searchIntent = Intent()
 
-        itemWithPicturesViewModel.getItemWithPicturesFromSearch(query).observe(
-                this, androidx.lifecycle.Observer { itemWithPictures ->
-            Log.d(TAG, "search result = $itemWithPictures")
+        realEstateWithMediasViewModel.getRealEstateWithMediasFromSearch(query).observe(
+                this, androidx.lifecycle.Observer { realEstateWithMedias ->
+            Log.d(TAG, "search result = $realEstateWithMedias")
 
-            if (!itemWithPictures.isNullOrEmpty()) {
-                searchIntent.putParcelableArrayListExtra(SEARCH_LIST, itemWithPictures as ArrayList)
+            if (!realEstateWithMedias.isNullOrEmpty()) {
+                searchIntent.putParcelableArrayListExtra(SEARCH_LIST, realEstateWithMedias as ArrayList)
                 this.setResult(Activity.RESULT_OK, searchIntent)
                 this.finish()
 

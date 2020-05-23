@@ -19,21 +19,21 @@ import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.application.MyApplication
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
-import com.openclassrooms.realestatemanager.fragments.BaseItemFragment
+import com.openclassrooms.realestatemanager.fragments.BaseRealEstateFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
 import com.openclassrooms.realestatemanager.fragments.MapFragment
-import com.openclassrooms.realestatemanager.models.Item
-import com.openclassrooms.realestatemanager.models.ItemAddress
-import com.openclassrooms.realestatemanager.models.ItemWithPictures
-import com.openclassrooms.realestatemanager.models.Picture
+import com.openclassrooms.realestatemanager.models.Address
+import com.openclassrooms.realestatemanager.models.Media
+import com.openclassrooms.realestatemanager.models.RealEstate
+import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.utils.MyUtils
-import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
+import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
 import kotlinx.android.synthetic.main.toolbar.*
 
 
 class MainActivity : AppCompatActivity(),
-        ListFragment.OnItemClickedListener,
+        ListFragment.OnRealEstateClickedListener,
         MapFragment.OnMarkerClickedListener,
         NavigationView.OnNavigationItemSelectedListener {
 
@@ -41,19 +41,19 @@ class MainActivity : AppCompatActivity(),
         private val TAG = MainActivity::class.java.simpleName
 
         // Keys for bundle
-        const val ITEM_ID_FOR_DETAIL: String = "ITEM_ID_FOR_DETAIL"
+        const val REAL_ESTATE_ID_USED_FOR_DETAIL: String = "REAL_ESTATE_ID_USED_FOR_DETAIL"
         const val LIST_FROM_SEARCH: String = "LIST_FROM_SEARCH"
 
-        // Key for item title
-        const val TITLE_ITEM_ACTIVITY: String = "TITLE_ITEM_ACTIVITY"
+        // Key for real estate title
+        const val TITLE_REAL_ESTATE_ACTIVITY: String = "TITLE_REAL_ESTATE_ACTIVITY"
 
         // Request codes
-        const val ADD_ITEM_ACTIVITY_REQUEST_CODE = 1
-        const val UPDATE_ITEM_ACTIVITY_REQUEST_CODE = 2
+        const val ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE = 1
+        const val UPDATE_REAL_ESTATE_ACTIVITY_REQUEST_CODE = 2
         const val SEARCH_ACTIVITY_REQUEST_CODE = 3
     }
 
-    private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
+    private lateinit var realEstateWithMediasViewModel: RealEstateWithMediasViewModel
 
     private val detailsFragment = DetailsFragment()
     private val listFragment = ListFragment()
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(),
         configureNavigationView()
 
         // Use the ViewModelProvider to associate the ViewModel with MainActivity
-        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
 
         displayListFragment()
         displayDetailsFragmentAtLaunchInTabletMode()
@@ -90,23 +90,24 @@ class MainActivity : AppCompatActivity(),
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
 
-                ADD_ITEM_ACTIVITY_REQUEST_CODE -> {
-                    // Insert itemWithPictures in database
-                    itemWithPicturesViewModel
-                            .insertItemWithPictures(itemData(data, null), pictureData(data))
+                ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE -> {
+                    // Insert realEstateWithMedias in database
+                    realEstateWithMediasViewModel
+                            .insertRealEstateWithMedias(realEstateData(data, null), mediaData(data))
                     sendNotification()
                 }
 
-                UPDATE_ITEM_ACTIVITY_REQUEST_CODE -> {
-                    // Update itemWithPictures in database
-                    itemWithPicturesViewModel
-                            .updateItemWithPictures(itemData(data,
-                                    data?.getLongExtra(BaseItemFragment.ID_ITEM, 0)),
-                                    pictureData(data))
+                UPDATE_REAL_ESTATE_ACTIVITY_REQUEST_CODE -> {
+                    // Update realEstateWithMedias in database
+                    realEstateWithMediasViewModel
+                            .updateRealEstateWithMedias(realEstateData(data,
+                                    data?.getLongExtra(BaseRealEstateFragment.ID_REAL_ESTATE, 0)),
+                                    mediaData(data))
                 }
 
                 SEARCH_ACTIVITY_REQUEST_CODE -> {
-                    val intentFromSearch = data?.getParcelableArrayListExtra<ItemWithPictures>(SearchActivity.SEARCH_LIST)
+                    val intentFromSearch =
+                            data?.getParcelableArrayListExtra<RealEstateWithMedias>(SearchActivity.SEARCH_LIST)
 
                     // Add a bundle to listFragment with the list from SearchActivity
                     val bundleListFragment = Bundle()
@@ -128,10 +129,10 @@ class MainActivity : AppCompatActivity(),
         } else {
             // If resultCode is canceled show the appropriate message
             when (requestCode) {
-                ADD_ITEM_ACTIVITY_REQUEST_CODE -> {
+                ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE -> {
                     myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
                 }
-                UPDATE_ITEM_ACTIVITY_REQUEST_CODE -> {
+                UPDATE_REAL_ESTATE_ACTIVITY_REQUEST_CODE -> {
                     myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
                 }
                 SEARCH_ACTIVITY_REQUEST_CODE -> {
@@ -144,38 +145,38 @@ class MainActivity : AppCompatActivity(),
     //----------------------------------------------------------------------------------
     // Methods to set data from onActivityResult
 
-    private fun itemData(data: Intent?, id: Long?): Item {
-        // Create an address with data from ItemActivity
-        val itemAddress = ItemAddress(data?.getStringExtra(BaseItemFragment.STREET_NUMBER_ITEM),
-                data?.getStringExtra(BaseItemFragment.STREET_ITEM),
-                data?.getStringExtra(BaseItemFragment.APARTMENT_NUMBER_ITEM),
-                data?.getStringExtra(BaseItemFragment.DISTRICT_ITEM),
-                data?.getStringExtra(BaseItemFragment.CITY_ITEM),
-                data?.getStringExtra(BaseItemFragment.POSTAL_CODE_ITEM),
-                data?.getStringExtra(BaseItemFragment.COUNTRY_ITEM),
-                data?.getDoubleExtra(BaseItemFragment.LATITUDE_ITEM, 0.0),
-                data?.getDoubleExtra(BaseItemFragment.LONGITUDE_ITEM, 0.0))
+    private fun realEstateData(data: Intent?, id: Long?): RealEstate {
+        // Create an address with data from RealEstateActivity
+        val address = Address(data?.getStringExtra(BaseRealEstateFragment.STREET_NUMBER_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.STREET_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.APARTMENT_NUMBER_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.DISTRICT_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.CITY_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.POSTAL_CODE_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.COUNTRY_REAL_ESTATE),
+                data?.getDoubleExtra(BaseRealEstateFragment.LATITUDE_REAL_ESTATE, 0.0),
+                data?.getDoubleExtra(BaseRealEstateFragment.LONGITUDE_REAL_ESTATE, 0.0))
 
-        // Create an item with data from ItemActivity
-        return Item(id, data?.getStringExtra(BaseItemFragment.TYPE_ITEM),
-                data?.getIntExtra(BaseItemFragment.PRICE_ITEM, -1),
-                data?.getIntExtra(BaseItemFragment.SURFACE_ITEM, -1),
-                data?.getIntExtra(BaseItemFragment.ROOMS_ITEM, -1),
-                data?.getIntExtra(BaseItemFragment.BATHROOMS_ITEM, -1),
-                data?.getIntExtra(BaseItemFragment.BEDROOMS_ITEM, -1),
-                data?.getStringArrayListExtra(BaseItemFragment.POI_ITEM),
-                itemAddress,
-                data?.getStringExtra(BaseItemFragment.DESCRIPTION_ITEM),
-                data?.getStringExtra(BaseItemFragment.STATUS_ITEM),
-                data?.getStringExtra(BaseItemFragment.ENTRY_DATE_ITEM),
-                data?.getStringExtra(BaseItemFragment.SALE_DATE_ITEM),
-                data?.getStringExtra(BaseItemFragment.AGENT_ITEM))
+        // Create an real estate with data from RealEstateActivity
+        return RealEstate(id, data?.getStringExtra(BaseRealEstateFragment.TYPE_REAL_ESTATE),
+                data?.getIntExtra(BaseRealEstateFragment.PRICE_REAL_ESTATE, -1),
+                data?.getIntExtra(BaseRealEstateFragment.SURFACE_REAL_ESTATE, -1),
+                data?.getIntExtra(BaseRealEstateFragment.ROOMS_REAL_ESTATE, -1),
+                data?.getIntExtra(BaseRealEstateFragment.BATHROOMS_REAL_ESTATE, -1),
+                data?.getIntExtra(BaseRealEstateFragment.BEDROOMS_REAL_ESTATE, -1),
+                data?.getStringArrayListExtra(BaseRealEstateFragment.POI_REAL_ESTATE),
+                address,
+                data?.getStringExtra(BaseRealEstateFragment.DESCRIPTION_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.STATUS_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.ENTRY_DATE_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.SALE_DATE_REAL_ESTATE),
+                data?.getStringExtra(BaseRealEstateFragment.AGENT_REAL_ESTATE))
     }
 
-    private fun pictureData(data: Intent?): ArrayList<Picture?> {
-        // Create a list of pictures with data from ItemActivity
-        return data?.getParcelableArrayListExtra<Picture>(BaseItemFragment.PICTURE_LIST_ITEM)
-                as ArrayList<Picture?>
+    private fun mediaData(data: Intent?): ArrayList<Media?> {
+        // Create a list of media with data from RealEstateActivity
+        return data?.getParcelableArrayListExtra<Media>(BaseRealEstateFragment.MEDIA_LIST_REAL_ESTATE)
+                as ArrayList<Media?>
     }
 
     //----------------------------------------------------------------------------------
@@ -190,9 +191,9 @@ class MainActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_toolbar_add -> {
-                val intentItem = Intent(this, ItemActivity::class.java)
-                intentItem.putExtra(TITLE_ITEM_ACTIVITY, getString(R.string.create_real_estate))
-                startActivityForResult(intentItem, ADD_ITEM_ACTIVITY_REQUEST_CODE)
+                val intentRealEstate = Intent(this, RealEstateActivity::class.java)
+                intentRealEstate.putExtra(TITLE_REAL_ESTATE_ACTIVITY, getString(R.string.create_real_estate))
+                startActivityForResult(intentRealEstate, ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE)
             }
             R.id.menu_toolbar_search -> {
                 val intentSearch = Intent(this, SearchActivity::class.java)
@@ -284,7 +285,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun displayDetailsFragmentAtLaunchInTabletMode() {
-        // At launch, only add DetailsFragment in Tablet mode, but hide the fragment because no real estate is selected
+        // At launch, add only DetailsFragment in Tablet mode,
+        // but hide the fragment because no real estate is selected
         if (binding.activityMainDetailsFragmentContainerView != null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activity_main_details_fragment_container_view, detailsFragment)
@@ -365,12 +367,12 @@ class MainActivity : AppCompatActivity(),
     }
 
     //----------------------------------------------------------------------------------
-    // Put the item id in a bundle and fetch it in detailsFragment
+    // Put the real estate id in a bundle and fetch it in detailsFragment
 
-    private fun putIdInBundle(itemWithPicturesId: Long?) {
-        val bundleItem = Bundle()
-        itemWithPicturesId?.let { bundleItem.putLong(ITEM_ID_FOR_DETAIL, it) }
-        detailsFragment.arguments = bundleItem
+    private fun putRealEstateIdInBundle(itemWithPicturesId: Long?) {
+        val bundleRealEstate = Bundle()
+        itemWithPicturesId?.let { bundleRealEstate.putLong(REAL_ESTATE_ID_USED_FOR_DETAIL, it) }
+        detailsFragment.arguments = bundleRealEstate
     }
 
     //----------------------------------------------------------------------------------
@@ -394,20 +396,20 @@ class MainActivity : AppCompatActivity(),
 
     //----------------------------------------------------------------------------------
 
-    // Implement listener from ListFragment to display DetailsFragment when click on an item
-    override fun onItemClicked(itemWithPicturesId: Long?) {
-        putIdInBundle(itemWithPicturesId)
+    // Implement listener from ListFragment to display DetailsFragment when click on a real estate
+    override fun onRealEstateClicked(realEstateWithMediasId: Long?) {
+        putRealEstateIdInBundle(realEstateWithMediasId)
         displayDetailsFragment()
     }
 
     // Implement listener from MapFragment to display DetailsFragment when click on a marker
-    override fun onMarkerClicked(itemWithPicturesId: Long?) {
+    override fun onMarkerClicked(realEstateWithMediasId: Long?) {
         // Check if we are in Tablet mode and adapt UI
         if (binding.activityMainMapFragmentContainerView != null) {
             hideMapFragment()
             displayListFragment()
         }
-        putIdInBundle(itemWithPicturesId)
+        putRealEstateIdInBundle(realEstateWithMediasId)
         displayDetailsFragment()
     }
 

@@ -13,29 +13,29 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.activities.MainActivity
-import com.openclassrooms.realestatemanager.adapters.ItemAdapter
+import com.openclassrooms.realestatemanager.adapters.RealEstateAdapter
 import com.openclassrooms.realestatemanager.databinding.FragmentListBinding
-import com.openclassrooms.realestatemanager.models.ItemWithPictures
-import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
+import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
+import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class ListFragment : Fragment(), ItemAdapter.Listener {
+class ListFragment : Fragment(), RealEstateAdapter.Listener {
 
     companion object {
         private val TAG = ListFragment::class.java.simpleName
     }
 
-    private var itemAdapter: ItemAdapter? = null
+    private var realEstateAdapter: RealEstateAdapter? = null
 
-    private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
+    private lateinit var realEstateWithMediasViewModel: RealEstateWithMediasViewModel
 
-    private var itemWithPicturesList: MutableList<ItemWithPictures?> = mutableListOf()
+    private var realEstateWithMediasList: MutableList<RealEstateWithMedias?> = mutableListOf()
 
     // Declare callback
-    private var callbackItem: OnItemClickedListener? = null
+    private var callbackRealEstate: OnRealEstateClickedListener? = null
 
     // View binding
     private var _binding: FragmentListBinding? = null
@@ -53,18 +53,18 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
         configureRecyclerView()
 
         // UpdateUI either with the search list or with the list of all properties
-        val listFromSearch: ArrayList<ItemWithPictures>
+        val listFromSearch: ArrayList<RealEstateWithMedias>
         if (arguments != null && !requireArguments().isEmpty) {
-            listFromSearch = arguments?.getParcelableArrayList<ItemWithPictures>(MainActivity.LIST_FROM_SEARCH)
-                    as ArrayList<ItemWithPictures>
+            listFromSearch = arguments?.getParcelableArrayList<RealEstateWithMedias>(MainActivity.LIST_FROM_SEARCH)
+                    as ArrayList<RealEstateWithMedias>
             updateUI(listFromSearch)
             arguments?.remove(MainActivity.LIST_FROM_SEARCH)
         } else {
             // Use the ViewModelProvider to associate the ViewModel with ListFragment
-            itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+            realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
 
             // Get the itemWithPicturesList
-            itemWithPicturesViewModel.getItemWithPictures.observe(viewLifecycleOwner, Observer { itemWithPicturesList ->
+            realEstateWithMediasViewModel.getRealEstateWithMedias.observe(viewLifecycleOwner, Observer { itemWithPicturesList ->
                 Log.d(TAG, "itemWithPicturesList = $itemWithPicturesList")
                 updateUI(itemWithPicturesList)
             })
@@ -83,31 +83,31 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of items
-        itemAdapter = ItemAdapter(itemWithPicturesList, Glide.with(this), this)
+        realEstateAdapter = RealEstateAdapter(realEstateWithMediasList, Glide.with(this), this)
         // Attach the adapter to the recyclerView to populate items
-        binding.fragmentListRecyclerView.adapter = itemAdapter
+        binding.fragmentListRecyclerView.adapter = realEstateAdapter
         // Set layout manager to position the items
         binding.fragmentListRecyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
-    private fun updateUI(updateList: List<ItemWithPictures?>) {
+    private fun updateUI(updateList: List<RealEstateWithMedias?>) {
         // Add the list from the request and notify the adapter
-        itemAdapter?.setItems(updateList)
+        realEstateAdapter?.setRealEstates(updateList)
     }
 
     //----------------------------------------------------------------------------------
     // Interface for callback from ItemAdapter
 
-    override fun onClickItem(position: Int) {
+    override fun onClickRealEstate(position: Int) {
         // Save the item object in the RecyclerView
-        val itemWithPictures: ItemWithPictures? = itemAdapter?.getPosition(position)
+        val realEstateWithMedias: RealEstateWithMedias? = realEstateAdapter?.getPosition(position)
         // Spread the click to the parent activity with the item id
-        callbackItem?.onItemClicked(itemWithPictures?.item?.id)
-        Log.d(TAG, "Click on ${itemWithPictures?.item?.type} ")
+        callbackRealEstate?.onRealEstateClicked(realEstateWithMedias?.realEstate?.id)
+        Log.d(TAG, "Click on ${realEstateWithMedias?.realEstate?.type} ")
     }
 
     //----------------------------------------------------------------------------------
-    // Interface for callback to parent activity and associated methods when click on an item
+    // Interface for callback to parent activity and associated methods when click on a real estate
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -116,17 +116,17 @@ class ListFragment : Fragment(), ItemAdapter.Listener {
     }
 
     // Declare our interface that will be implemented by any container activity
-    interface OnItemClickedListener {
-        fun onItemClicked(itemWithPicturesId: Long?)
+    interface OnRealEstateClickedListener {
+        fun onRealEstateClicked(realEstateWithMediasId: Long?)
     }
 
     // Create callback to parent activity
     private fun createCallbackToParentActivity() {
         try {
             // Parent activity will automatically subscribe to callback
-            callbackItem = activity as OnItemClickedListener?
+            callbackRealEstate = activity as OnRealEstateClickedListener?
         } catch (e: ClassCastException) {
-            throw ClassCastException("$e must implement OnItemClickedListener")
+            throw ClassCastException("$e must implement OnRealEstateClickedListener")
         }
     }
 }

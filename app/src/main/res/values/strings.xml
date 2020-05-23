@@ -66,8 +66,8 @@
     <string name="search_district">In which district?</string>
     <string name="search_entry_date">On the market since?</string>
     <string name="search_sale_date">Sold from?</string>
-    <string name="search_picture">With how many photos minimum?</string>
-    <string name="search_picture_number">Minimum number of pictures?</string>
+    <string name="search_media">With how many photos or videos minimum?</string>
+    <string name="search_media_number">Minimum number of media?</string>
     <string name="search_button">Search</string>
 
     <string name="search_canceled">Search canceled</string>
@@ -75,6 +75,14 @@
 
     <!-- MapFragment -->
     <string name="network_unavailable">Network unavailable</string>
+
+    <!-- real_estate xml and media xml for RecyclerView -->
+    <string name="property_image">property image</string>
+    <string name="type">type</string>
+    <string name="district">district</string>
+    <string name="price">price</string>
+    <string name="property_media">property media</string>
+    <string name="text">text</string>
 
     <!-- NavigationDrawer -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>

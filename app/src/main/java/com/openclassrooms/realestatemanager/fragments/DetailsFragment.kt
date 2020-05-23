@@ -19,38 +19,38 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.activities.ItemActivity
 import com.openclassrooms.realestatemanager.activities.MainActivity
-import com.openclassrooms.realestatemanager.adapters.ItemPicturesAdapter
+import com.openclassrooms.realestatemanager.activities.RealEstateActivity
+import com.openclassrooms.realestatemanager.adapters.MediaAdapter
 import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding
-import com.openclassrooms.realestatemanager.models.Picture
+import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.utils.MyUtils
-import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
+import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class DetailsFragment : Fragment(),
-        ItemPicturesAdapter.PictureListener,
-        ItemPicturesAdapter.PictureLongClickListener,
+        MediaAdapter.MediaListener,
+        MediaAdapter.MediaLongClickListener,
         OnMapReadyCallback {
 
     companion object {
         private val TAG = DetailsFragment::class.java.simpleName
 
         // Key for itemWithPictures
-        const val BUNDLE_ITEM_WITH_PICTURES: String = "BUNDLE_ITEM_WITH_PICTURES"
+        const val BUNDLE_REAL_ESTATE_WITH_MEDIAS: String = "BUNDLE_REAL_ESTATE_WITH_MEDIAS"
 
         // Keys for storing activity state
         private const val MAPVIEW_BUNDLE_KEY = "MAPVIEW_BUNDLE_KEY"
     }
 
-    private var itemPicturesAdapter: ItemPicturesAdapter? = null
+    private var mediaAdapter: MediaAdapter? = null
 
-    private var pictureList: ArrayList<Picture?> = arrayListOf()
+    private var mediaList: ArrayList<Media?> = arrayListOf()
 
-    private var editIntent = Intent()
+    private var editRealEstateIntent = Intent()
 
     private val myUtils = MyUtils()
 
@@ -76,13 +76,13 @@ class DetailsFragment : Fragment(),
         // For Toolbar menu
         setHasOptionsMenu(true)
 
-        editIntent = Intent(activity, ItemActivity::class.java)
+        editRealEstateIntent = Intent(activity, RealEstateActivity::class.java)
 
-        // Get the identifier of the itemWithPictures from the bundle
-        val itemWithPicturesId: Long? = arguments?.getLong(MainActivity.ITEM_ID_FOR_DETAIL, -1)
+        // Get the identifier of the realEstateWithMedias from the bundle
+        val realEstateWithMediasId: Long? = arguments?.getLong(MainActivity.REAL_ESTATE_ID_USED_FOR_DETAIL, -1)
 
         // Use the ViewModelProvider to associate the ViewModel with DetailsFragment
-        val itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
+        val realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
 
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK objects or sub-Bundles.
         var mapViewBundle: Bundle? = null
@@ -93,31 +93,31 @@ class DetailsFragment : Fragment(),
         mapView!!.getMapAsync(this)
         mapView!!.isClickable = false
 
-        // Observe changes in the itemWithPictures retrieved with the item id stored in the bundle
-        itemWithPicturesViewModel.getModifiedItemWithPictures(itemWithPicturesId)
-                .observe(viewLifecycleOwner, Observer { itemWithPictures ->
+        // Observe changes in the realEstateWithMedias retrieved with the real estate id stored in the bundle
+        realEstateWithMediasViewModel.getModifiedRealEstateWithMedias(realEstateWithMediasId)
+                .observe(viewLifecycleOwner, Observer { realEstateWithMedias ->
 
-                    // Put the itemWithPictures in the intent, which is used when the user want to edit data
-                    editIntent.putExtra(BUNDLE_ITEM_WITH_PICTURES, itemWithPictures)
+                    // Put the realEstateWithMedias in the intent, which is used when the user want to edit data
+                    editRealEstateIntent.putExtra(BUNDLE_REAL_ESTATE_WITH_MEDIAS, realEstateWithMedias)
 
                     // Get data to set addresses for textViews and map
-                    val streetNumber = itemWithPictures?.item?.itemAddress?.streetNumber ?: ""
-                    val street = itemWithPictures?.item?.itemAddress?.street ?: ""
+                    val streetNumber = realEstateWithMedias?.realEstate?.address?.streetNumber ?: ""
+                    val street = realEstateWithMedias?.realEstate?.address?.street ?: ""
                     val shortAddress = String.format("$streetNumber $street ")
-                    val apartmentNumber = itemWithPictures?.item?.itemAddress?.apartmentNumber
-                    val postalCode = itemWithPictures?.item?.itemAddress?.postalCode
-                    val city = itemWithPictures?.item?.itemAddress?.city
-                    val country = itemWithPictures?.item?.itemAddress?.country
+                    val apartmentNumber = realEstateWithMedias?.realEstate?.address?.apartmentNumber
+                    val postalCode = realEstateWithMedias?.realEstate?.address?.postalCode
+                    val city = realEstateWithMedias?.realEstate?.address?.city
+                    val country = realEstateWithMedias?.realEstate?.address?.country
 
                     // Get data to set Integers for textViews
-                    val surface = itemWithPictures?.item?.surface
-                    val roomsNumber = itemWithPictures?.item?.roomsNumber
-                    val bathroomsNumber = itemWithPictures?.item?.bathroomsNumber
-                    val bedroomsNumber = itemWithPictures?.item?.bedroomsNumber
+                    val surface = realEstateWithMedias?.realEstate?.surface
+                    val roomsNumber = realEstateWithMedias?.realEstate?.roomsNumber
+                    val bathroomsNumber = realEstateWithMedias?.realEstate?.bathroomsNumber
+                    val bedroomsNumber = realEstateWithMedias?.realEstate?.bedroomsNumber
 
                     with(binding) {
                         // Set the editTexts
-                        detailsFragmentDescription.text = itemWithPictures?.item?.description
+                        detailsFragmentDescription.text = realEstateWithMedias?.realEstate?.description
 
                         myUtils.displayIntegerProperties(surface, detailsFragmentSurface)
                         myUtils.displayIntegerProperties(roomsNumber, detailsFragmentRooms)
@@ -136,17 +136,17 @@ class DetailsFragment : Fragment(),
                     }
 
                     configureRecyclerView()
-                    // Clear the pictureList in case of reuse it
-                    pictureList.clear()
+                    // Clear the mediaList in case of reuse it
+                    mediaList.clear()
                     // Add photos of the chosen real estate from ListFragment
-                    itemWithPictures?.pictures?.let { pictureList.addAll(it) }
-                    updateUI(pictureList)
-                    Log.d(TAG, "pictureList = $pictureList")
+                    realEstateWithMedias?.medias?.let { mediaList.addAll(it) }
+                    updateUI(mediaList)
+                    Log.d(TAG, "pictureList = $mediaList")
 
                     // Display the real estate on the map
                     clearMap()
-                    val realEstateLatLng = itemWithPictures?.item?.itemAddress?.latitude?.let {
-                        itemWithPictures.item.itemAddress?.longitude?.let { it1 ->
+                    val realEstateLatLng = realEstateWithMedias?.realEstate?.address?.latitude?.let {
+                        realEstateWithMedias.realEstate.address?.longitude?.let { it1 ->
                             LatLng(it, it1)
                         }
                     }
@@ -177,8 +177,8 @@ class DetailsFragment : Fragment(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_toolbar_edit) {
-            editIntent.putExtra(MainActivity.TITLE_ITEM_ACTIVITY, getString(R.string.update_real_estate))
-            activity?.startActivityForResult(editIntent, MainActivity.UPDATE_ITEM_ACTIVITY_REQUEST_CODE)
+            editRealEstateIntent.putExtra(MainActivity.TITLE_REAL_ESTATE_ACTIVITY, getString(R.string.update_real_estate))
+            activity?.startActivityForResult(editRealEstateIntent, MainActivity.UPDATE_REAL_ESTATE_ACTIVITY_REQUEST_CODE)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -187,26 +187,26 @@ class DetailsFragment : Fragment(),
     // Configure RecyclerViews, Adapters, LayoutManager & UI
 
     private fun configureRecyclerView() {
-        // Create the adapter by passing the list of pictures
-        itemPicturesAdapter = ItemPicturesAdapter(pictureList, Glide.with(this), this, this)
-        // Attach the adapter to the recyclerView to populate pictures
-        binding.detailsFragmentRecyclerView.adapter = itemPicturesAdapter
-        // Set layout manager to position the pictures
+        // Create the adapter by passing the list of media
+        mediaAdapter = MediaAdapter(mediaList, Glide.with(this), this, this)
+        // Attach the adapter to the recyclerView to populate medias
+        binding.detailsFragmentRecyclerView.adapter = mediaAdapter
+        // Set layout manager to position the medias
         binding.detailsFragmentRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    private fun updateUI(updateList: ArrayList<Picture?>) {
-        itemPicturesAdapter?.setPictures(updateList)
+    private fun updateUI(updateList: ArrayList<Media?>) {
+        mediaAdapter?.setMedias(updateList)
     }
 
     //----------------------------------------------------------------------------------
-    // Interfaces for callback from ItemPicturesAdapter
+    // Interfaces for callback from MediaAdapter
 
-    override fun onClickPicture(position: Int) {
+    override fun onClickMedia(position: Int) {
         Log.d("DETAILS", "CLICK on picture !")
     }
 
-    override fun onLongClickItem(position: Int) {
+    override fun onLongClickMedia(position: Int) {
         Log.d("DETAILS", "LONG CLICK on picture !")
     }
 

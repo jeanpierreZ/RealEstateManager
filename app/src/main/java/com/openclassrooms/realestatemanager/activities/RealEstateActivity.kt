@@ -6,10 +6,10 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.fragments.AddItemFragment
+import com.openclassrooms.realestatemanager.fragments.AddRealEstateFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
-import com.openclassrooms.realestatemanager.fragments.UpdateItemFragment
-import com.openclassrooms.realestatemanager.models.ItemWithPictures
+import com.openclassrooms.realestatemanager.fragments.UpdateRealEstateFragment
+import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
@@ -18,33 +18,33 @@ import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
 
-class ItemActivity : AppCompatActivity(),
+class RealEstateActivity : AppCompatActivity(),
         PropertyDialogFragment.OnPropertyChosenListener,
         POIDialogFragment.OnPOIChosenListener,
         DateDialogFragment.OnDateListener {
 
     companion object {
-        // Keys for fragment title and itemWithPictures
-        const val TITLE: String = "TITLE_FRAGMENT"
-        const val ITEM_WITH_PICTURES: String = "ITEM_WITH_PICTURES_FRAGMENT"
+        // Keys for fragment title and realEstateWithMedias
+        const val TITLE_FRAGMENT: String = "TITLE_FRAGMENT"
+        const val REAL_ESTATE_WITH_MEDIAS: String = "REAL_ESTATE_WITH_MEDIAS"
     }
 
     private var title: String? = ""
-    private var itemWithPictures: ItemWithPictures? = null
+    private var realEstateWithMedias: RealEstateWithMedias? = null
     private var fragment = Fragment()
 
     private val myUtils = MyUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item)
+        setContentView(R.layout.activity_real_estate)
 
-        title = intent.getStringExtra(MainActivity.TITLE_ITEM_ACTIVITY)
-        // itemWithPictures object from DetailsFragment
-        itemWithPictures = intent.getParcelableExtra(DetailsFragment.BUNDLE_ITEM_WITH_PICTURES)
+        title = intent.getStringExtra(MainActivity.TITLE_REAL_ESTATE_ACTIVITY)
+        // realEstateWithMedias object from DetailsFragment
+        realEstateWithMedias = intent.getParcelableExtra(DetailsFragment.BUNDLE_REAL_ESTATE_WITH_MEDIAS)
 
         configureToolbar()
-        displayCreateItemFragment()
+        displayFragment()
     }
 
     //----------------------------------------------------------------------------------
@@ -59,20 +59,20 @@ class ItemActivity : AppCompatActivity(),
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun displayCreateItemFragment() {
+    private fun displayFragment() {
         val bundle = Bundle()
-        bundle.putString(TITLE, title)
+        bundle.putString(TITLE_FRAGMENT, title)
 
         if (title == getString(R.string.create_real_estate)) {
-            fragment = AddItemFragment()
+            fragment = AddRealEstateFragment()
         } else {
-            fragment = UpdateItemFragment()
-            bundle.putParcelable(ITEM_WITH_PICTURES, itemWithPictures)
+            fragment = UpdateRealEstateFragment()
+            bundle.putParcelable(REAL_ESTATE_WITH_MEDIAS, realEstateWithMedias)
         }
 
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_item_fragment_container_view, fragment)
+                .replace(R.id.activity_real_estate_fragment_container_view, fragment)
                 .commit()
     }
 
@@ -86,29 +86,29 @@ class ItemActivity : AppCompatActivity(),
     }
 
     //----------------------------------------------------------------------------------
-    // Implement listeners from the DialogFragments, use data in BaseItemFragment methods
+    // Implement listeners from the DialogFragments, use data in BaseRealEstateFragment methods
 
     override fun onPropertyChosen(propertyChosen: EditText?) {
-        if (fragment is AddItemFragment) {
-            (fragment as AddItemFragment).setPropertyChosen(propertyChosen)
+        if (fragment is AddRealEstateFragment) {
+            (fragment as AddRealEstateFragment).setPropertyChosen(propertyChosen)
         } else {
-            (fragment as UpdateItemFragment).setPropertyChosen(propertyChosen)
+            (fragment as UpdateRealEstateFragment).setPropertyChosen(propertyChosen)
         }
     }
 
     override fun onPOIChosen(POIChosen: ArrayList<String>?) {
-        if (fragment is AddItemFragment) {
-            (fragment as AddItemFragment).setPOIChosen(POIChosen)
+        if (fragment is AddRealEstateFragment) {
+            (fragment as AddRealEstateFragment).setPOIChosen(POIChosen)
         } else {
-            (fragment as UpdateItemFragment).setPOIChosen(POIChosen)
+            (fragment as UpdateRealEstateFragment).setPOIChosen(POIChosen)
         }
     }
 
     override fun onDateChosen(editTextChosen: EditText?) {
-        if (fragment is AddItemFragment) {
-            (fragment as AddItemFragment).setDateChosen(editTextChosen)
+        if (fragment is AddRealEstateFragment) {
+            (fragment as AddRealEstateFragment).setDateChosen(editTextChosen)
         } else {
-            (fragment as UpdateItemFragment).setDateChosen(editTextChosen)
+            (fragment as UpdateRealEstateFragment).setDateChosen(editTextChosen)
         }
     }
 

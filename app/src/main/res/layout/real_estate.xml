@@ -3,7 +3,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
-    android:id="@+id/item_card_view"
+    android:id="@+id/real_estate_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
@@ -16,76 +16,76 @@
         android:layout_margin="6dp">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/item_guideline_thirty_vertical"
+            android:id="@+id/real_estate_guideline_thirty_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.3" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/item_guideline_thirty_horizontal"
+            android:id="@+id/real_estate_guideline_thirty_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.3" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/item_guideline_sixty_horizontal"
+            android:id="@+id/real_estate_guideline_sixty_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.6" />
 
         <ImageView
-            android:id="@+id/item_image"
+            android:id="@+id/real_estate_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:contentDescription="property_image"
+            android:contentDescription="@string/property_image"
             android:padding="4dp"
             android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_guideline_thirty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/real_estate_guideline_thirty_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/item_type"
+            android:id="@+id/real_estate_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="type"
-            app:layout_constraintBottom_toTopOf="@+id/item_guideline_thirty_horizontal"
+            android:text="@string/type"
+            app:layout_constraintBottom_toTopOf="@+id/real_estate_guideline_thirty_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_guideline_thirty_vertical"
+            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_thirty_vertical"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/item_district"
+            android:id="@+id/real_estate_district"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="district"
-            app:layout_constraintBottom_toTopOf="@+id/item_guideline_sixty_horizontal"
+            android:text="@string/district"
+            app:layout_constraintBottom_toTopOf="@+id/real_estate_guideline_sixty_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_guideline_thirty_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/item_guideline_thirty_horizontal" />
+            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/real_estate_guideline_thirty_horizontal" />
 
         <TextView
-            android:id="@+id/item_price"
+            android:id="@+id/real_estate_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="price"
+            android:text="@string/price"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_guideline_thirty_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/item_guideline_sixty_horizontal" />
+            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/real_estate_guideline_sixty_horizontal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

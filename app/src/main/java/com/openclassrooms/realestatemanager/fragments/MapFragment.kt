@@ -26,11 +26,11 @@ import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.FragmentMapBinding
-import com.openclassrooms.realestatemanager.models.ItemWithPictures
+import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.Utils.isInternetAvailable
-import com.openclassrooms.realestatemanager.views.viewmodels.ItemWithPicturesViewModel
+import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -77,7 +77,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     // A default location (New York, USA) to use when location permission is not granted.
     private val defaultLocation = LatLng(40.7127281, -74.0060152)
 
-    private lateinit var itemWithPicturesViewModel: ItemWithPicturesViewModel
+    private lateinit var realEstateWithMediasViewModel: RealEstateWithMediasViewModel
 
     private val myUtils = MyUtils()
 
@@ -132,9 +132,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
         map?.setOnMarkerClickListener { marker: Marker ->
             // Retrieve the data from the marker
-            val itemWithPicturesId = marker.tag as Long?
+            val realEstateWithMediasId = marker.tag as Long?
             // Spread the click to the parent activity with the item id
-            callbackMarker?.onMarkerClicked(itemWithPicturesId)
+            callbackMarker?.onMarkerClicked(realEstateWithMediasId)
             false
         }
     }
@@ -269,40 +269,40 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     private fun getDataAndShowRealEstates() {
         // Add markers at real estates location
         map?.clear() // clear older markers
-        itemWithPicturesViewModel = ViewModelProvider(this).get(ItemWithPicturesViewModel::class.java)
-        itemWithPicturesViewModel.getItemWithPictures.observe(this, Observer { itemWithPictures ->
-            for (itemWithPicture in itemWithPictures) {
-                itemWithPicture?.let { showRealEstates(it) }
+        realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
+        realEstateWithMediasViewModel.getRealEstateWithMedias.observe(this, Observer { realEstateWithMedias ->
+            for (realEstateWithMedia in realEstateWithMedias) {
+                realEstateWithMedia?.let { showRealEstates(it) }
             }
         })
     }
 
     // Display markers at real estates location
-    private fun showRealEstates(itemWithPictures: ItemWithPictures) {
+    private fun showRealEstates(realEstateWithMedias: RealEstateWithMedias) {
         if (activity?.let { EasyPermissions.hasPermissions(it, *LOCATION_PERMS) }!!) {
-            val latLng = itemWithPictures.item.itemAddress?.latitude?.let {
-                itemWithPictures.item.itemAddress?.longitude?.let { it1 -> LatLng(it, it1) }
+            val latLng = realEstateWithMedias.realEstate.address?.latitude?.let {
+                realEstateWithMedias.realEstate.address?.longitude?.let { it1 -> LatLng(it, it1) }
             }
 
             if (latLng != null) {
                 // If the real estate is sold, mark a red icon
-                if (itemWithPictures.item.status == Status.SOLD.availability) {
-                    addMarkers(latLng, R.drawable.ic_location_on_red_24dp, itemWithPictures.item.id)
+                if (realEstateWithMedias.realEstate.status == Status.SOLD.availability) {
+                    addMarkers(latLng, R.drawable.ic_location_on_red_24dp, realEstateWithMedias.realEstate.id)
                 } else {
                     // If the real estate is available or has a null status, mark a green icon
-                    addMarkers(latLng, R.drawable.ic_location_on_green_24dp, itemWithPictures.item.id)
+                    addMarkers(latLng, R.drawable.ic_location_on_green_24dp, realEstateWithMedias.realEstate.id)
                 }
             }
         }
     }
 
     // Add different color markers depending on whether real estates are available or sold
-    private fun addMarkers(latLng: LatLng, icLocation: Int, itemWithPicturesId: Long?) {
+    private fun addMarkers(latLng: LatLng, icLocation: Int, realEstateWithMediasId: Long?) {
         if (latLng != LatLng(0.0, 0.0)) {
             val marker: Marker? = map?.addMarker(MarkerOptions()
                     .icon(bitmapDescriptorFromVector(icLocation))
                     .position(latLng))
-            marker?.tag = itemWithPicturesId
+            marker?.tag = realEstateWithMediasId
         }
     }
 
@@ -355,7 +355,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     // Declare our interface that will be implemented by any container activity
     interface OnMarkerClickedListener {
-        fun onMarkerClicked(itemWithPicturesId: Long?)
+        fun onMarkerClicked(realEstateWithMediasId: Long?)
     }
 
     // Create callback to parent activity
