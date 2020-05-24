@@ -30,9 +30,15 @@ class RealEstateViewHolder(val binding: RealEstateBinding) : RecyclerView.ViewHo
         binding.realEstateDistrict.text = realEstateWithMedias?.realEstate?.address?.district
         myUtils.displayIntegerProperties(realEstateWithMedias?.realEstate?.price, binding.realEstatePrice)
 
+        // Necessary if the user don't have a media with the real estate
         if (realEstateWithMedias?.medias?.size != 0) {
-            binding.realEstateImage.let { glide.load(realEstateWithMedias?.medias?.get(0)?.mediaPicture).into(it) }
+            if (realEstateWithMedias?.medias?.get(0)?.mediaPicture?.isAbsolute!!) {
+                glide.load(realEstateWithMedias.medias[0].mediaPicture).into(binding.realEstateImage)
+            } else if (realEstateWithMedias.medias[0].mediaVideo?.isAbsolute!!) {
+                glide.load(realEstateWithMedias.medias[0].mediaVideo).into(binding.realEstateImage)
+            }
         }
+
         // Create a new weak Reference to our Listener
         callbackWeakRef = WeakReference(callback)
         // Implement Listener

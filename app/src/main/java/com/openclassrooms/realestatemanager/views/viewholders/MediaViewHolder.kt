@@ -26,7 +26,12 @@ class MediaViewHolder(val binding: MediaBinding) : RecyclerView.ViewHolder(bindi
                        callbackLongClick: MediaAdapter.MediaLongClickListener) {
         // Update widgets
         binding.mediaText.text = media?.mediaDescription
-        binding.mediaImage.let { glide.load(media?.mediaPicture).into(it) }
+
+        if (media?.mediaPicture?.isAbsolute!!) {
+            binding.mediaImage.let { glide.load(media.mediaPicture).into(it) }
+        } else if (media.mediaVideo?.isAbsolute!!) {
+            binding.mediaImage.let { glide.load(media.mediaVideo).into(it) }
+        }
 
         // Create news weak References to our Listeners and implement listeners
 

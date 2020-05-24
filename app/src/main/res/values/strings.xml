@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
 
-    <!-- Main Activity and Item Activity -->
+    <!-- Main and RealEstate Activities -->
     <string name="real_estate_not_saved">Real estate not saved</string>
 
     <!-- Details Fragment -->
@@ -20,7 +20,7 @@
     <string name="apt">Apt</string>
     <string name="address_not_available">Address not available to display the map</string>
 
-    <!-- Item Activity and Search Activity -->
+    <!-- RealEstate and Search Activities -->
     <string name="create_real_estate">Create a real estate</string>
     <string name="update_real_estate">Update a real estate</string>
     <string name="real_estate_type">Type of the real estate</string>
@@ -44,12 +44,12 @@
     <string name="real_estate_agent">The real estate agent in charge of this property.</string>
     <string name="sale_date_earlier_entry_date">The sale date cannot be earlier than the entry date.</string>
     <string name="impossible_future_date">You cannot choose a date in the future.</string>
-    <string name="image_preview">Preview of the image</string>
-    <string name="picture_description">Picture description</string>
+    <string name="media_description">Media description</string>
     <string name="no_image_chosen">No image chosen</string>
-    <string name="no_picture_description">Choose a description for the picture</string>
+    <string name="no_media_description">Choose a description for the media</string>
     <string name="add_picture">Add a picture</string>
     <string name="take_picture">Take a picture</string>
+    <string name="take_video">Take a video</string>
     <string name="delete_picture">Delete this picture?</string>
     <string name="erase">Erase</string>
     <string name="save">Save</string>

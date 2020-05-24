@@ -77,12 +77,15 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
         val WRITE_EXT_STORAGE_AND_CAMERA_PERMS = arrayOf(WRITE_EXTERNAL_STORAGE, CAMERA)
 
         // Request codes for permissions
-        const val RC_READ_PERM = 333
-        const val RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS = 444
+        const val RC_READ_PERM = 400
+        const val RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS = 500
 
         // Request codes for picture
         const val RC_CHOOSE_PHOTO = 100
         const val RC_TAKE_PHOTO = 200
+
+        const val RC_VIDEO_CAPTURE = 300
+
     }
 
     // Properties of a RealEstate with Address, PointsOfInterest, Status and Type
@@ -148,7 +151,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
 
         configureRecyclerView()
 
-        Log.d(TAG, "ON CREATE pictureList = $mediaList")
+        Log.d(TAG, "ON CREATE mediaList = $mediaList")
 
         //----------------------------------------------------------------------------------
         // Get data
@@ -253,6 +256,10 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                 takePicture()
             }
 
+            fragmentBaseRealEstateButtonTakeVideo.setOnClickListener {
+                takeVideo()
+            }
+
             fragmentBaseRealEstateButtonSave.setOnClickListener {
                 saveRealEstateWithMedias()
             }
@@ -277,7 +284,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     val picture = Media(null, mediaDescription, uriPictureSelected, null, null)
                     // Add Picture to a list
                     mediaList.add(picture)
-                    Log.d(TAG, "ON ACTIVITY RESULT pictureList = $mediaList")
+                    Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
                     updatePictureList(mediaList)
                 }
 
@@ -286,7 +293,18 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     val pictureTaken = Media(null, mediaDescription, mPhotoFile?.toUri(), null, null)
                     // Add Media to a list
                     mediaList.add(pictureTaken)
-                    Log.d(TAG, "ON ACTIVITY RESULT pictureList = $mediaList")
+                    Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
+                    updatePictureList(mediaList)
+                }
+
+                RC_VIDEO_CAPTURE -> {
+                    // Uri of video take by user
+                    val videoUri: Uri? = data?.data
+                    // Create a Media model with data
+                    val videoTaken = Media(null, mediaDescription, null, videoUri, null)
+                    // Add Media to a list
+                    mediaList.add(videoTaken)
+                    Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
                     updatePictureList(mediaList)
                 }
             }
@@ -322,7 +340,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
     private fun addPicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *READ_PERM) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_description) }
+                activity?.let { myUtils.showShortToastMessage(it, R.string.no_media_description) }
             } else {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(intent, RC_CHOOSE_PHOTO)
@@ -356,7 +374,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
     private fun takePicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                activity?.let { myUtils.showShortToastMessage(it, R.string.no_picture_description) }
+                activity?.let { myUtils.showShortToastMessage(it, R.string.no_media_description) }
             } else {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     // Ensure that there's a camera activity to handle the intent
@@ -380,6 +398,24 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                         }
                         // File use in onActivityResult
                         mPhotoFile = photoFile
+                    }
+                }
+            }
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_write_and_camera_permission_access),
+                    RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS)
+        }
+    }
+
+    @AfterPermissionGranted(RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS)
+    private fun takeVideo() {
+        if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
+            if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
+                activity?.let { myUtils.showShortToastMessage(it, R.string.no_media_description) }
+            } else {
+                Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+                    takeVideoIntent.resolveActivity(requireActivity().packageManager)?.also {
+                        startActivityForResult(takeVideoIntent, RC_VIDEO_CAPTURE)
                     }
                 }
             }
