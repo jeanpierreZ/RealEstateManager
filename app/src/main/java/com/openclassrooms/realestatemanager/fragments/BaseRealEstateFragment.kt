@@ -279,7 +279,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     val uriPictureSelected = data?.data
                     // Granting temporary permissions to the Uri
                     activity?.grantUriPermission(BuildConfig.APPLICATION_ID, uriPictureSelected,
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     // Create a Media model with data
                     val picture = Media(null, mediaDescription, uriPictureSelected, null, null)
                     // Add Picture to a list
@@ -343,6 +343,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                 activity?.let { myUtils.showShortToastMessage(it, R.string.no_media_description) }
             } else {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                intent.addCategory(Intent.CATEGORY_OPENABLE)
                 startActivityForResult(intent, RC_CHOOSE_PHOTO)
             }
         } else {
@@ -537,7 +538,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
 
         // Create an AlertDialog to request deletion of the media
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-        builder.setMessage(getString(R.string.delete_picture))
+        builder.setMessage(getString(R.string.delete_media))
         builder.apply {
             setPositiveButton(android.R.string.ok) { _, _ ->
                 // Remove the media object from the list to save

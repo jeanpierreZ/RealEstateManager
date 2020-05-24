@@ -50,7 +50,7 @@
     <string name="add_picture">Add a picture</string>
     <string name="take_picture">Take a picture</string>
     <string name="take_video">Take a video</string>
-    <string name="delete_picture">Delete this picture?</string>
+    <string name="delete_media">Delete this media?</string>
     <string name="erase">Erase</string>
     <string name="save">Save</string>
 

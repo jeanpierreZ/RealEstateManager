@@ -1,7 +1,9 @@
 package com.openclassrooms.realestatemanager.fragments
 
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -57,6 +59,9 @@ class DetailsFragment : Fragment(),
     // Google Mobile Services Objects
     private var mapView: MapView? = null
     private lateinit var map: GoogleMap
+
+    // Declare callback
+    private var callbackMedia: OnMediaClickedListener? = null
 
     // View binding
     private var _binding: FragmentDetailsBinding? = null
@@ -152,7 +157,7 @@ class DetailsFragment : Fragment(),
                     }
                     if (realEstateLatLng != null) {
                         if (realEstateLatLng == LatLng(0.0, 0.0) && view.isVisible) {
-                            Snackbar.make(view, getString(R.string.address_not_available), Snackbar.LENGTH_LONG).show()
+                            Snackbar.make(view, getString(R.string.address_not_available), Snackbar.LENGTH_SHORT).show()
                         } else if (realEstateLatLng != LatLng(0.0, 0.0)) {
                             addRealEstateMarker(realEstateLatLng)
                         }
@@ -203,11 +208,26 @@ class DetailsFragment : Fragment(),
     // Interfaces for callback from MediaAdapter
 
     override fun onClickMedia(position: Int) {
-        Log.d("DETAILS", "CLICK on picture !")
+        // Get media from position
+        val media = mediaList[position]
+        var isMediaVideo = true
+
+        var mediaToPlay: Uri? = Uri.EMPTY
+        if (media?.mediaPicture?.isAbsolute!!) {
+            mediaToPlay = mediaList[position]?.mediaPicture
+            isMediaVideo = false
+        } else if (media.mediaVideo?.isAbsolute!!) {
+            mediaToPlay = mediaList[position]?.mediaVideo
+        }
+
+        if (mediaToPlay != Uri.EMPTY) {
+            Log.d(TAG, "Click on $mediaToPlay which isMediaVideo = $isMediaVideo")
+            callbackMedia?.onMediaClicked(mediaToPlay, isMediaVideo)
+        }
     }
 
     override fun onLongClickMedia(position: Int) {
-        Log.d("DETAILS", "LONG CLICK on picture !")
+        Log.d(TAG, "LONG CLICK on media !")
     }
 
     //----------------------------------------------------------------------------------
@@ -247,4 +267,29 @@ class DetailsFragment : Fragment(),
         map.addMarker(MarkerOptions().position(latLng))
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
     }
+
+    //----------------------------------------------------------------------------------
+    // Interface for callback to parent activity and associated methods when click on a media
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Call the method that creating callback after being attached to parent activity
+        createCallbackToParentActivity()
+    }
+
+    // Declare our interface that will be implemented by any container activity
+    interface OnMediaClickedListener {
+        fun onMediaClicked(mediaVideo: Uri?, isMediaVideo: Boolean)
+    }
+
+    // Create callback to parent activity
+    private fun createCallbackToParentActivity() {
+        try {
+            // Parent activity will automatically subscribe to callback
+            callbackMedia = activity as OnMediaClickedListener?
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$e must implement OnMediaClickedListener")
+        }
+    }
+
 }

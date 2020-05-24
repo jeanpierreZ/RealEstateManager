@@ -21,15 +21,15 @@ class MediaViewHolder(val binding: MediaBinding) : RecyclerView.ViewHolder(bindi
     private var callbackWeakRef: WeakReference<MediaAdapter.MediaListener>? = null
     private var callbackLongClickWeakRef: WeakReference<MediaAdapter.MediaLongClickListener>? = null
 
-    fun updatePictures(media: Media?, glide: RequestManager,
-                       callback: MediaAdapter.MediaListener,
-                       callbackLongClick: MediaAdapter.MediaLongClickListener) {
+    fun updateMedias(media: Media?, glide: RequestManager,
+                     callback: MediaAdapter.MediaListener,
+                     callbackLongClick: MediaAdapter.MediaLongClickListener) {
         // Update widgets
         binding.mediaText.text = media?.mediaDescription
 
-        if (media?.mediaPicture?.isAbsolute!!) {
+        if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
             binding.mediaImage.let { glide.load(media.mediaPicture).into(it) }
-        } else if (media.mediaVideo?.isAbsolute!!) {
+        } else if (media?.mediaVideo != null && media.mediaVideo?.isAbsolute!!) {
             binding.mediaImage.let { glide.load(media.mediaVideo).into(it) }
         }
 

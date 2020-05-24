@@ -37,7 +37,7 @@ class MediaAdapter(private var list: ArrayList<Media?>,
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: MediaViewHolder, position: Int) =
-            holder.updatePictures(list[position], glide, callback, callbackLongClick)
+            holder.updateMedias(list[position], glide, callback, callbackLongClick)
 
     fun setMedias(mediaList: ArrayList<Media?>) {
         list = mediaList
