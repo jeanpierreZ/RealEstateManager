@@ -59,7 +59,7 @@ class POIDialogFragment(private var editPOI: EditText,
             }
 
             // Use the Builder class for convenient dialog construction
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.DialogTheme)
             builder.setTitle(R.string.real_estate_points_of_interest)
                     // Specify the list array, the items to be selected by default (null for none),
                     // and the listener through which to receive callbacks when items are selected
