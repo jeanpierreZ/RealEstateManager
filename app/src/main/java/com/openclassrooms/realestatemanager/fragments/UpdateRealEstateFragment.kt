@@ -91,7 +91,7 @@ class UpdateRealEstateFragment : BaseRealEstateFragment() {
         //----------------------------------------------------------------------------------
         // Set the recyclerView
         realEstateWithMedias?.medias?.let { mediaList.addAll(it) }
-        updatePictureList(mediaList)
+        updateMediaList(mediaList)
 
         return view
     }

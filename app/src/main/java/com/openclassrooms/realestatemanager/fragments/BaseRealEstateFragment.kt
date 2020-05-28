@@ -22,6 +22,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
@@ -81,12 +82,10 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
         const val RC_READ_PERM = 400
         const val RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS = 500
 
-        // Request codes for picture
+        // Request codes for media
         const val RC_CHOOSE_PHOTO = 100
         const val RC_TAKE_PHOTO = 200
-
         const val RC_VIDEO_CAPTURE = 300
-
     }
 
     // Properties of a RealEstate with Address, PointsOfInterest, Status and Type
@@ -290,7 +289,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     // Add Picture to a list
                     mediaList.add(picture)
                     Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
-                    updatePictureList(mediaList)
+                    updateMediaList(mediaList)
                 }
 
                 RC_TAKE_PHOTO -> {
@@ -299,7 +298,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     // Add Media to a list
                     mediaList.add(pictureTaken)
                     Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
-                    updatePictureList(mediaList)
+                    updateMediaList(mediaList)
                 }
 
                 RC_VIDEO_CAPTURE -> {
@@ -310,7 +309,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     // Add Media to a list
                     mediaList.add(videoTaken)
                     Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
-                    updatePictureList(mediaList)
+                    updateMediaList(mediaList)
                 }
             }
         }
@@ -332,13 +331,29 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
         // Set layout manager to position the pictures
         binding.fragmentBaseRealEstateRecyclerView.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+        // Check if we are in tablet mode to adapt layout
+        if (myUtils.getScreenWidth(requireActivity()) > 720) {
+            binding.fragmentBaseRealEstateRecyclerView.setPadding(300, 0, 300, 0)
+        }
+
         // To swipe page after page
         binding.fragmentBaseRealEstateRecyclerView.onFlingListener = null
         PagerSnapHelper().attachToRecyclerView(binding.fragmentBaseRealEstateRecyclerView)
+
+        // Udate the pagerRecyclerView when switch on an other page
+        binding.fragmentBaseRealEstateRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position = (recyclerView.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
+                myUtils.addPagerToRecyclerView(requireActivity(), mediaList, position, binding.baseRealEstateFragmentPager)
+            }
+        })
     }
 
-    protected fun updatePictureList(updateList: ArrayList<Media?>) {
+    protected fun updateMediaList(updateList: ArrayList<Media?>) {
         mediaAdapter.setMedias(updateList)
+        myUtils.addPagerToRecyclerView(requireActivity(), updateList, 0, binding.baseRealEstateFragmentPager)
     }
 
     //----------------------------------------------------------------------------------

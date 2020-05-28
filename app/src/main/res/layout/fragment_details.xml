@@ -27,11 +27,17 @@
         android:id="@+id/details_fragment_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_description_title"
+        app:layout_constraintBottom_toTopOf="@+id/detailsFragmentPager"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
+
+    <LinearLayout
+        android:id="@+id/detailsFragmentPager"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/details_fragment_description_title"
+        app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
 
     <TextView
         android:id="@+id/details_fragment_description_title"
@@ -40,7 +46,7 @@
         android:text="@string/description"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_description"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
+        app:layout_constraintTop_toBottomOf="@+id/detailsFragmentPager" />
 
     <TextView
         android:id="@+id/details_fragment_description"

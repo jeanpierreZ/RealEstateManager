@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -146,7 +147,7 @@ class DetailsFragment : Fragment(),
                     mediaList.clear()
                     // Add photos of the chosen real estate from ListFragment
                     realEstateWithMedias?.medias?.let { mediaList.addAll(it) }
-                    updateUI(mediaList)
+                    updateMediaList(mediaList)
                     Log.d(TAG, "pictureList = $mediaList")
 
                     // Display the real estate on the map
@@ -202,10 +203,20 @@ class DetailsFragment : Fragment(),
         // To swipe page after page
         binding.detailsFragmentRecyclerView.onFlingListener = null
         PagerSnapHelper().attachToRecyclerView(binding.detailsFragmentRecyclerView)
+
+        // Udate the pagerRecyclerView when switch on an other page
+        binding.detailsFragmentRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position = (recyclerView.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
+                myUtils.addPagerToRecyclerView(requireActivity(), mediaList, position, binding.detailsFragmentPager)
+            }
+        })
     }
 
-    private fun updateUI(updateList: ArrayList<Media?>) {
+    private fun updateMediaList(updateList: ArrayList<Media?>) {
         mediaAdapter?.setMedias(updateList)
+        myUtils.addPagerToRecyclerView(requireActivity(), updateList, 0, binding.detailsFragmentPager)
     }
 
     //----------------------------------------------------------------------------------
