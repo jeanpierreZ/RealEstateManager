@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,8 @@ import com.openclassrooms.realestatemanager.views.viewholders.MediaViewHolder
 class MediaAdapter(private var list: ArrayList<Media?>,
                    private val glide: RequestManager,
                    private val callback: MediaListener,
-                   private val callbackLongClick: MediaLongClickListener)
+                   private val callbackLongClick: MediaLongClickListener,
+                   private var context: Context)
     : RecyclerView.Adapter<MediaViewHolder>() {
 
     //----------------------------------------------------------------------------------
@@ -29,7 +31,8 @@ class MediaAdapter(private var list: ArrayList<Media?>,
     //----------------------------------------------------------------------------------
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
+        context = parent.context
+        val inflater = LayoutInflater.from(context)
         val binding = MediaBinding.inflate(inflater, parent, false)
         return MediaViewHolder(binding)
     }
@@ -37,7 +40,7 @@ class MediaAdapter(private var list: ArrayList<Media?>,
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: MediaViewHolder, position: Int) =
-            holder.updateMedias(list[position], glide, callback, callbackLongClick)
+            holder.updateMedias(list[position], glide, callback, callbackLongClick, context)
 
     fun setMedias(mediaList: ArrayList<Media?>) {
         list = mediaList

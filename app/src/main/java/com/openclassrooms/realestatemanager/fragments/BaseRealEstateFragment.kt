@@ -21,6 +21,7 @@ import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
@@ -280,6 +281,10 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     // Granting temporary permissions to the Uri
                     activity?.grantUriPermission(BuildConfig.APPLICATION_ID, uriPictureSelected,
                             Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    val photoFlags = data?.flags?.and((Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION))
+                    if (uriPictureSelected != null && photoFlags != null) {
+                        activity?.contentResolver?.takePersistableUriPermission(uriPictureSelected, photoFlags)
+                    }
                     // Create a Media model with data
                     val picture = Media(null, mediaDescription, uriPictureSelected, null, null)
                     // Add Picture to a list
@@ -321,12 +326,15 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of pictures
-        mediaAdapter = MediaAdapter(mediaList, Glide.with(this), this, this)
+        mediaAdapter = MediaAdapter(mediaList, Glide.with(this), this, this, requireActivity())
         // Attach the adapter to the recyclerView to populate pictures
         binding.fragmentBaseRealEstateRecyclerView.adapter = mediaAdapter
         // Set layout manager to position the pictures
         binding.fragmentBaseRealEstateRecyclerView.layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        // To swipe page after page
+        binding.fragmentBaseRealEstateRecyclerView.onFlingListener = null
+        PagerSnapHelper().attachToRecyclerView(binding.fragmentBaseRealEstateRecyclerView)
     }
 
     protected fun updatePictureList(updateList: ArrayList<Media?>) {

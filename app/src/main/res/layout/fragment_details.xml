@@ -27,6 +27,9 @@
         android:id="@+id/details_fragment_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_description_title"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
 

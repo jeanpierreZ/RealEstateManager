@@ -1,7 +1,9 @@
 package com.openclassrooms.realestatemanager.views.viewholders
 
+import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.MediaController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.adapters.MediaAdapter
@@ -23,14 +25,21 @@ class MediaViewHolder(val binding: MediaBinding) : RecyclerView.ViewHolder(bindi
 
     fun updateMedias(media: Media?, glide: RequestManager,
                      callback: MediaAdapter.MediaListener,
-                     callbackLongClick: MediaAdapter.MediaLongClickListener) {
-        // Update widgets
+                     callbackLongClick: MediaAdapter.MediaLongClickListener,
+                     context: Context) {
+        // Description
         binding.mediaText.text = media?.mediaDescription
 
-        if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
-            binding.mediaImage.let { glide.load(media.mediaPicture).into(it) }
-        } else if (media?.mediaVideo != null && media.mediaVideo?.isAbsolute!!) {
-            binding.mediaImage.let { glide.load(media.mediaVideo).into(it) }
+        // Video
+        if (media?.mediaVideo != null && media.mediaVideo?.isAbsolute!!) {
+            binding.mediaVideo.setVideoURI(media.mediaVideo)
+            binding.mediaVideo.seekTo(1)
+            val mediaController = MediaController(context)
+            binding.mediaVideo.setMediaController(mediaController)
+            mediaController.setAnchorView(binding.mediaVideo)
+            // Picture
+        } else if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
+            glide.load(media.mediaPicture).into(binding.mediaImage)
         }
 
         // Create news weak References to our Listeners and implement listeners

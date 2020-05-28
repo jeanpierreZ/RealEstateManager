@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -193,11 +194,14 @@ class DetailsFragment : Fragment(),
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of media
-        mediaAdapter = MediaAdapter(mediaList, Glide.with(this), this, this)
+        mediaAdapter = activity?.let { MediaAdapter(mediaList, Glide.with(this), this, this, it) }
         // Attach the adapter to the recyclerView to populate medias
         binding.detailsFragmentRecyclerView.adapter = mediaAdapter
         // Set layout manager to position the medias
         binding.detailsFragmentRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        // To swipe page after page
+        binding.detailsFragmentRecyclerView.onFlingListener = null
+        PagerSnapHelper().attachToRecyclerView(binding.detailsFragmentRecyclerView)
     }
 
     private fun updateUI(updateList: ArrayList<Media?>) {
