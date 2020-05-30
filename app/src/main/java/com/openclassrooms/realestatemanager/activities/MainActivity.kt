@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.application.MyApplication
-import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.fragments.BaseRealEstateFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.ListFragment
@@ -29,6 +28,7 @@ import com.openclassrooms.realestatemanager.models.RealEstate
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
@@ -61,15 +61,9 @@ class MainActivity : AppCompatActivity(),
 
     private val myUtils = MyUtils()
 
-    // View binding
-    private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_main)
 
         configureToolbar()
         configureDrawerLayout()
@@ -115,7 +109,7 @@ class MainActivity : AppCompatActivity(),
                     listFragment.arguments = bundleListFragment
 
                     // Manage UI for tablet mode
-                    if (binding.activityMainDetailsFragmentContainerView != null) {
+                    if (activityMainDetailsFragmentContainerView != null) {
                         if (mapFragment.isVisible) {
                             hideMapFragment()
                         }
@@ -212,16 +206,16 @@ class MainActivity : AppCompatActivity(),
 
     private fun configureDrawerLayout() {
         // "Hamburger icon"
-        val toggle = ActionBarDrawerToggle(this, binding.drawerLayout, toolbar,
+        val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, android.R.color.white)
-        binding.drawerLayout.addDrawerListener(toggle)
+        drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
     }
 
     private fun configureNavigationView() {
         // For Menu Item
-        binding.activityMainNavView.setNavigationItemSelectedListener(this)
+        activityMainNavView.setNavigationItemSelectedListener(this)
     }
 
     //----------------------------------------------------------------------------------
@@ -229,8 +223,8 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         // Handle back click to close menu
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -240,9 +234,9 @@ class MainActivity : AppCompatActivity(),
         // Handle Navigation Item Click
         when (item.itemId) {
 
-            R.id.menu_nav_drawer_main_activity -> {
+            R.id.menuNavDrawerMainActivity -> {
                 // Check if we are in Tablet mode and adapt UI
-                if (binding.activityMainMapFragmentContainerView != null) {
+                if (activityMainMapFragmentContainerView != null) {
                     if (mapFragment.isVisible) {
                         hideMapFragment()
                     }
@@ -251,7 +245,7 @@ class MainActivity : AppCompatActivity(),
                 displayOrRefreshListFragment()
             }
 
-            R.id.menu_nav_drawer_map_fragment -> {
+            R.id.menuNavDrawerMapFragment -> {
                 // In Tablet mode, if mapFragment is already called, we adapt UI
                 if (mapFragment.isHidden) {
                     hideListAndDetailsFragment()
@@ -261,7 +255,7 @@ class MainActivity : AppCompatActivity(),
                 }
             }
         }
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -269,16 +263,16 @@ class MainActivity : AppCompatActivity(),
     // Private methods to display fragments
 
     private fun displayListFragment() {
-        if (binding.activityMainDetailsFragmentContainerView != null) {
+        if (activityMainDetailsFragmentContainerView != null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.activity_main_fragment_container_view, listFragment)
+                    .replace(R.id.activityMainFragmentContainerView, listFragment)
                     .attach(listFragment)
                     .show(listFragment)
                     .addToBackStack(listFragment.toString())
                     .commit()
         } else {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.activity_main_fragment_container_view, listFragment)
+                    .replace(R.id.activityMainFragmentContainerView, listFragment)
                     .addToBackStack(listFragment.toString())
                     .commit()
         }
@@ -287,9 +281,9 @@ class MainActivity : AppCompatActivity(),
     private fun displayDetailsFragmentAtLaunchInTabletMode() {
         // At launch, add only DetailsFragment in Tablet mode,
         // but hide the fragment because no real estate is selected
-        if (binding.activityMainDetailsFragmentContainerView != null) {
+        if (activityMainDetailsFragmentContainerView != null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.activity_main_details_fragment_container_view, detailsFragment)
+                    .replace(R.id.activityMainDetailsFragmentContainerView, detailsFragment)
                     .hide(detailsFragment)
                     .commit()
         }
@@ -297,7 +291,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun displayDetailsFragment() {
         // Refresh detailsFragment in Tablet mode
-        if (binding.activityMainDetailsFragmentContainerView != null) {
+        if (activityMainDetailsFragmentContainerView != null) {
             supportFragmentManager.beginTransaction().detach(detailsFragment).commit()
             // show() is used because detailsFragment is hide at launch
             supportFragmentManager.beginTransaction().attach(detailsFragment).show(detailsFragment)
@@ -306,7 +300,7 @@ class MainActivity : AppCompatActivity(),
         } else {
             // Display detailsFragment instead of ListFragment in Phone mode
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.activity_main_fragment_container_view, detailsFragment)
+                    .replace(R.id.activityMainFragmentContainerView, detailsFragment)
                     .addToBackStack(detailsFragment.toString())
                     .commit()
         }
@@ -314,11 +308,11 @@ class MainActivity : AppCompatActivity(),
 
     private fun displayMapFragment() {
         //  In Tablet mode, display mapFragment at the 1st call
-        if (binding.activityMainMapFragmentContainerView != null) {
+        if (activityMainMapFragmentContainerView != null) {
             // Hide listFragment and detailsFragment
             hideListAndDetailsFragment()
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.activity_main_map_fragment_container_view, mapFragment)
+                    .replace(R.id.activityMainMapFragmentContainerView, mapFragment)
                     .addToBackStack(mapFragment.toString())
                     .commit()
 
@@ -330,7 +324,7 @@ class MainActivity : AppCompatActivity(),
         } else {
             // Display mapFragment instead of ListFragment or DetailsFragment in Phone mode
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.activity_main_fragment_container_view, mapFragment)
+                    .replace(R.id.activityMainFragmentContainerView, mapFragment)
                     .addToBackStack(mapFragment.toString())
                     .commit()
         }
@@ -369,7 +363,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun displayOrRefreshListFragment() {
-        val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.activity_main_fragment_container_view)
+        val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.activityMainFragmentContainerView)
         if (currentFragment is ListFragment) {
             refreshListFragment()
         } else {
@@ -416,7 +410,7 @@ class MainActivity : AppCompatActivity(),
     // Implement listener from MapFragment to display DetailsFragment when click on a marker
     override fun onMarkerClicked(realEstateWithMediasId: Long?) {
         // Check if we are in Tablet mode and adapt UI
-        if (binding.activityMainMapFragmentContainerView != null) {
+        if (activityMainMapFragmentContainerView != null) {
             hideMapFragment()
             displayListFragment()
         }

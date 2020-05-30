@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.openclassrooms.realestatemanager.databinding.RealEstateBinding
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.views.viewholders.RealEstateViewHolder
 
@@ -20,8 +20,8 @@ class RealEstateAdapter(private var list: List<RealEstateWithMedias?>,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RealEstateViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = RealEstateBinding.inflate(inflater, parent, false)
-        return RealEstateViewHolder(binding)
+        val view = inflater.inflate(R.layout.real_estate, parent, false)
+        return RealEstateViewHolder(view)
     }
 
     override fun getItemCount(): Int = list.size

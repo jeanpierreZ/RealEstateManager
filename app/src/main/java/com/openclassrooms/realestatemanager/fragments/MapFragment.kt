@@ -25,7 +25,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.databinding.FragmentMapBinding
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.utils.MyUtils
@@ -81,20 +80,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     private val myUtils = MyUtils()
 
-    // View binding
-    private var _binding: FragmentMapBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        val fragmentView = inflater.inflate(R.layout.fragment_map, container, false)
 
-        // Inflate the layout for this fragment
-        _binding = FragmentMapBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        mMapView = binding.fragmentMapView
+        mMapView = fragmentView.findViewById(R.id.fragment_map_view)
 
         // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK objects or sub-Bundles.
         var mapViewBundle: Bundle? = null
@@ -114,7 +104,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
         // Construct a FusedLocationProviderClient
         fusedLocationProviderClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }
 
-        return view
+        return fragmentView
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -186,11 +176,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     override fun onLowMemory() {
         super.onLowMemory()
         mMapView?.onLowMemory()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     //----------------------------------------------------------------------------------

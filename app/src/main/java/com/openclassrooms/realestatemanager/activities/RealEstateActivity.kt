@@ -72,7 +72,7 @@ class RealEstateActivity : AppCompatActivity(),
 
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_real_estate_fragment_container_view, fragment)
+                .replace(R.id.activityRealEstateFragmentContainerView, fragment)
                 .commit()
     }
 

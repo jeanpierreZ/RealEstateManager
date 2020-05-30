@@ -12,291 +12,289 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/details_fragment_guideline_forty_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/details_fragment_guideline_forty_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/details_fragment_guideline_sixty_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/details_fragment_guideline_sixty_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/details_fragment_guideline_thirty_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.3" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/details_fragment_guideline_thirty_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/details_fragment_guideline_sixty_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.6" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/details_fragment_guideline_sixty_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6" />
 
-    <TextView
-        android:id="@+id/details_fragment_media"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/media"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_recycler_view"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/details_fragment_media"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/media"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_recycler_view"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/details_fragment_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingEnd="50dp"
-        android:paddingStart="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/detailsFragmentPager"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/details_fragment_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/detailsFragmentPager"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
 
-    <LinearLayout
-        android:id="@+id/detailsFragmentPager"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_forty_horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
+        <LinearLayout
+            android:id="@+id/detailsFragmentPager"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_forty_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
 
-    <TextView
-        android:id="@+id/details_fragment_description_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/description"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_description"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_forty_horizontal" />
+        <TextView
+            android:id="@+id/details_fragment_description_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_description"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_forty_horizontal" />
 
-    <TextView
-        android:id="@+id/details_fragment_description"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_sixty_horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_description_title" />
+        <TextView
+            android:id="@+id/details_fragment_description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_sixty_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_description_title" />
 
-    <ImageView
-        android:id="@+id/details_fragment_surface_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/surface_icon"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_surface_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
-        app:srcCompat="@drawable/ic_settings_overscan_black_24dp" />
+        <ImageView
+            android:id="@+id/details_fragment_surface_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/surface_icon"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_surface_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
+            app:srcCompat="@drawable/ic_settings_overscan_black_24dp" />
 
-    <TextView
-        android:id="@+id/details_fragment_surface_title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/surface_title"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_surface_icon"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal" />
+        <TextView
+            android:id="@+id/details_fragment_surface_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/surface_title"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_surface_icon"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal" />
 
-    <TextView
-        android:id="@+id/details_fragment_surface"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms_title"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface_title" />
+        <TextView
+            android:id="@+id/details_fragment_surface"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms_title"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface_title" />
 
-    <ImageView
-        android:id="@+id/details_fragment_room_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/room_icon"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_rooms_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface"
-        app:srcCompat="@drawable/ic_home_black_24dp" />
+        <ImageView
+            android:id="@+id/details_fragment_room_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/room_icon"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_rooms_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface"
+            app:srcCompat="@drawable/ic_home_black_24dp" />
 
-    <TextView
-        android:id="@+id/details_fragment_rooms_title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/number_of_rooms_title"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_room_icon"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface" />
+        <TextView
+            android:id="@+id/details_fragment_rooms_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/number_of_rooms_title"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_room_icon"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface" />
 
-    <TextView
-        android:id="@+id/details_fragment_rooms"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms_title"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms_title" />
+        <TextView
+            android:id="@+id/details_fragment_rooms"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms_title"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms_title" />
 
-    <ImageView
-        android:id="@+id/details_fragment_bathroom_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/bathroom_icon"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_bathrooms_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms"
-        app:srcCompat="@drawable/ic_hot_tub_black_24dp" />
+        <ImageView
+            android:id="@+id/details_fragment_bathroom_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bathroom_icon"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_bathrooms_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms"
+            app:srcCompat="@drawable/ic_hot_tub_black_24dp" />
 
-    <TextView
-        android:id="@+id/details_fragment_bathrooms_title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/number_of_bathrooms_title"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_bathroom_icon"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms" />
+        <TextView
+            android:id="@+id/details_fragment_bathrooms_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/number_of_bathrooms_title"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_bathroom_icon"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms" />
 
-    <TextView
-        android:id="@+id/details_fragment_bathrooms"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms_title"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms_title" />
+        <TextView
+            android:id="@+id/details_fragment_bathrooms"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms_title"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms_title" />
 
-    <ImageView
-        android:id="@+id/details_fragment_bedroom_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/bedroom_icon"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_bedrooms_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms"
-        app:srcCompat="@drawable/ic_hotel_black_24dp" />
+        <ImageView
+            android:id="@+id/details_fragment_bedroom_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/bedroom_icon"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_bedrooms_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms"
+            app:srcCompat="@drawable/ic_hotel_black_24dp" />
 
-    <TextView
-        android:id="@+id/details_fragment_bedrooms_title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/number_of_bedrooms_title"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_bedroom_icon"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms" />
+        <TextView
+            android:id="@+id/details_fragment_bedrooms_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/number_of_bedrooms_title"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_bedroom_icon"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms" />
 
-    <TextView
-        android:id="@+id/details_fragment_bedrooms"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_bedrooms_title" />
+        <TextView
+            android:id="@+id/details_fragment_bedrooms"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_bedrooms_title" />
 
-    <ImageView
-        android:id="@+id/details_fragment_location_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/location_icon"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
-        app:layout_constraintEnd_toStartOf="@+id/details_fragment_location_title"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
-        app:srcCompat="@drawable/ic_location_on_black_24dp" />
+        <ImageView
+            android:id="@+id/details_fragment_location_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/location_icon"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_location_title"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
+            app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
-    <TextView
-        android:id="@+id/details_fragment_location_title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/location_title"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_location_icon"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal" />
+        <TextView
+            android:id="@+id/details_fragment_location_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/location_title"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_location_icon"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal" />
 
-    <TextView
-        android:id="@+id/details_fragment_street"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_apartment"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_location_title" />
+        <TextView
+            android:id="@+id/details_fragment_street"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_apartment"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
+            app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_location_title" />
 
-    <TextView
-        android:id="@+id/details_fragment_apartment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_city"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_street" />
+        <TextView
+            android:id="@+id/details_fragment_apartment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_city"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
+            app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_street" />
 
-    <TextView
-        android:id="@+id/details_fragment_city"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_postal_code"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_apartment" />
+        <TextView
+            android:id="@+id/details_fragment_city"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_postal_code"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
+            app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_apartment" />
 
-    <TextView
-        android:id="@+id/details_fragment_postal_code"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/details_fragment_country"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_city" />
+        <TextView
+            android:id="@+id/details_fragment_postal_code"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_country"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
+            app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_city" />
 
-    <TextView
-        android:id="@+id/details_fragment_country"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_postal_code" />
+        <TextView
+            android:id="@+id/details_fragment_country"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
+            app:layout_constraintStart_toStartOf="@+id/details_fragment_guideline_thirty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_postal_code" />
 
-    <com.google.android.gms.maps.MapView
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/details_fragment_map"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
-        map:cameraZoom="17"
-        map:mapType="normal"
-        map:liteMode="true">
-    </com.google.android.gms.maps.MapView>
+        <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/details_fragment_map"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
+            map:cameraZoom="17"
+            map:liteMode="true"
+            map:mapType="normal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

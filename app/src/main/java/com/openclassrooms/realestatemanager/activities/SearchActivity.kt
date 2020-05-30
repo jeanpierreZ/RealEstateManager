@@ -11,13 +11,13 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.models.Type
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,9 +34,6 @@ class SearchActivity : AppCompatActivity(),
     }
 
     private val myUtils = MyUtils()
-
-    // View binding
-    private lateinit var binding: ActivitySearchBinding
 
     // Create a charSequence array of the Type Enum
     private val types: Array<CharSequence> =
@@ -56,66 +53,61 @@ class SearchActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_search)
 
         configureToolbar()
 
         //----------------------------------------------------------------------------------
         // Get data
 
-        with(binding) {
 
-            // Show the AlertDialog to choose the type of the real estate
-            activitySearchEditType.setOnClickListener {
-                myUtils.openPropertyDialogFragment(activitySearchEditType, R.string.real_estate_type,
-                        types, supportFragmentManager)
-            }
+        // Show the AlertDialog to choose the type of the real estate
+        activity_search_edit_type.setOnClickListener {
+            myUtils.openPropertyDialogFragment(activity_search_edit_type, R.string.real_estate_type,
+                    types, supportFragmentManager)
+        }
 
-            activitySearchEditPriceMin.doOnTextChanged { text, _, _, _ ->
-                minPrice = text.toString().toIntOrNull()
-            }
+        activity_search_edit_price_min.doOnTextChanged { text, _, _, _ ->
+            minPrice = text.toString().toIntOrNull()
+        }
 
-            activitySearchEditPriceMax.doOnTextChanged { text, _, _, _ ->
-                maxPrice = text.toString().toIntOrNull()
-            }
+        activity_search_edit_price_max.doOnTextChanged { text, _, _, _ ->
+            maxPrice = text.toString().toIntOrNull()
+        }
 
-            activitySearchEditSurfaceMin.doOnTextChanged { text, _, _, _ ->
-                minSurface = text.toString().toIntOrNull()
-            }
+        activity_search_edit_surface_min.doOnTextChanged { text, _, _, _ ->
+            minSurface = text.toString().toIntOrNull()
+        }
 
-            activitySearchEditSurfaceMax.doOnTextChanged { text, _, _, _ ->
-                maxSurface = text.toString().toIntOrNull()
-            }
+        activity_search_edit_surface_max.doOnTextChanged { text, _, _, _ ->
+            maxSurface = text.toString().toIntOrNull()
+        }
 
-            // Show the AlertDialog to choose the points of interest of the real estate
-            activitySearchEditPoi.setOnClickListener {
-                myUtils.openPOIDialogFragment(activitySearchEditPoi, pointsOfInterest, supportFragmentManager)
-            }
+        // Show the AlertDialog to choose the points of interest of the real estate
+        activity_search_edit_poi.setOnClickListener {
+            myUtils.openPOIDialogFragment(activity_search_edit_poi, pointsOfInterest, supportFragmentManager)
+        }
 
-            activitySearchEditDistrict.doOnTextChanged { text, _, _, _ ->
-                district = text.toString()
-            }
+        activity_search_edit_district.doOnTextChanged { text, _, _, _ ->
+            district = text.toString()
+        }
 
-            // Show the AlertDialog to choose the entry date of the real estate
-            activitySearchEditEntryDate.setOnClickListener {
-                myUtils.openDateDialogFragment(activitySearchEditEntryDate, supportFragmentManager)
-            }
+        // Show the AlertDialog to choose the entry date of the real estate
+        activity_search_edit_entry_date.setOnClickListener {
+            myUtils.openDateDialogFragment(activity_search_edit_entry_date, supportFragmentManager)
+        }
 
-            // Show the AlertDialog to choose the sale date of the real estate
-            activitySearchEditSaleDate.setOnClickListener {
-                myUtils.openDateDialogFragment(activitySearchEditSaleDate, supportFragmentManager)
-            }
+        // Show the AlertDialog to choose the sale date of the real estate
+        activity_search_edit_sale_date.setOnClickListener {
+            myUtils.openDateDialogFragment(activity_search_edit_sale_date, supportFragmentManager)
+        }
 
-            activitySearchEditMedia.doOnTextChanged { text, _, _, _ ->
-                mediaNumber = text.toString().toIntOrNull()
-            }
+        activity_search_edit_media.doOnTextChanged { text, _, _, _ ->
+            mediaNumber = text.toString().toIntOrNull()
+        }
 
-            activitySearchButton.setOnClickListener {
-                searchRealEstateWithMedias()
-            }
+        activity_search_button.setOnClickListener {
+            searchRealEstateWithMedias()
         }
     }
 
@@ -157,13 +149,13 @@ class SearchActivity : AppCompatActivity(),
 
         if (editTextChosen?.text.toString() != "") {
             when (editTextChosen) {
-                binding.activitySearchEditEntryDate -> entryDate = editTextChosen.text.toString()
-                binding.activitySearchEditSaleDate -> saleDate = editTextChosen.text.toString()
+                activity_search_edit_entry_date -> entryDate = editTextChosen?.text.toString()
+                activity_search_edit_sale_date -> saleDate = editTextChosen?.text.toString()
             }
         } else {
             when (editTextChosen) {
-                binding.activitySearchEditEntryDate -> entryDate = null
-                binding.activitySearchEditSaleDate -> saleDate = null
+                activity_search_edit_entry_date -> entryDate = null
+                activity_search_edit_sale_date -> saleDate = null
             }
         }
         // Parse String from EditText to Date then compare the two dates
@@ -175,8 +167,8 @@ class SearchActivity : AppCompatActivity(),
             // The sale date cannot be earlier than the entry date
             if (dateOfSale.before(dateOfEntry)) {
                 myUtils.showShortToastMessage(this, R.string.sale_date_earlier_entry_date)
-                binding.activitySearchEditEntryDate.text.clear()
-                binding.activitySearchEditSaleDate.text.clear()
+                activity_search_edit_entry_date.text.clear()
+                activity_search_edit_sale_date.text.clear()
                 entryDate = null
                 saleDate = null
             }

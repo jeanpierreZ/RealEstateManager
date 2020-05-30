@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.openclassrooms.realestatemanager.databinding.MediaBinding
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.views.viewholders.MediaViewHolder
 
@@ -33,8 +33,8 @@ class MediaAdapter(private var list: ArrayList<Media?>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
         context = parent.context
         val inflater = LayoutInflater.from(context)
-        val binding = MediaBinding.inflate(inflater, parent, false)
-        return MediaViewHolder(binding)
+        val view = inflater.inflate(R.layout.media, parent, false)
+        return MediaViewHolder(view)
     }
 
     override fun getItemCount(): Int = list.size

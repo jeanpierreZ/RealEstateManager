@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.openclassrooms.realestatemanager.activities.RealEstateActivity
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.utils.MyUtils
+import kotlinx.android.synthetic.main.fragment_base_real_estate.*
 
 /**
  * A simple [Fragment] subclass.
@@ -18,14 +19,7 @@ class UpdateRealEstateFragment : BaseRealEstateFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the parent layout for this fragment
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-
-        //----------------------------------------------------------------------------------
-        // Set data of the real estate from DetailsFragment
-
-        val title = arguments?.getString(RealEstateActivity.TITLE_FRAGMENT)
-        binding.fragmentBaseRealEstateTitle.text = title
+        val fragmentView = super.onCreateView(inflater, container, savedInstanceState)
 
         // Get data from the realEstateWithMedias
         val realEstateWithMedias: RealEstateWithMedias? = arguments?.getParcelable(RealEstateActivity.REAL_ESTATE_WITH_MEDIAS)
@@ -59,41 +53,47 @@ class UpdateRealEstateFragment : BaseRealEstateFragment() {
         agent = realEstateWithMedias?.realEstate?.agent
 
         //----------------------------------------------------------------------------------
-        // Set data in editTexts
-
-        with(binding) {
-            fragmentBaseRealEstateEditType.setText(type)
-
-            myUtils.displayIntegerProperties(price, fragmentBaseRealEstateEditPrice)
-            myUtils.displayIntegerProperties(surface, fragmentBaseRealEstateEditSurface)
-            myUtils.displayIntegerProperties(roomsNumber, fragmentBaseRealEstateEditRooms)
-            myUtils.displayIntegerProperties(bathroomsNumber, fragmentBaseRealEstateEditBathrooms)
-            myUtils.displayIntegerProperties(bedroomsNumber, fragmentBaseRealEstateEditBedrooms)
-
-            val displayPOI = pointsOfInterest?.joinToString { it -> it }
-            fragmentBaseRealEstateEditPoi.setText(displayPOI)
-
-            fragmentBaseRealEstateEditStreetNumber.setText(streetNumber)
-            fragmentBaseRealEstateEditStreet.setText(street)
-            fragmentBaseRealEstateEditApartmentNumber.setText(apartmentNumber)
-            fragmentBaseRealEstateEditDistrict.setText(district)
-            fragmentBaseRealEstateEditCity.setText(city)
-            fragmentBaseRealEstateEditPostalCode.setText(postalCode)
-            fragmentBaseRealEstateEditCountry.setText(country)
-
-            fragmentBaseRealEstateEditDescription.setText(description)
-            fragmentBaseRealEstateEditStatus.setText(status)
-            fragmentBaseRealEstateEditEntryDate.setText(entryDate)
-            fragmentBaseRealEstateEditSaleDate.setText(saleDate)
-            fragmentBaseRealEstateEditAgent.setText(agent)
-        }
-
-        //----------------------------------------------------------------------------------
         // Set the recyclerView
         realEstateWithMedias?.medias?.let { mediaList.addAll(it) }
         updateMediaList(mediaList)
 
-        return view
+        return fragmentView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set data of the real estate from DetailsFragment
+        val title = arguments?.getString(RealEstateActivity.TITLE_FRAGMENT)
+        fragment_base_real_estate_title.text = title
+
+        //----------------------------------------------------------------------------------
+        // Set data in editTexts
+
+        fragment_base_real_estate_edit_type.setText(type)
+
+        myUtils.displayIntegerProperties(price, fragment_base_real_estate_edit_price)
+        myUtils.displayIntegerProperties(surface, fragment_base_real_estate_edit_surface)
+        myUtils.displayIntegerProperties(roomsNumber, fragment_base_real_estate_edit_rooms)
+        myUtils.displayIntegerProperties(bathroomsNumber, fragment_base_real_estate_edit_bathrooms)
+        myUtils.displayIntegerProperties(bedroomsNumber, fragment_base_real_estate_edit_bedrooms)
+
+        val displayPOI = pointsOfInterest?.joinToString { it -> it }
+        fragment_base_real_estate_edit_poi.setText(displayPOI)
+
+        fragment_base_real_estate_edit_street_number.setText(streetNumber)
+        fragment_base_real_estate_edit_street.setText(street)
+        fragment_base_real_estate_edit_apartment_number.setText(apartmentNumber)
+        fragment_base_real_estate_edit_district.setText(district)
+        fragment_base_real_estate_edit_city.setText(city)
+        fragment_base_real_estate_edit_postal_code.setText(postalCode)
+        fragment_base_real_estate_edit_country.setText(country)
+
+        fragment_base_real_estate_edit_description.setText(description)
+        fragment_base_real_estate_edit_status.setText(status)
+        fragment_base_real_estate_edit_entry_date.setText(entryDate)
+        fragment_base_real_estate_edit_sale_date.setText(saleDate)
+        fragment_base_real_estate_edit_agent.setText(agent)
     }
 
 }

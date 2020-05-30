@@ -11,10 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.RealEstateAdapter
-import com.openclassrooms.realestatemanager.databinding.FragmentListBinding
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
 
@@ -28,6 +29,7 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
         private val TAG = ListFragment::class.java.simpleName
     }
 
+    private var recyclerView: RecyclerView? = null
     private var realEstateAdapter: RealEstateAdapter? = null
 
     private lateinit var realEstateWithMediasViewModel: RealEstateWithMediasViewModel
@@ -37,18 +39,12 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
     // Declare callback
     private var callbackRealEstate: OnRealEstateClickedListener? = null
 
-    // View binding
-    private var _binding: FragmentListBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        val fragmentView: View = inflater.inflate(R.layout.fragment_list, container, false)
 
-        // Inflate the layout for this fragment
-        _binding = FragmentListBinding.inflate(inflater, container, false)
-        val view = binding.root
+        // Get RecyclerView from layout and serialise it
+        recyclerView = fragmentView.findViewById(R.id.fragment_list_recycler_view)
 
         configureRecyclerView()
 
@@ -70,12 +66,7 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
             })
         }
 
-        return view
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        return fragmentView
     }
 
     //----------------------------------------------------------------------------------
@@ -85,9 +76,9 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
         // Create the adapter by passing the list of items
         realEstateAdapter = RealEstateAdapter(realEstateWithMediasList, Glide.with(this), this)
         // Attach the adapter to the recyclerView to populate items
-        binding.fragmentListRecyclerView.adapter = realEstateAdapter
+        recyclerView?.adapter = realEstateAdapter
         // Set layout manager to position the items
-        binding.fragmentListRecyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView?.layoutManager = LinearLayoutManager(activity)
     }
 
     private fun updateUI(updateList: List<RealEstateWithMedias?>) {

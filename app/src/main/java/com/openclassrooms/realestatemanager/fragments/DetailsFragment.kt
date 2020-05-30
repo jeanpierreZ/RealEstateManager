@@ -27,10 +27,10 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.activities.RealEstateActivity
 import com.openclassrooms.realestatemanager.adapters.MediaAdapter
-import com.openclassrooms.realestatemanager.databinding.FragmentDetailsBinding
 import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import kotlinx.android.synthetic.main.fragment_details.*
 
 
 /**
@@ -55,6 +55,7 @@ class DetailsFragment : Fragment(),
         private const val MAPVIEW_BUNDLE_KEY = "MAPVIEW_BUNDLE_KEY"
     }
 
+    private var recyclerView: RecyclerView? = null
     private var mediaAdapter: MediaAdapter? = null
 
     private var mediaList: ArrayList<Media?> = arrayListOf()
@@ -72,20 +73,12 @@ class DetailsFragment : Fragment(),
 
     private lateinit var fragmentTransaction: FragmentTransaction
 
-    // View binding
-    private var _binding: FragmentDetailsBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    private val binding get() = _binding!!
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        val fragmentView: View = inflater.inflate(R.layout.fragment_details, container, false)
 
-        // Inflate the layout for this fragment
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        mapView = binding.detailsFragmentMap
+        recyclerView = fragmentView.findViewById(R.id.details_fragment_recycler_view)
+        mapView = fragmentView.findViewById(R.id.details_fragment_map)
 
         // For Toolbar menu
         setHasOptionsMenu(true)
@@ -144,25 +137,24 @@ class DetailsFragment : Fragment(),
                     val bathroomsNumber = realEstateWithMedias?.realEstate?.bathroomsNumber
                     val bedroomsNumber = realEstateWithMedias?.realEstate?.bedroomsNumber
 
-                    with(binding) {
-                        // Set the editTexts
-                        detailsFragmentDescription.text = realEstateWithMedias?.realEstate?.description
+                    // Set the editTexts
+                    details_fragment_description.text = realEstateWithMedias?.realEstate?.description
 
-                        myUtils.displayIntegerProperties(surface, detailsFragmentSurface)
-                        myUtils.displayIntegerProperties(roomsNumber, detailsFragmentRooms)
-                        myUtils.displayIntegerProperties(bathroomsNumber, detailsFragmentBathrooms)
-                        myUtils.displayIntegerProperties(bedroomsNumber, detailsFragmentBedrooms)
+                    myUtils.displayIntegerProperties(surface, details_fragment_surface)
+                    myUtils.displayIntegerProperties(roomsNumber, details_fragment_rooms)
+                    myUtils.displayIntegerProperties(bathroomsNumber, details_fragment_bathrooms)
+                    myUtils.displayIntegerProperties(bedroomsNumber, details_fragment_bedrooms)
 
-                        detailsFragmentStreet.text = shortAddress
-                        if (apartmentNumber.isNullOrBlank() || apartmentNumber == "") {
-                            detailsFragmentApartment.text = apartmentNumber
-                        } else {
-                            detailsFragmentApartment.text = String.format(getString(R.string.apt) + " $apartmentNumber")
-                        }
-                        detailsFragmentCity.text = city
-                        detailsFragmentPostalCode.text = postalCode
-                        detailsFragmentCountry.text = country
+                    details_fragment_street.text = shortAddress
+                    if (apartmentNumber.isNullOrBlank() || apartmentNumber == "") {
+                        details_fragment_apartment.text = apartmentNumber
+                    } else {
+                        details_fragment_apartment.text = String.format(getString(R.string.apt) + " $apartmentNumber")
                     }
+                    details_fragment_city.text = city
+                    details_fragment_postal_code.text = postalCode
+                    details_fragment_country.text = country
+
 
                     configureRecyclerView()
                     // Clear the mediaList in case of reuse it
@@ -180,15 +172,15 @@ class DetailsFragment : Fragment(),
                         }
                     }
                     if (realEstateLatLng != null) {
-                        if (realEstateLatLng == LatLng(0.0, 0.0) && view.isVisible) {
-                            Snackbar.make(view, getString(R.string.address_not_available), Snackbar.LENGTH_SHORT).show()
+                        if (realEstateLatLng == LatLng(0.0, 0.0) && fragmentView.isVisible) {
+                            Snackbar.make(fragmentView, getString(R.string.address_not_available), Snackbar.LENGTH_SHORT).show()
                         } else if (realEstateLatLng != LatLng(0.0, 0.0)) {
                             addRealEstateMarker(realEstateLatLng)
                         }
                     }
                 })
 
-        return view
+        return fragmentView
     }
 
     override fun onResume() {
@@ -197,11 +189,6 @@ class DetailsFragment : Fragment(),
             // Remove nested PlayerFragment and return to parent DetailsFragment
             removeNestedPlayerFragment()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     //----------------------------------------------------------------------------------
@@ -227,26 +214,26 @@ class DetailsFragment : Fragment(),
         // Create the adapter by passing the list of media
         mediaAdapter = activity?.let { MediaAdapter(mediaList, Glide.with(this), this, this, it) }
         // Attach the adapter to the recyclerView to populate medias
-        binding.detailsFragmentRecyclerView.adapter = mediaAdapter
+        recyclerView?.adapter = mediaAdapter
         // Set layout manager to position the medias
-        binding.detailsFragmentRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         // To swipe page after page
-        binding.detailsFragmentRecyclerView.onFlingListener = null
-        PagerSnapHelper().attachToRecyclerView(binding.detailsFragmentRecyclerView)
+        recyclerView?.onFlingListener = null
+        PagerSnapHelper().attachToRecyclerView(recyclerView)
 
         // Udate the pagerRecyclerView when switch on an other page
-        binding.detailsFragmentRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 val position = (recyclerView.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
-                myUtils.addPagerToRecyclerView(requireActivity(), mediaList, position, binding.detailsFragmentPager)
+                myUtils.addPagerToRecyclerView(requireActivity(), mediaList, position, detailsFragmentPager)
             }
         })
     }
 
     private fun updateMediaList(updateList: ArrayList<Media?>) {
         mediaAdapter?.setMedias(updateList)
-        myUtils.addPagerToRecyclerView(requireActivity(), updateList, 0, binding.detailsFragmentPager)
+        myUtils.addPagerToRecyclerView(requireActivity(), updateList, 0, detailsFragmentPager)
     }
 
     //----------------------------------------------------------------------------------

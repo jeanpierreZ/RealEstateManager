@@ -3,15 +3,18 @@ package com.openclassrooms.realestatemanager.views.viewholders
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.MediaController
+import android.widget.TextView
+import android.widget.VideoView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.MediaAdapter
-import com.openclassrooms.realestatemanager.databinding.MediaBinding
 import com.openclassrooms.realestatemanager.models.Media
 import java.lang.ref.WeakReference
 
-class MediaViewHolder(val binding: MediaBinding) : RecyclerView.ViewHolder(binding.root),
+class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
         View.OnClickListener, View.OnLongClickListener {
     // Represent a media of a real estate in the RecyclerView
 
@@ -19,27 +22,37 @@ class MediaViewHolder(val binding: MediaBinding) : RecyclerView.ViewHolder(bindi
         private val TAG = MediaViewHolder::class.java.simpleName
     }
 
+    private var mediaText: TextView? = null
+    private var mediaPicture: ImageView? = null
+    private var mediaVideo: VideoView? = null
+
     // For data
     private var callbackWeakRef: WeakReference<MediaAdapter.MediaListener>? = null
     private var callbackLongClickWeakRef: WeakReference<MediaAdapter.MediaLongClickListener>? = null
+
+    init {
+        mediaText = mediaView.findViewById(R.id.media_text)
+        mediaPicture = mediaView.findViewById(R.id.media_image)
+        mediaVideo = mediaView.findViewById(R.id.media_video)
+    }
 
     fun updateMedias(media: Media?, glide: RequestManager,
                      callback: MediaAdapter.MediaListener,
                      callbackLongClick: MediaAdapter.MediaLongClickListener,
                      context: Context) {
         // Description
-        binding.mediaText.text = media?.mediaDescription
+        mediaText?.text = media?.mediaDescription
 
         // Video
         if (media?.mediaVideo != null && media.mediaVideo?.isAbsolute!!) {
-            binding.mediaVideo.setVideoURI(media.mediaVideo)
-            binding.mediaVideo.seekTo(1)
+            mediaVideo?.setVideoURI(media.mediaVideo)
+            mediaVideo?.seekTo(1)
             val mediaController = MediaController(context)
-            binding.mediaVideo.setMediaController(mediaController)
-            mediaController.setAnchorView(binding.mediaVideo)
+            mediaVideo?.setMediaController(mediaController)
+            mediaController.setAnchorView(mediaVideo)
             // Picture
         } else if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
-            glide.load(media.mediaPicture).into(binding.mediaImage)
+            mediaPicture?.let { glide.load(media.mediaPicture).into(it) }
         }
 
         // Create news weak References to our Listeners and implement listeners
