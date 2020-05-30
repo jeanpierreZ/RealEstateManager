@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -20,7 +19,10 @@ import com.google.android.material.navigation.NavigationView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.application.MyApplication
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
-import com.openclassrooms.realestatemanager.fragments.*
+import com.openclassrooms.realestatemanager.fragments.BaseRealEstateFragment
+import com.openclassrooms.realestatemanager.fragments.DetailsFragment
+import com.openclassrooms.realestatemanager.fragments.ListFragment
+import com.openclassrooms.realestatemanager.fragments.MapFragment
 import com.openclassrooms.realestatemanager.models.Address
 import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.models.RealEstate
@@ -33,7 +35,6 @@ import kotlinx.android.synthetic.main.toolbar.*
 class MainActivity : AppCompatActivity(),
         ListFragment.OnRealEstateClickedListener,
         MapFragment.OnMarkerClickedListener,
-        DetailsFragment.OnMediaClickedListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
@@ -42,8 +43,6 @@ class MainActivity : AppCompatActivity(),
         // Keys for bundle
         const val REAL_ESTATE_ID_USED_FOR_DETAIL: String = "REAL_ESTATE_ID_USED_FOR_DETAIL"
         const val LIST_FROM_SEARCH: String = "LIST_FROM_SEARCH"
-        const val MEDIA_TO_PLAY: String = "MEDIA_TO_PLAY"
-        const val IS_MEDIA_VIDEO: String = "IS_MEDIA_VIDEO"
 
         // Key for real estate title
         const val TITLE_REAL_ESTATE_ACTIVITY: String = "TITLE_REAL_ESTATE_ACTIVITY"
@@ -59,7 +58,6 @@ class MainActivity : AppCompatActivity(),
     private val detailsFragment = DetailsFragment()
     private val listFragment = ListFragment()
     private val mapFragment = MapFragment()
-    private val playerFragment = PlayerFragment()
 
     private val myUtils = MyUtils()
 
@@ -323,6 +321,12 @@ class MainActivity : AppCompatActivity(),
                     .replace(R.id.activity_main_map_fragment_container_view, mapFragment)
                     .addToBackStack(mapFragment.toString())
                     .commit()
+
+            // If the toolbar is hide (from PlayerFragment), show it
+            if (!supportActionBar?.isShowing!!) {
+                supportActionBar?.show()
+            }
+
         } else {
             // Display mapFragment instead of ListFragment or DetailsFragment in Phone mode
             supportFragmentManager.beginTransaction()
@@ -330,14 +334,6 @@ class MainActivity : AppCompatActivity(),
                     .addToBackStack(mapFragment.toString())
                     .commit()
         }
-    }
-
-    private fun displayPlayerFragment() {
-        // Display PlayerFragment in Phone mode
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_main_fragment_container_view, playerFragment)
-                .addToBackStack(playerFragment.toString())
-                .commit()
     }
 
     private fun hideListAndDetailsFragment() {
@@ -359,6 +355,11 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction().attach(mapFragment).show(mapFragment)
                 .addToBackStack(mapFragment.toString())
                 .commit()
+
+        // If the toolbar is hide (from PlayerFragment), show it
+        if (!supportActionBar?.isShowing!!) {
+            supportActionBar?.show()
+        }
     }
 
     private fun refreshListFragment() {
@@ -421,18 +422,6 @@ class MainActivity : AppCompatActivity(),
         }
         putRealEstateIdInBundle(realEstateWithMediasId)
         displayDetailsFragment()
-    }
-
-    // Implement listener from DetailsFragment to display PlayerFragment when click on a media
-    override fun onMediaClicked(mediaVideo: Uri?, isMediaVideo: Boolean) {
-        val bundle = Bundle()
-        if (mediaVideo != null) {
-            bundle.putParcelable(MEDIA_TO_PLAY, mediaVideo)
-            bundle.putBoolean(IS_MEDIA_VIDEO, isMediaVideo)
-        }
-        playerFragment.arguments = bundle
-        // Display PlayerFragment instead of DetailsFragment in Phone mode
-        displayPlayerFragment()
     }
 
 }

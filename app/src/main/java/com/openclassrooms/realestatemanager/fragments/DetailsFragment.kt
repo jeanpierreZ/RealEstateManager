@@ -1,14 +1,15 @@
 package com.openclassrooms.realestatemanager.fragments
 
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,8 +44,12 @@ class DetailsFragment : Fragment(),
     companion object {
         private val TAG = DetailsFragment::class.java.simpleName
 
-        // Key for itemWithPictures
-        const val BUNDLE_REAL_ESTATE_WITH_MEDIAS: String = "BUNDLE_REAL_ESTATE_WITH_MEDIAS"
+        // Key for intent to edit a realEstateWithMedias in RealEstateActivity
+        const val REAL_ESTATE_WITH_MEDIAS: String = "REAL_ESTATE_WITH_MEDIAS"
+
+        // Bundles for PlayerFragment
+        const val BUNDLE_MEDIA_TO_PLAY: String = "BUNDLE_MEDIA_TO_PLAY"
+        const val BUNDLE_IS_MEDIA_VIDEO: String = "BUNDLE_IS_MEDIA_VIDEO"
 
         // Keys for storing activity state
         private const val MAPVIEW_BUNDLE_KEY = "MAPVIEW_BUNDLE_KEY"
@@ -62,8 +67,10 @@ class DetailsFragment : Fragment(),
     private var mapView: MapView? = null
     private lateinit var map: GoogleMap
 
-    // Declare callback
-    private var callbackMedia: OnMediaClickedListener? = null
+    // Nested PlayerFragment
+    private val playerFragment: Fragment = PlayerFragment()
+
+    private lateinit var fragmentTransaction: FragmentTransaction
 
     // View binding
     private var _binding: FragmentDetailsBinding? = null
@@ -82,6 +89,21 @@ class DetailsFragment : Fragment(),
 
         // For Toolbar menu
         setHasOptionsMenu(true)
+
+        // This callback will only be called when DetailsFragment is at least Started.
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            Log.d(TAG, "DetailsFragment callback back pressed")
+            // Handle the back button event...
+            if (playerFragment.isAdded) {
+                // ... to remove nested PlayerFragment and return to parent DetailsFragment...
+                removeNestedPlayerFragment()
+            } else {
+                // ... or return to backstack
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+        // Enabled the callback
+        callback.isEnabled = true
 
         editRealEstateIntent = Intent(activity, RealEstateActivity::class.java)
 
@@ -105,7 +127,7 @@ class DetailsFragment : Fragment(),
                 .observe(viewLifecycleOwner, Observer { realEstateWithMedias ->
 
                     // Put the realEstateWithMedias in the intent, which is used when the user want to edit data
-                    editRealEstateIntent.putExtra(BUNDLE_REAL_ESTATE_WITH_MEDIAS, realEstateWithMedias)
+                    editRealEstateIntent.putExtra(REAL_ESTATE_WITH_MEDIAS, realEstateWithMedias)
 
                     // Get data to set addresses for textViews and map
                     val streetNumber = realEstateWithMedias?.realEstate?.address?.streetNumber ?: ""
@@ -145,10 +167,10 @@ class DetailsFragment : Fragment(),
                     configureRecyclerView()
                     // Clear the mediaList in case of reuse it
                     mediaList.clear()
-                    // Add photos of the chosen real estate from ListFragment
+                    // Add medias of the chosen real estate from ListFragment
                     realEstateWithMedias?.medias?.let { mediaList.addAll(it) }
                     updateMediaList(mediaList)
-                    Log.d(TAG, "pictureList = $mediaList")
+                    Log.d(TAG, "mediaList = $mediaList")
 
                     // Display the real estate on the map
                     clearMap()
@@ -167,6 +189,14 @@ class DetailsFragment : Fragment(),
                 })
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (playerFragment.isAdded) {
+            // Remove nested PlayerFragment and return to parent DetailsFragment
+            removeNestedPlayerFragment()
+        }
     }
 
     override fun onDestroyView() {
@@ -225,8 +255,10 @@ class DetailsFragment : Fragment(),
     override fun onClickMedia(position: Int) {
         // Get media from position
         val media = mediaList[position]
+        // To check if it is a picture or a video
         var isMediaVideo = true
 
+        // Get the media to play
         var mediaToPlay: Uri? = Uri.EMPTY
         if (media?.mediaPicture?.isAbsolute!!) {
             mediaToPlay = mediaList[position]?.mediaPicture
@@ -235,9 +267,16 @@ class DetailsFragment : Fragment(),
             mediaToPlay = mediaList[position]?.mediaVideo
         }
 
+        // Start PlayerFragment with data
         if (mediaToPlay != Uri.EMPTY) {
             Log.d(TAG, "Click on $mediaToPlay which isMediaVideo = $isMediaVideo")
-            callbackMedia?.onMediaClicked(mediaToPlay, isMediaVideo)
+
+            val bundle = Bundle()
+            bundle.putParcelable(BUNDLE_MEDIA_TO_PLAY, mediaToPlay)
+            bundle.putBoolean(BUNDLE_IS_MEDIA_VIDEO, isMediaVideo)
+            playerFragment.arguments = bundle
+
+            addNestedPlayerFragment()
         }
     }
 
@@ -246,6 +285,22 @@ class DetailsFragment : Fragment(),
     }
 
     //----------------------------------------------------------------------------------
+    // Private methods to display child fragment
+
+    private fun addNestedPlayerFragment() {
+        fragmentTransaction = childFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.detailsFragmentLayout, playerFragment)
+        fragmentTransaction.commit()
+    }
+
+    private fun removeNestedPlayerFragment() {
+        fragmentTransaction = childFragmentManager.beginTransaction()
+        fragmentTransaction.remove(playerFragment)
+        fragmentTransaction.commit()
+    }
+
+    //----------------------------------------------------------------------------------
+    // For Google Map
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.map = googleMap
@@ -254,9 +309,6 @@ class DetailsFragment : Fragment(),
         map.uiSettings.isMapToolbarEnabled = false
         map.uiSettings.isCompassEnabled = false
     }
-
-    //----------------------------------------------------------------------------------
-    // For Google Map
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -281,30 +333,6 @@ class DetailsFragment : Fragment(),
     private fun addRealEstateMarker(latLng: LatLng) {
         map.addMarker(MarkerOptions().position(latLng))
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-    }
-
-    //----------------------------------------------------------------------------------
-    // Interface for callback to parent activity and associated methods when click on a media
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        // Call the method that creating callback after being attached to parent activity
-        createCallbackToParentActivity()
-    }
-
-    // Declare our interface that will be implemented by any container activity
-    interface OnMediaClickedListener {
-        fun onMediaClicked(mediaVideo: Uri?, isMediaVideo: Boolean)
-    }
-
-    // Create callback to parent activity
-    private fun createCallbackToParentActivity() {
-        try {
-            // Parent activity will automatically subscribe to callback
-            callbackMedia = activity as OnMediaClickedListener?
-        } catch (e: ClassCastException) {
-            throw ClassCastException("$e must implement OnMediaClickedListener")
-        }
     }
 
 }

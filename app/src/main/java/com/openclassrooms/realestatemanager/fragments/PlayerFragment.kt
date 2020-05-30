@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.databinding.FragmentPlayerBinding
 
 /**
@@ -28,8 +28,8 @@ class PlayerFragment : Fragment() {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val mediaToPlay: Uri? = arguments?.getParcelable(MainActivity.MEDIA_TO_PLAY)
-        val isMediaVideo = arguments?.getBoolean(MainActivity.IS_MEDIA_VIDEO)
+        val mediaToPlay: Uri? = arguments?.getParcelable(DetailsFragment.BUNDLE_MEDIA_TO_PLAY)
+        val isMediaVideo = arguments?.getBoolean(DetailsFragment.BUNDLE_IS_MEDIA_VIDEO)
 
         if (isMediaVideo != null && isMediaVideo) {
             binding.fragmentPlayerImage.visibility = View.GONE
@@ -44,6 +44,16 @@ class PlayerFragment : Fragment() {
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     override fun onDestroyView() {

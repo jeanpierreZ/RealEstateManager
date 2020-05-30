@@ -2,10 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailsFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp"
     tools:context=".fragments.DetailsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/details_fragment_guideline_fifty_vertical"
@@ -34,8 +39,8 @@
         android:id="@+id/detailsFragmentPager"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/details_fragment_description_title"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
 
@@ -256,16 +261,16 @@
         app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_postal_code" />
 
-    <com.google.android.gms.maps.MapView
-        xmlns:map="http://schemas.android.com/apk/res-auto"
+    <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/details_fragment_map"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_fragment_country"
         map:cameraZoom="17"
-        map:mapType="normal"
-        map:liteMode="true">
-    </com.google.android.gms.maps.MapView>
+        map:liteMode="true"
+        map:mapType="normal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

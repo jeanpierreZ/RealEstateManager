@@ -41,7 +41,7 @@ class RealEstateActivity : AppCompatActivity(),
 
         title = intent.getStringExtra(MainActivity.TITLE_REAL_ESTATE_ACTIVITY)
         // realEstateWithMedias object from DetailsFragment
-        realEstateWithMedias = intent.getParcelableExtra(DetailsFragment.BUNDLE_REAL_ESTATE_WITH_MEDIAS)
+        realEstateWithMedias = intent.getParcelableExtra(DetailsFragment.REAL_ESTATE_WITH_MEDIAS)
 
         configureToolbar()
         displayFragment()
