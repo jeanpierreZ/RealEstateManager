@@ -105,4 +105,9 @@
     <string name="channel_description">Channel for notifications</string>
     <string name="notification_text"> New real estate added!</string>
 
+    <!-- ExoPlayer -->
+    <string name="full_screen">Full screen</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+
 </resources>

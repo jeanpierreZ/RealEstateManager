@@ -1,13 +1,13 @@
 package com.openclassrooms.realestatemanager.application
 
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import androidx.multidex.MultiDexApplication
 import com.openclassrooms.realestatemanager.R
 
 
-class MyApplication : Application() {
+class MyApplication : MultiDexApplication() {
 
     companion object {
         const val CHANNEL_ID = "channel_id"
