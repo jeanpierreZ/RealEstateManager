@@ -55,7 +55,7 @@ class UpdateRealEstateFragment : BaseRealEstateFragment() {
         //----------------------------------------------------------------------------------
         // Set the recyclerView
         realEstateWithMedias?.medias?.let { mediaList.addAll(it) }
-        updateMediaList(mediaList)
+        insertMediaInList(mediaList)
 
         return fragmentView
     }

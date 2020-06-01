@@ -44,8 +44,11 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCallbacks,
-        MediaAdapter.MediaListener, MediaAdapter.MediaLongClickListener {
+abstract class BaseRealEstateFragment : Fragment(),
+        EasyPermissions.PermissionCallbacks,
+        MediaAdapter.MediaListener,
+        MediaAdapter.MediaLongClickListener,
+        MediaAdapter.MediaFullScreenListener {
 
     companion object {
         private val TAG = BaseRealEstateFragment::class.java.simpleName
@@ -121,9 +124,11 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
     // File used when user take a photo with the camera
     private var mPhotoFile: File? = null
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var mediaAdapter: MediaAdapter
+    private var recyclerView: RecyclerView? = null
+    private var mediaAdapter: MediaAdapter? = null
     private lateinit var pager: LinearLayout
+    private val isFullScreen = false
+    private val isRealEstateActivity = true
 
     // Create a charSequence array of the Type Enum and a title
     private val types: Array<CharSequence> =
@@ -283,7 +288,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     // Add Picture to a list
                     mediaList.add(picture)
                     Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
-                    updateMediaList(mediaList)
+                    refreshMediaInList(mediaList)
                 }
 
                 RC_TAKE_PHOTO -> {
@@ -292,7 +297,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     // Add Media to a list
                     mediaList.add(pictureTaken)
                     Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
-                    updateMediaList(mediaList)
+                    refreshMediaInList(mediaList)
                 }
 
                 RC_VIDEO_CAPTURE -> {
@@ -303,7 +308,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
                     // Add Media to a list
                     mediaList.add(videoTaken)
                     Log.d(TAG, "ON ACTIVITY RESULT mediaList = $mediaList")
-                    updateMediaList(mediaList)
+                    refreshMediaInList(mediaList)
                 }
             }
         }
@@ -313,24 +318,26 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
     // Configure RecyclerView, Adapter & LayoutManager
 
     private fun configureRecyclerView() {
-        // Create the adapter by passing the list of pictures
-        mediaAdapter = MediaAdapter(mediaList, Glide.with(this), this, this, requireActivity())
-        // Attach the adapter to the recyclerView to populate pictures
-        recyclerView.adapter = mediaAdapter
-        // Set layout manager to position the pictures
-        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        // Create the adapter by passing the list of media
+        mediaAdapter = activity?.let {
+            MediaAdapter(mediaList, Glide.with(this), this, this, this, isFullScreen, isRealEstateActivity, it)
+        }
+        // Attach the adapter to the recyclerView to populate medias
+        recyclerView?.adapter = mediaAdapter
+        // Set layout manager to position the medias
+        recyclerView?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         // Check if we are in tablet mode to adapt layout
         if (myUtils.getScreenWidth(requireActivity()) > 720) {
-            recyclerView.setPadding(300, 0, 300, 0)
+            recyclerView?.setPadding(300, 0, 300, 0)
         }
 
         // To swipe page after page
-        recyclerView.onFlingListener = null
+        recyclerView?.onFlingListener = null
         PagerSnapHelper().attachToRecyclerView(recyclerView)
 
-        // Udate the pagerRecyclerView when switch on an other page
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        // Update the pagerRecyclerView when switch on an other page
+        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 val position = (recyclerView.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
@@ -339,9 +346,29 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
         })
     }
 
-    protected fun updateMediaList(updateList: ArrayList<Media?>) {
-        mediaAdapter.setMedias(updateList)
+    protected fun insertMediaInList(updateList: ArrayList<Media?>) {
+        mediaAdapter?.setMedias(updateList)
         myUtils.addPagerToRecyclerView(requireActivity(), updateList, 0, pager)
+    }
+
+    private fun refreshMediaInList(updateList: ArrayList<Media?>) {
+        mediaAdapter?.notifyItemInserted(updateList.lastIndex)
+        val position = updateList.lastIndex
+        recyclerView?.scrollToPosition(position)
+        // Update pager
+        myUtils.addPagerToRecyclerView(requireActivity(), updateList, position, pager)
+    }
+
+    private fun removeMediaFromListAndRefresh(media: Media, position: Int) {
+        var updatedPosition: Int = position
+        if (updatedPosition == mediaList.lastIndex) {
+            updatedPosition = mediaList.lastIndex - 1 // because we will remove a media from the list
+        }
+        // Remove the media object from the list to save
+        mediaList.remove(media)
+        mediaAdapter?.notifyItemRemoved(position)
+        // Update pager
+        myUtils.addPagerToRecyclerView(requireActivity(), mediaList, updatedPosition, pager)
     }
 
     //----------------------------------------------------------------------------------
@@ -435,6 +462,22 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_write_and_camera_permission_access),
                     RC_WRITE_EXT_STORAGE_AND_CAMERA_PERMS, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS)
         }
+    }
+
+    private fun deleteAlertDialog(media: Media, position: Int) {
+        // Create an AlertDialog to request deletion of the media
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        builder.setMessage(getString(R.string.delete_media))
+        builder.apply {
+            setPositiveButton(android.R.string.ok) { _, _ ->
+                removeMediaFromListAndRefresh(media, position)
+            }
+            setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     private fun storeLatLng() {
@@ -537,7 +580,7 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
     }
 
     //----------------------------------------------------------------------------------
-    // Listeners in RealEstateMediasAdapter
+    // Interfaces for callback from MediaAdapter
 
     override fun onClickMedia(position: Int) {
         // Do nothing
@@ -545,21 +588,12 @@ abstract class BaseRealEstateFragment : Fragment(), EasyPermissions.PermissionCa
 
     override fun onLongClickMedia(position: Int) {
         // Get the media object with the position in the RecyclerView
-        val media: Media? = mediaAdapter.getPosition(position)
+        val media: Media? = mediaAdapter?.getPosition(position)
+        media?.let { deleteAlertDialog(it, position) }
+    }
 
-        // Create an AlertDialog to request deletion of the media
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-        builder.setMessage(getString(R.string.delete_media))
-        builder.apply {
-            setPositiveButton(android.R.string.ok) { _, _ ->
-                // Remove the media object from the list to save
-                mediaList.remove(media)
-                // Use notifyItemRemoved instead of the updateMediaList() method to enjoy animation
-                mediaAdapter.notifyItemRemoved(position)
-            }
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+    override fun onClickMediaFullScreen(position: Int) {
+        // Do nothing
     }
 
     //----------------------------------------------------------------------------------

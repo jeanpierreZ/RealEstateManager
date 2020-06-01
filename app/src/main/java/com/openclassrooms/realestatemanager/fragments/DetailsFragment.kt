@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.fragments
 
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -39,6 +38,7 @@ import kotlinx.android.synthetic.main.fragment_details.*
 class DetailsFragment : Fragment(),
         MediaAdapter.MediaListener,
         MediaAdapter.MediaLongClickListener,
+        MediaAdapter.MediaFullScreenListener,
         OnMapReadyCallback {
 
     companion object {
@@ -48,8 +48,8 @@ class DetailsFragment : Fragment(),
         const val REAL_ESTATE_WITH_MEDIAS: String = "REAL_ESTATE_WITH_MEDIAS"
 
         // Bundles for PlayerFragment
-        const val BUNDLE_MEDIA_TO_PLAY: String = "BUNDLE_MEDIA_TO_PLAY"
-        const val BUNDLE_IS_MEDIA_VIDEO: String = "BUNDLE_IS_MEDIA_VIDEO"
+        const val BUNDLE_MEDIA_LIST: String = "BUNDLE_MEDIA_LIST"
+        const val BUNDLE_MEDIA_POSITION: String = "BUNDLE_MEDIA_POSITION"
 
         // Keys for storing activity state
         private const val MAPVIEW_BUNDLE_KEY = "MAPVIEW_BUNDLE_KEY"
@@ -57,6 +57,8 @@ class DetailsFragment : Fragment(),
 
     private var recyclerView: RecyclerView? = null
     private var mediaAdapter: MediaAdapter? = null
+    private val isFullScreen = false
+    private val isRealEstateActivity = false
 
     private var mediaList: ArrayList<Media?> = arrayListOf()
 
@@ -155,7 +157,6 @@ class DetailsFragment : Fragment(),
                     details_fragment_postal_code.text = postalCode
                     details_fragment_country.text = country
 
-
                     configureRecyclerView()
                     // Clear the mediaList in case of reuse it
                     mediaList.clear()
@@ -212,7 +213,9 @@ class DetailsFragment : Fragment(),
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of media
-        mediaAdapter = activity?.let { MediaAdapter(mediaList, Glide.with(this), this, this, it) }
+        mediaAdapter = activity?.let {
+            MediaAdapter(mediaList, Glide.with(this), this, this, this, isFullScreen, isRealEstateActivity, it)
+        }
         // Attach the adapter to the recyclerView to populate medias
         recyclerView?.adapter = mediaAdapter
         // Set layout manager to position the medias
@@ -221,7 +224,7 @@ class DetailsFragment : Fragment(),
         recyclerView?.onFlingListener = null
         PagerSnapHelper().attachToRecyclerView(recyclerView)
 
-        // Udate the pagerRecyclerView when switch on an other page
+        // Update the pagerRecyclerView when switch on an other page
         recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -240,35 +243,19 @@ class DetailsFragment : Fragment(),
     // Interfaces for callback from MediaAdapter
 
     override fun onClickMedia(position: Int) {
-        // Get media from position
-        val media = mediaList[position]
-        // To check if it is a picture or a video
-        var isMediaVideo = true
-
-        // Get the media to play
-        var mediaToPlay: Uri? = Uri.EMPTY
-        if (media?.mediaPicture?.isAbsolute!!) {
-            mediaToPlay = mediaList[position]?.mediaPicture
-            isMediaVideo = false
-        } else if (media.mediaVideo?.isAbsolute!!) {
-            mediaToPlay = mediaList[position]?.mediaVideo
-        }
-
-        // Start PlayerFragment with data
-        if (mediaToPlay != Uri.EMPTY) {
-            Log.d(TAG, "Click on $mediaToPlay which isMediaVideo = $isMediaVideo")
-
-            val bundle = Bundle()
-            bundle.putParcelable(BUNDLE_MEDIA_TO_PLAY, mediaToPlay)
-            bundle.putBoolean(BUNDLE_IS_MEDIA_VIDEO, isMediaVideo)
-            playerFragment.arguments = bundle
-
-            addNestedPlayerFragment()
-        }
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(BUNDLE_MEDIA_LIST, mediaList)
+        bundle.putInt(BUNDLE_MEDIA_POSITION, position)
+        playerFragment.arguments = bundle
+        addNestedPlayerFragment()
     }
 
     override fun onLongClickMedia(position: Int) {
-        Log.d(TAG, "LONG CLICK on media !")
+        // Do nothing
+    }
+
+    override fun onClickMediaFullScreen(position: Int) {
+        // Do nothing
     }
 
     //----------------------------------------------------------------------------------

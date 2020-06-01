@@ -76,14 +76,6 @@
     <!-- MapFragment -->
     <string name="network_unavailable">Network unavailable</string>
 
-    <!-- real_estate xml and media xml for RecyclerView -->
-    <string name="property_image">property image</string>
-    <string name="type">type</string>
-    <string name="district">district</string>
-    <string name="price">price</string>
-    <string name="property_media">property media</string>
-    <string name="text">text</string>
-
     <!-- NavigationDrawer -->
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
@@ -109,5 +101,16 @@
     <string name="full_screen">Full screen</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
+
+    <!-- real_estate xml and media xml for RecyclerView -->
+    <string name="property_image">property image</string>
+    <string name="type">type</string>
+    <string name="district">district</string>
+    <string name="price">price</string>
+    <string name="property_media">property media</string>
+    <string name="text">text</string>
+
+    <!-- media_full_screen xml for RecyclerView -->
+    <string name="close">Close</string>
 
 </resources>

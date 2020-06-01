@@ -8,15 +8,10 @@
     android:focusable="true"
     tools:context=".fragments.PlayerFragment">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/fragment_player_video"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ImageView
-        android:id="@+id/fragment_player_image"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/player_fragment_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/property_image" />
+        android:layout_gravity="center" />
 
 </FrameLayout>
