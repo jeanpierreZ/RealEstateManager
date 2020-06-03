@@ -112,6 +112,8 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
         // When a click happens, we fire our listener to get the media position in the list
         val callback: MediaAdapter.MediaListener? = callbackWeakRef?.get()
         callback?.onClickMedia(adapterPosition)
+        // Pause the player when click on fullScreenIconView
+        playerView?.player?.playWhenReady = false
         Log.d(TAG, "CLICK on media!")
     }
 
@@ -119,6 +121,8 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
         // When a long click happens, we fire our listener to get the media position in the list
         val callback: MediaAdapter.MediaLongClickListener? = callbackLongClickWeakRef?.get()
         callback?.onLongClickMedia(adapterPosition)
+        // Pause the player when long click on fullScreenIconView
+        playerView?.player?.playWhenReady = false
         Log.d(TAG, "LONG CLICK on media!")
         return true
     }
