@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -65,6 +66,18 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
             val player = SimpleExoPlayer.Builder(context).build()
             // Bind the player to the view.
             playerView?.player = player
+
+            // Add a listener to receive events from the player.
+            player.addListener(object : Player.EventListener {
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    if (isPlaying) {
+                        playerView?.hideController()
+                    } else {
+                        playerView?.showController()
+                    }
+                }
+            })
+
 
             // Produces DataSource instances through which media data is loaded.
             val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(context,

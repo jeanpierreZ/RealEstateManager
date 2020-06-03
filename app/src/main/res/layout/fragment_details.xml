@@ -13,27 +13,18 @@
         android:padding="4dp">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/details_fragment_guideline_fifty_vertical"
+            android:id="@+id/details_fragment_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/details_fragment_media"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/media"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/details_fragment_recycler_view"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/details_fragment_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="200dp"
             app:layout_constraintBottom_toTopOf="@+id/detailsFragmentPager"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/detailsFragmentPager"
@@ -57,6 +48,8 @@
             android:id="@+id/details_fragment_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface_title"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_description_title" />
@@ -79,7 +72,7 @@
             android:text="@string/surface_title"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_surface_icon"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_description" />
 
@@ -89,7 +82,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms_title"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface_title" />
 
@@ -111,7 +104,7 @@
             android:text="@string/number_of_rooms_title"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_rooms"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_room_icon"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_surface" />
 
@@ -121,7 +114,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms_title"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms_title" />
 
@@ -143,7 +136,7 @@
             android:text="@string/number_of_bathrooms_title"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_bathrooms"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_bathroom_icon"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_rooms" />
 
@@ -153,7 +146,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms_title"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms_title" />
 
@@ -175,7 +168,7 @@
             android:text="@string/number_of_bedrooms_title"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_bedrooms"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_bedroom_icon"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_bathrooms" />
 
@@ -185,7 +178,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_map"
-            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/details_fragment_guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_bedrooms_title" />
 
@@ -196,7 +189,7 @@
             android:contentDescription="@string/location_icon"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
             app:layout_constraintEnd_toStartOf="@+id/details_fragment_location_title"
-            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_description"
             app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
@@ -218,7 +211,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_apartment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_location_title" />
 
         <TextView
@@ -228,7 +221,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_city"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_street" />
 
         <TextView
@@ -238,7 +231,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_postal_code"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_apartment" />
 
         <TextView
@@ -248,7 +241,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_country"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_city" />
 
         <TextView
@@ -258,7 +251,7 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_map"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_fifty_vertical"
+            app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_postal_code" />
 
         <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"

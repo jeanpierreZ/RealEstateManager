@@ -13,18 +13,18 @@
         android:padding="8dp">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/details_fragment_guideline_forty_horizontal"
+            android:id="@+id/details_fragment_guideline_forty_five_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.4" />
+            app:layout_constraintGuide_percent="0.45" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/details_fragment_guideline_sixty_horizontal"
+            android:id="@+id/details_fragment_guideline_sixty_five_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.6" />
+            app:layout_constraintGuide_percent="0.65" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/details_fragment_guideline_thirty_vertical"
@@ -40,23 +40,14 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.6" />
 
-        <TextView
-            android:id="@+id/details_fragment_media"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/media"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/details_fragment_recycler_view"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/details_fragment_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="250dp"
             android:paddingStart="50dp"
             android:paddingEnd="50dp"
             app:layout_constraintBottom_toTopOf="@+id/detailsFragmentPager"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_media" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/detailsFragmentPager"
@@ -64,7 +55,7 @@
             android:layout_height="10dp"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_forty_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_forty_five_horizontal"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_recycler_view" />
 
         <TextView
@@ -74,14 +65,16 @@
             android:text="@string/description"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_description"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_forty_horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_forty_five_horizontal" />
 
         <TextView
             android:id="@+id/details_fragment_description"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:ellipsize="end"
+            android:maxLines="6"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_sixty_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/details_fragment_guideline_sixty_five_horizontal"
             app:layout_constraintTop_toBottomOf="@+id/details_fragment_description_title" />
 
         <ImageView
@@ -92,7 +85,7 @@
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
             app:layout_constraintEnd_toStartOf="@+id/details_fragment_surface_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_five_horizontal"
             app:srcCompat="@drawable/ic_settings_overscan_black_24dp" />
 
         <TextView
@@ -104,7 +97,7 @@
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_surface"
             app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_surface_icon"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_five_horizontal" />
 
         <TextView
             android:id="@+id/details_fragment_surface"
@@ -220,7 +213,7 @@
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
             app:layout_constraintEnd_toStartOf="@+id/details_fragment_location_title"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_thirty_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_five_horizontal"
             app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
         <TextView
@@ -232,7 +225,7 @@
             app:layout_constraintBottom_toTopOf="@+id/details_fragment_street"
             app:layout_constraintEnd_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_location_icon"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal" />
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_five_horizontal" />
 
         <TextView
             android:id="@+id/details_fragment_street"
@@ -291,7 +284,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/details_fragment_guideline_sixty_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/details_fragment_guideline_sixty_five_horizontal"
             map:cameraZoom="17"
             map:liteMode="true"
             map:mapType="normal" />
