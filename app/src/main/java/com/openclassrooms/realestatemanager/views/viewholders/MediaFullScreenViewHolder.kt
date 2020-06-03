@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.views.viewholders
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.View
@@ -19,7 +20,9 @@ import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapters.MediaAdapter
 import com.openclassrooms.realestatemanager.models.Media
+import com.openclassrooms.realestatemanager.utils.ScaleViewListener
 import java.lang.ref.WeakReference
+
 
 class MediaFullScreenViewHolder(mediaFullScreenView: View) : RecyclerView.ViewHolder(mediaFullScreenView),
         View.OnClickListener {
@@ -44,6 +47,7 @@ class MediaFullScreenViewHolder(mediaFullScreenView: View) : RecyclerView.ViewHo
         fullScreenIconView = mediaFullScreenView.findViewById(R.id.exo_fullscreen)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     fun updateMediasFullScreen(media: Media?, glide: RequestManager,
                                callback: MediaAdapter.MediaFullScreenListener, context: Context) {
 
@@ -82,6 +86,8 @@ class MediaFullScreenViewHolder(mediaFullScreenView: View) : RecyclerView.ViewHo
         } else if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
             playerView?.visibility = View.GONE
             imageView?.let { glide.load(media.mediaPicture).into(it) }
+            // Use the listener for zoom the imageView
+            imageView?.setOnTouchListener(ScaleViewListener(context))
         }
 
         // Create news weak References to our Listener and implement listener
