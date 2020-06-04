@@ -151,7 +151,6 @@ abstract class BaseRealEstateFragment : Fragment(),
         pager = fragmentView.findViewById(R.id.baseRealEstateFragmentPager)
 
         configureRecyclerView()
-        Log.d(TAG, "ON CREATE VIEW mediaList = $mediaList")
 
         return fragmentView
     }
@@ -162,8 +161,8 @@ abstract class BaseRealEstateFragment : Fragment(),
 
         // Show the AlertDialog to choose the type of the real estate
         fragment_base_real_estate_edit_type.setOnClickListener {
-            myUtils.openPropertyDialogFragment(fragment_base_real_estate_edit_type, typeTitle, types,
-                    requireActivity().supportFragmentManager)
+            myUtils.openPropertyDialogFragment(fragment_base_real_estate_edit_type, typeTitle,
+                    type, types, requireActivity().supportFragmentManager)
         }
 
         fragment_base_real_estate_edit_price.doOnTextChanged { text, _, _, _ ->
@@ -226,8 +225,8 @@ abstract class BaseRealEstateFragment : Fragment(),
 
         // Show the AlertDialog to choose the status of the real estate
         fragment_base_real_estate_edit_status.setOnClickListener {
-            myUtils.openPropertyDialogFragment(fragment_base_real_estate_edit_status, statusTitle, statutes,
-                    requireActivity().supportFragmentManager)
+            myUtils.openPropertyDialogFragment(fragment_base_real_estate_edit_status, statusTitle,
+                    status, statutes, requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the entry date of the real estate

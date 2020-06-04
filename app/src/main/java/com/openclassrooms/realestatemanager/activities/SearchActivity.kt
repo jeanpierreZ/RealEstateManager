@@ -64,7 +64,7 @@ class SearchActivity : AppCompatActivity(),
         // Show the AlertDialog to choose the type of the real estate
         activity_search_edit_type.setOnClickListener {
             myUtils.openPropertyDialogFragment(activity_search_edit_type, R.string.real_estate_type,
-                    types, supportFragmentManager)
+                    type, types, supportFragmentManager)
         }
 
         activity_search_edit_price_min.doOnTextChanged { text, _, _, _ ->

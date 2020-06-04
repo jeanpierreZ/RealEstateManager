@@ -7,9 +7,12 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.models.Status
+import com.openclassrooms.realestatemanager.models.Type
 
 class PropertyDialogFragment(private var editText: EditText,
                              private val title: Int,
+                             private val previouslySelectedChoice: String?,
                              private val list: Array<CharSequence>) : DialogFragment() {
 
     // Declare callback
@@ -18,15 +21,40 @@ class PropertyDialogFragment(private var editText: EditText,
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
-            var choice: String?
+            // Preselected item to pass for dialog in SingleChoiceItems
+            var preSelectedChoice: Int = -1
+
+            // Update value if the item was previously selected
+            if (!previouslySelectedChoice.isNullOrEmpty()) {
+                if (list.contains(Type.DUPLEX.realEstateType)) {
+                    when (previouslySelectedChoice) {
+                        Type.DUPLEX.realEstateType -> preSelectedChoice = 0
+                        Type.FLAT.realEstateType -> preSelectedChoice = 1
+                        Type.LOFT.realEstateType -> preSelectedChoice = 2
+                        Type.MANOR.realEstateType -> preSelectedChoice = 3
+                        Type.PENTHOUSE.realEstateType -> preSelectedChoice = 4
+                    }
+                } else {
+                    when (previouslySelectedChoice) {
+                        Status.AVAILABLE.availability -> preSelectedChoice = 0
+                        Status.SOLD.availability -> preSelectedChoice = 1
+                    }
+                }
+            }
+
+            var choice: String? = null
 
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
             builder.setTitle(title)
-                    .setItems(list) { _, which ->
+                    // Specify the list array, the item to be selected by default (-1 for none),
+                    // and the listener through which to receive callbacks which item is selected
+                    .setSingleChoiceItems(list, preSelectedChoice) { _, which ->
                         // The 'which' argument contains the index position of the selected item
-                        // Set and save the selected value for the property of the item
                         choice = list[which] as String
+                    }
+                    .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
+                        // Set and save the selected value for the property or the status of the item
                         editText.setText(choice)
                         callbackProperty?.onPropertyChosen(editText)
                     }

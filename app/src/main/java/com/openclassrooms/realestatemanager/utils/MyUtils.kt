@@ -67,8 +67,9 @@ class MyUtils {
         pOIDialogFragment.show(fragmentManager, "pOIDialogFragment")
     }
 
-    fun openPropertyDialogFragment(editText: EditText, title: Int, list: Array<CharSequence>, fragmentManager: FragmentManager) {
-        val propertyDialogFragment = PropertyDialogFragment(editText, title, list)
+    fun openPropertyDialogFragment(editText: EditText, title: Int, previouslySelectedChoice: String?,
+                                   list: Array<CharSequence>, fragmentManager: FragmentManager) {
+        val propertyDialogFragment = PropertyDialogFragment(editText, title, previouslySelectedChoice, list)
         propertyDialogFragment.show(fragmentManager, "propertyDialogFragment")
     }
 
