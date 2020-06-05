@@ -231,13 +231,13 @@ abstract class BaseRealEstateFragment : Fragment(),
 
         // Show the AlertDialog to choose the entry date of the real estate
         fragment_base_real_estate_edit_entry_date.setOnClickListener {
-            myUtils.openDateDialogFragment(fragment_base_real_estate_edit_entry_date,
+            myUtils.openDateDialogFragment(fragment_base_real_estate_edit_entry_date, entryDate,
                     requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the sale date of the real estate
         fragment_base_real_estate_edit_sale_date.setOnClickListener {
-            myUtils.openDateDialogFragment(fragment_base_real_estate_edit_sale_date,
+            myUtils.openDateDialogFragment(fragment_base_real_estate_edit_sale_date, saleDate,
                     requireActivity().supportFragmentManager)
         }
 

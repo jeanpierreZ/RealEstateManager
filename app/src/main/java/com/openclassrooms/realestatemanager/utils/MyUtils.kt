@@ -73,8 +73,8 @@ class MyUtils {
         propertyDialogFragment.show(fragmentManager, "propertyDialogFragment")
     }
 
-    fun openDateDialogFragment(editDate: EditText, fragmentManager: FragmentManager) {
-        val dateDialogFragment = DateDialogFragment(editDate)
+    fun openDateDialogFragment(editDate: EditText, previousDate: String?, fragmentManager: FragmentManager) {
+        val dateDialogFragment = DateDialogFragment(editDate, previousDate)
         dateDialogFragment.show(fragmentManager, "dateDialogFragment")
     }
 

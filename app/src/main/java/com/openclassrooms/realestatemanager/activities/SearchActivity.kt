@@ -94,12 +94,12 @@ class SearchActivity : AppCompatActivity(),
 
         // Show the AlertDialog to choose the entry date of the real estate
         activity_search_edit_entry_date.setOnClickListener {
-            myUtils.openDateDialogFragment(activity_search_edit_entry_date, supportFragmentManager)
+            myUtils.openDateDialogFragment(activity_search_edit_entry_date, entryDate, supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the sale date of the real estate
         activity_search_edit_sale_date.setOnClickListener {
-            myUtils.openDateDialogFragment(activity_search_edit_sale_date, supportFragmentManager)
+            myUtils.openDateDialogFragment(activity_search_edit_sale_date, saleDate, supportFragmentManager)
         }
 
         activity_search_edit_media.doOnTextChanged { text, _, _, _ ->
