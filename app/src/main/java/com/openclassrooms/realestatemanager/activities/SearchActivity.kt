@@ -124,10 +124,10 @@ class SearchActivity : AppCompatActivity(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            // Respond to the action bar's Up/Home button
-            android.R.id.home ->
-                myUtils.showShortToastMessage(this, R.string.search_canceled)
+        if (item.itemId == android.R.id.home) {
+            // Respond to the action bar's Up/Home button like on back pressed
+            onBackPressed()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
