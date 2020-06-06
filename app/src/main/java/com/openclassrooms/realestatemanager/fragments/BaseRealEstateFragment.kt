@@ -463,7 +463,7 @@ abstract class BaseRealEstateFragment : Fragment(),
         }
     }
 
-    private fun deleteAlertDialog(media: Media, position: Int) {
+    private fun deleteMediaAlertDialog(media: Media, position: Int) {
         // Create an AlertDialog to request deletion of the media
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
         builder.setMessage(getString(R.string.delete_media))
@@ -588,7 +588,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     override fun onLongClickMedia(position: Int) {
         // Get the media object with the position in the RecyclerView
         val media: Media? = mediaAdapter?.getPosition(position)
-        media?.let { deleteAlertDialog(it, position) }
+        media?.let { deleteMediaAlertDialog(it, position) }
     }
 
     override fun onClickMediaFullScreen(position: Int) {

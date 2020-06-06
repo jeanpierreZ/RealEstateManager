@@ -208,7 +208,6 @@ class MainActivity : AppCompatActivity(),
         // "Hamburger icon"
         val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        toggle.drawerArrowDrawable.color = ContextCompat.getColor(this, android.R.color.white)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
     }
@@ -233,7 +232,6 @@ class MainActivity : AppCompatActivity(),
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle Navigation Item Click
         when (item.itemId) {
-
             R.id.menuNavDrawerMainActivity -> {
                 // Check if we are in Tablet mode and adapt UI
                 if (activityMainMapFragmentContainerView != null) {
@@ -244,7 +242,6 @@ class MainActivity : AppCompatActivity(),
                 }
                 displayOrRefreshListFragment()
             }
-
             R.id.menuNavDrawerMapFragment -> {
                 // In Tablet mode, if mapFragment is already called, we adapt UI
                 if (mapFragment.isHidden) {
