@@ -21,7 +21,6 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.activities.RealEstateActivity
@@ -174,7 +173,7 @@ class DetailsFragment : Fragment(),
                     }
                     if (realEstateLatLng != null) {
                         if (realEstateLatLng == LatLng(0.0, 0.0) && fragmentView.isVisible) {
-                            Snackbar.make(fragmentView, getString(R.string.address_not_available), Snackbar.LENGTH_SHORT).show()
+                            myUtils.showSnackbarMessage(requireActivity(), getString(R.string.address_not_available))
                         } else if (realEstateLatLng != LatLng(0.0, 0.0)) {
                             addRealEstateMarker(realEstateLatLng)
                         }

@@ -166,7 +166,7 @@ class SearchActivity : AppCompatActivity(),
 
             // The sale date cannot be earlier than the entry date
             if (dateOfSale.before(dateOfEntry)) {
-                myUtils.showShortToastMessage(this, R.string.sale_date_earlier_entry_date)
+                myUtils.showSnackbarMessage(this, getString(R.string.sale_date_earlier_entry_date))
                 activity_search_edit_entry_date.text.clear()
                 activity_search_edit_sale_date.text.clear()
                 entryDate = null
@@ -309,7 +309,7 @@ class SearchActivity : AppCompatActivity(),
                 this.finish()
 
             } else {
-                myUtils.showShortToastMessage(this, R.string.no_results_search)
+                myUtils.showSnackbarMessage(this, getString(R.string.no_results_search))
             }
         })
     }

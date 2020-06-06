@@ -117,7 +117,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
             // If permissions are granted...
             updateLocationUIAndShowMarkers()
         } else {
-            activity?.let { myUtils.showShortToastMessage(it, R.string.network_unavailable) }
+            myUtils.showSnackbarMessage(requireActivity(), getString(R.string.network_unavailable))
         }
 
         map?.setOnMarkerClickListener { marker: Marker ->

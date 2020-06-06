@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.snackbar.Snackbar
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
+
 
 class MyUtils {
 
@@ -29,8 +30,12 @@ class MyUtils {
         }
     }
 
-    fun showShortToastMessage(context: Context, int: Int) {
-        Toast.makeText(context, int, Toast.LENGTH_SHORT).show()
+    fun showSnackbarMessage(activity: Activity?, text: String?) {
+        val snackbar = activity?.findViewById<View>(android.R.id.content)?.let { Snackbar.make(it, text!!, 3500) }
+        snackbar?.view?.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorWhite))
+        snackbar?.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark))
+        snackbar?.view?.setOnClickListener { _ -> snackbar.dismiss() }
+        snackbar?.show()
     }
 
     fun getScreenWidth(activity: Activity): Float {

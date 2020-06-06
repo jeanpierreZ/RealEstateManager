@@ -124,13 +124,13 @@ class MainActivity : AppCompatActivity(),
             // If resultCode is canceled show the appropriate message
             when (requestCode) {
                 ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE -> {
-                    myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
+                    myUtils.showSnackbarMessage(this, getString(R.string.real_estate_not_saved))
                 }
                 UPDATE_REAL_ESTATE_ACTIVITY_REQUEST_CODE -> {
-                    myUtils.showShortToastMessage(this, R.string.real_estate_not_saved)
+                    myUtils.showSnackbarMessage(this, getString(R.string.real_estate_not_saved))
                 }
                 SEARCH_ACTIVITY_REQUEST_CODE -> {
-                    myUtils.showShortToastMessage(this, R.string.search_canceled)
+                    myUtils.showSnackbarMessage(this, getString(R.string.search_canceled))
                 }
             }
         }

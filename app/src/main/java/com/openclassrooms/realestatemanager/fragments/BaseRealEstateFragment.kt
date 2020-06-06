@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
@@ -377,7 +376,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun addPicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *READ_PERM) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                activity?.let { myUtils.showShortToastMessage(it, R.string.no_media_description) }
+                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.no_media_description))
             } else {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -412,7 +411,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun takePicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                activity?.let { myUtils.showShortToastMessage(it, R.string.no_media_description) }
+                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.no_media_description))
             } else {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     // Ensure that there's a camera activity to handle the intent
@@ -449,7 +448,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun takeVideo() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                activity?.let { myUtils.showShortToastMessage(it, R.string.no_media_description) }
+                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.no_media_description))
             } else {
                 Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
                     takeVideoIntent.resolveActivity(requireActivity().packageManager)?.also {
@@ -569,7 +568,7 @@ abstract class BaseRealEstateFragment : Fragment(),
 
             // The sale date cannot be earlier than the entry date
             if (dateOfSale!!.before(dateOfEntry)) {
-                Toast.makeText(activity, getString(R.string.sale_date_earlier_entry_date), Toast.LENGTH_LONG).show()
+                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.sale_date_earlier_entry_date))
                 fragment_base_real_estate_edit_entry_date.text.clear()
                 fragment_base_real_estate_edit_sale_date.text.clear()
                 entryDate = null
