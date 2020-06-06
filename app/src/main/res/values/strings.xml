@@ -45,7 +45,6 @@
     <string name="sale_date_earlier_entry_date">The sale date cannot be earlier than the entry date.</string>
     <string name="impossible_future_date">You cannot choose a date in the future.</string>
     <string name="media_description">Media description</string>
-    <string name="no_image_chosen">No image chosen</string>
     <string name="no_media_description">Choose a description for the media</string>
     <string name="add_picture">Add a picture</string>
     <string name="take_picture">Take a picture</string>
@@ -71,6 +70,7 @@
     <string name="search_button">Search</string>
 
     <string name="search_canceled">Search canceled</string>
+    <string name="no_search_parameter">Add a parameter to perform a search</string>
     <string name="no_results_search">No results for the search</string>
 
     <!-- MapFragment -->

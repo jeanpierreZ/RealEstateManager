@@ -294,24 +294,30 @@ class SearchActivity : AppCompatActivity(),
         baseQuery = baseQuery.plus(" ORDER BY id DESC")
         Log.d(TAG, "baseQuery = $baseQuery")
 
-        val query = SimpleSQLiteQuery(baseQuery, bindArgs.toArray())
+        // If there is no parameter, do not request the database
+        if (type == null && minPrice == null && maxPrice == null && minSurface == null && maxSurface == null &&
+                pointsOfInterest == null && district == null && entryDate == null && saleDate == null && mediaNumber == 0) {
+            myUtils.showSnackbarMessage(this, getString(R.string.no_search_parameter))
+        } else {
+            val query = SimpleSQLiteQuery(baseQuery, bindArgs.toArray())
 
-        val realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
-        val searchIntent = Intent()
+            val realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
+            val searchIntent = Intent()
 
-        realEstateWithMediasViewModel.getRealEstateWithMediasFromSearch(query).observe(
-                this, androidx.lifecycle.Observer { realEstateWithMedias ->
-            Log.d(TAG, "search result = $realEstateWithMedias")
+            realEstateWithMediasViewModel.getRealEstateWithMediasFromSearch(query).observe(
+                    this, androidx.lifecycle.Observer { realEstateWithMedias ->
+                Log.d(TAG, "search result = $realEstateWithMedias")
 
-            if (!realEstateWithMedias.isNullOrEmpty()) {
-                searchIntent.putParcelableArrayListExtra(SEARCH_LIST, realEstateWithMedias as ArrayList)
-                this.setResult(Activity.RESULT_OK, searchIntent)
-                this.finish()
+                if (!realEstateWithMedias.isNullOrEmpty()) {
+                    searchIntent.putParcelableArrayListExtra(SEARCH_LIST, realEstateWithMedias as ArrayList)
+                    this.setResult(Activity.RESULT_OK, searchIntent)
+                    this.finish()
 
-            } else {
-                myUtils.showSnackbarMessage(this, getString(R.string.no_results_search))
-            }
-        })
+                } else {
+                    myUtils.showSnackbarMessage(this, getString(R.string.no_results_search))
+                }
+            })
+        }
     }
 
 }
