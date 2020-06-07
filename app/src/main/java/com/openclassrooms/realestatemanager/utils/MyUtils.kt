@@ -46,23 +46,82 @@ class MyUtils {
 
     fun addPagerToRecyclerView(context: Context, list: ArrayList<Media?>, position: Int, linearLayout: LinearLayout) {
         linearLayout.removeAllViews()
-        // Add a view for each media in list
-        for (media in 0 until list.size) {
-            val pagerView = View(context)
-            // Add view to the LinearLayout
-            linearLayout.addView(pagerView)
-            // Set parameters
-            pagerView.layoutParams.height = 10
-            pagerView.layoutParams.width = 20
-            pagerView.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
-            // Distinguish the actual position in the RecyclerView by colorAccent
-            if (media == position) {
-                pagerView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+        val infiniteMiddlePageList = arrayOf(1, 2, 3, 4, 5)
+
+        if (list.size >= 8) {
+
+            // Set parameters for the fist page
+            val infiniteFirstPage = View(context)
+            linearLayout.addView(infiniteFirstPage)
+
+            infiniteFirstPage.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
+            if (position == 0) {
+                infiniteFirstPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                infiniteFirstPage.layoutParams.height = 10
+                infiniteFirstPage.layoutParams.width = 40
             } else {
-                pagerView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                infiniteFirstPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                infiniteFirstPage.layoutParams.height = 5
+                infiniteFirstPage.layoutParams.width = 20
+            }
+
+            // Set parameters for middle pages
+            for (page in infiniteMiddlePageList) {
+                val infiniteMiddlePage = View(context)
+                linearLayout.addView(infiniteMiddlePage)
+
+                infiniteMiddlePage.layoutParams.height = 10
+                infiniteMiddlePage.layoutParams.width = 40
+                infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                infiniteMiddlePage.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
+
+                if (position > 3 && position < (list.lastIndex - 2) && page == 3) {
+                    infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                }
+                when (page) {
+                    1 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    2 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    3 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    4 -> if (position == (list.lastIndex - 2)) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    5 -> if (position == (list.lastIndex - 1)) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                }
+            }
+
+            // Set parameters for the last page
+            val infiniteLastPage = View(context)
+            linearLayout.addView(infiniteLastPage)
+
+            infiniteLastPage.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
+            if (position == list.lastIndex) {
+                infiniteLastPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                infiniteLastPage.layoutParams.height = 10
+                infiniteLastPage.layoutParams.width = 40
+            } else {
+                infiniteLastPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                infiniteLastPage.layoutParams.height = 5
+                infiniteLastPage.layoutParams.width = 20
+            }
+
+            // Add a view for each media when the list size is < than 8
+        } else {
+            for (media in 0 until list.size) {
+                val pagerView = View(context)
+                // Add view to the LinearLayout
+                linearLayout.addView(pagerView)
+                // Set parameters
+                pagerView.layoutParams.height = 10
+                pagerView.layoutParams.width = 40
+                pagerView.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
+                // Distinguish the actual position in the RecyclerView by colorAccent
+                if (media == position) {
+                    pagerView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                } else {
+                    pagerView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                }
             }
         }
     }
+
 
     //----------------------------------------------------------------------------------
     // Configure DialogFragments
