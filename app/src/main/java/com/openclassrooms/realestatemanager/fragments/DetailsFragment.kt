@@ -173,7 +173,7 @@ class DetailsFragment : Fragment(),
                     }
                     if (realEstateLatLng != null) {
                         if (realEstateLatLng == LatLng(0.0, 0.0) && fragmentView.isVisible) {
-                            myUtils.showSnackbarMessage(requireActivity(), getString(R.string.address_not_available))
+                            myUtils.showSnackbarMessage(requireActivity(), R.string.address_not_available)
                         } else if (realEstateLatLng != LatLng(0.0, 0.0)) {
                             addRealEstateMarker(realEstateLatLng)
                         }

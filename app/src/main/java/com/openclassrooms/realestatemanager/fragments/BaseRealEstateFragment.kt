@@ -376,7 +376,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun addPicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *READ_PERM) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.no_media_description))
+                myUtils.showSnackbarMessage(requireActivity(), R.string.no_media_description)
             } else {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -411,7 +411,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun takePicture() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.no_media_description))
+                myUtils.showSnackbarMessage(requireActivity(), R.string.no_media_description)
             } else {
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     // Ensure that there's a camera activity to handle the intent
@@ -448,7 +448,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun takeVideo() {
         if (activity?.let { EasyPermissions.hasPermissions(it, *WRITE_EXT_STORAGE_AND_CAMERA_PERMS) }!!) {
             if (mediaDescription.isNullOrEmpty() || mediaDescription.isNullOrBlank()) {
-                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.no_media_description))
+                myUtils.showSnackbarMessage(requireActivity(), R.string.no_media_description)
             } else {
                 Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
                     takeVideoIntent.resolveActivity(requireActivity().packageManager)?.also {
@@ -499,31 +499,35 @@ abstract class BaseRealEstateFragment : Fragment(),
     }
 
     private fun saveRealEstateWithMedias() {
-        storeLatLng()
-        saveRealEstateIntent.putExtra(ID_REAL_ESTATE, id)
-        saveRealEstateIntent.putExtra(TYPE_REAL_ESTATE, type)
-        saveRealEstateIntent.putExtra(PRICE_REAL_ESTATE, price)
-        saveRealEstateIntent.putExtra(SURFACE_REAL_ESTATE, surface)
-        saveRealEstateIntent.putExtra(ROOMS_REAL_ESTATE, roomsNumber)
-        saveRealEstateIntent.putExtra(BATHROOMS_REAL_ESTATE, bathroomsNumber)
-        saveRealEstateIntent.putExtra(BEDROOMS_REAL_ESTATE, bedroomsNumber)
-        saveRealEstateIntent.putStringArrayListExtra(POI_REAL_ESTATE, pointsOfInterest)
-        saveRealEstateIntent.putExtra(STREET_NUMBER_REAL_ESTATE, streetNumber)
-        saveRealEstateIntent.putExtra(STREET_REAL_ESTATE, street)
-        saveRealEstateIntent.putExtra(APARTMENT_NUMBER_REAL_ESTATE, apartmentNumber)
-        saveRealEstateIntent.putExtra(DISTRICT_REAL_ESTATE, district)
-        saveRealEstateIntent.putExtra(CITY_REAL_ESTATE, city)
-        saveRealEstateIntent.putExtra(POSTAL_CODE_REAL_ESTATE, postalCode)
-        saveRealEstateIntent.putExtra(COUNTRY_REAL_ESTATE, country)
-        saveRealEstateIntent.putExtra(DESCRIPTION_REAL_ESTATE, description)
-        saveRealEstateIntent.putExtra(STATUS_REAL_ESTATE, status)
-        saveRealEstateIntent.putExtra(ENTRY_DATE_REAL_ESTATE, entryDate)
-        saveRealEstateIntent.putExtra(SALE_DATE_REAL_ESTATE, saleDate)
-        saveRealEstateIntent.putExtra(AGENT_REAL_ESTATE, agent)
-        saveRealEstateIntent.putParcelableArrayListExtra(MEDIA_LIST_REAL_ESTATE, mediaList)
+        if (type.isNullOrEmpty() || mediaList.isNullOrEmpty()) {
+            myUtils.showSnackbarMessage(activity, R.string.enter_type_and_media)
+        } else {
+            storeLatLng()
+            saveRealEstateIntent.putExtra(ID_REAL_ESTATE, id)
+            saveRealEstateIntent.putExtra(TYPE_REAL_ESTATE, type)
+            saveRealEstateIntent.putExtra(PRICE_REAL_ESTATE, price)
+            saveRealEstateIntent.putExtra(SURFACE_REAL_ESTATE, surface)
+            saveRealEstateIntent.putExtra(ROOMS_REAL_ESTATE, roomsNumber)
+            saveRealEstateIntent.putExtra(BATHROOMS_REAL_ESTATE, bathroomsNumber)
+            saveRealEstateIntent.putExtra(BEDROOMS_REAL_ESTATE, bedroomsNumber)
+            saveRealEstateIntent.putStringArrayListExtra(POI_REAL_ESTATE, pointsOfInterest)
+            saveRealEstateIntent.putExtra(STREET_NUMBER_REAL_ESTATE, streetNumber)
+            saveRealEstateIntent.putExtra(STREET_REAL_ESTATE, street)
+            saveRealEstateIntent.putExtra(APARTMENT_NUMBER_REAL_ESTATE, apartmentNumber)
+            saveRealEstateIntent.putExtra(DISTRICT_REAL_ESTATE, district)
+            saveRealEstateIntent.putExtra(CITY_REAL_ESTATE, city)
+            saveRealEstateIntent.putExtra(POSTAL_CODE_REAL_ESTATE, postalCode)
+            saveRealEstateIntent.putExtra(COUNTRY_REAL_ESTATE, country)
+            saveRealEstateIntent.putExtra(DESCRIPTION_REAL_ESTATE, description)
+            saveRealEstateIntent.putExtra(STATUS_REAL_ESTATE, status)
+            saveRealEstateIntent.putExtra(ENTRY_DATE_REAL_ESTATE, entryDate)
+            saveRealEstateIntent.putExtra(SALE_DATE_REAL_ESTATE, saleDate)
+            saveRealEstateIntent.putExtra(AGENT_REAL_ESTATE, agent)
+            saveRealEstateIntent.putParcelableArrayListExtra(MEDIA_LIST_REAL_ESTATE, mediaList)
 
-        activity?.setResult(Activity.RESULT_OK, saveRealEstateIntent)
-        activity?.finish()
+            activity?.setResult(Activity.RESULT_OK, saveRealEstateIntent)
+            activity?.finish()
+        }
     }
 
     //----------------------------------------------------------------------------------
@@ -568,7 +572,7 @@ abstract class BaseRealEstateFragment : Fragment(),
 
             // The sale date cannot be earlier than the entry date
             if (dateOfSale!!.before(dateOfEntry)) {
-                myUtils.showSnackbarMessage(requireActivity(), getString(R.string.sale_date_earlier_entry_date))
+                myUtils.showSnackbarMessage(requireActivity(), R.string.sale_date_earlier_entry_date)
                 fragment_base_real_estate_edit_entry_date.text.clear()
                 fragment_base_real_estate_edit_sale_date.text.clear()
                 entryDate = null

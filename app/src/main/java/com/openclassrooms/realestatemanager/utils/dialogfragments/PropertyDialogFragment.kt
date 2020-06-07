@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
 
@@ -56,12 +55,6 @@ class PropertyDialogFragment(private var editText: EditText,
                     .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                         // Set and save the selected value for the property or the status of the item
                         editText.setText(choice)
-                        callbackProperty?.onPropertyChosen(editText)
-                    }
-                    // Set the negative action button
-                    .setNegativeButton(getString(R.string.erase)) { _, _ ->
-                        // Save a null value for the property of the item
-                        editText.text = null
                         callbackProperty?.onPropertyChosen(editText)
                     }
             // Create the AlertDialog object and return it

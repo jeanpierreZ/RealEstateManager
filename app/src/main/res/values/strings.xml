@@ -51,6 +51,7 @@
     <string name="take_video">Take a video</string>
     <string name="delete_media">Delete this media?</string>
     <string name="erase">Erase</string>
+    <string name="enter_type_and_media">Enter a type and media</string>
     <string name="save">Save</string>
 
     <string name="search_title">Search for real estate</string>

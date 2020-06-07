@@ -67,7 +67,7 @@ class DateDialogFragment(private var editDate: EditText, private val previousDat
 
         // The date chosen cannot be later than today
         if (dateChosen.after(today)) {
-            myUtils.showSnackbarMessage(requireActivity(), getString(R.string.impossible_future_date))
+            myUtils.showSnackbarMessage(requireActivity(), R.string.impossible_future_date)
         } else {
             // Display the date chosen in the editText
             displayDate()

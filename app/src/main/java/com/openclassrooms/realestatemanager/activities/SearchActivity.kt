@@ -166,7 +166,7 @@ class SearchActivity : AppCompatActivity(),
 
             // The sale date cannot be earlier than the entry date
             if (dateOfSale.before(dateOfEntry)) {
-                myUtils.showSnackbarMessage(this, getString(R.string.sale_date_earlier_entry_date))
+                myUtils.showSnackbarMessage(this, R.string.sale_date_earlier_entry_date)
                 activity_search_edit_entry_date.text.clear()
                 activity_search_edit_sale_date.text.clear()
                 entryDate = null
@@ -297,7 +297,7 @@ class SearchActivity : AppCompatActivity(),
         // If there is no parameter, do not request the database
         if (type == null && minPrice == null && maxPrice == null && minSurface == null && maxSurface == null &&
                 pointsOfInterest == null && district == null && entryDate == null && saleDate == null && mediaNumber == 0) {
-            myUtils.showSnackbarMessage(this, getString(R.string.no_search_parameter))
+            myUtils.showSnackbarMessage(this, R.string.no_search_parameter)
         } else {
             val query = SimpleSQLiteQuery(baseQuery, bindArgs.toArray())
 
@@ -314,7 +314,7 @@ class SearchActivity : AppCompatActivity(),
                     this.finish()
 
                 } else {
-                    myUtils.showSnackbarMessage(this, getString(R.string.no_results_search))
+                    myUtils.showSnackbarMessage(this, R.string.no_results_search)
                 }
             })
         }

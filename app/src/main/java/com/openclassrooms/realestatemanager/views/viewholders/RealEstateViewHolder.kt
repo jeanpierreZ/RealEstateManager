@@ -50,6 +50,8 @@ class RealEstateViewHolder(realEstateView: View) : RecyclerView.ViewHolder(realE
             } else if (realEstateWithMedias.medias[0].mediaVideo?.isAbsolute!!) {
                 realEstateImage?.let { glide.load(realEstateWithMedias.medias[0].mediaVideo).into(it) }
             }
+        } else {
+            realEstateImage?.let { glide.clear(it) }
         }
 
         // Create a new weak Reference to our Listener
