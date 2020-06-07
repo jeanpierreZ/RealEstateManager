@@ -82,6 +82,7 @@
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="map">MAP</string>
     <string name="real_estate">REAL ESTATE</string>
+    <string name="search_uppercase">SEARCH</string>
 
     <!-- Toolbar -->
     <string name="add">Add</string>

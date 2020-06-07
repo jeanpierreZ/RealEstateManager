@@ -190,8 +190,7 @@ class MainActivity : AppCompatActivity(),
                 startActivityForResult(intentRealEstate, ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE)
             }
             R.id.menu_toolbar_search -> {
-                val intentSearch = Intent(this, SearchActivity::class.java)
-                startActivityForResult(intentSearch, SEARCH_ACTIVITY_REQUEST_CODE)
+                startSearchActivity()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -251,13 +250,21 @@ class MainActivity : AppCompatActivity(),
                     displayMapFragment()
                 }
             }
+            R.id.menuNavDrawerSearchActivity -> {
+                startSearchActivity()
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
     //----------------------------------------------------------------------------------
-    // Private methods to display fragments
+    // Private methods to display fragments and activities
+
+    private fun startSearchActivity() {
+        val intentSearch = Intent(this, SearchActivity::class.java)
+        startActivityForResult(intentSearch, SEARCH_ACTIVITY_REQUEST_CODE)
+    }
 
     private fun displayListFragment() {
         if (activityMainDetailsFragmentContainerView != null) {

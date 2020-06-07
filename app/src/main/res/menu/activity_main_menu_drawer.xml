@@ -10,10 +10,16 @@
                     android:id="@+id/menuNavDrawerMainActivity"
                     android:icon="@drawable/ic_home_black_24dp"
                     android:title="@string/real_estate" />
+                <item android:title="" />
                 <item
                     android:id="@+id/menuNavDrawerMapFragment"
                     android:icon="@drawable/ic_location_on_black_24dp"
                     android:title="@string/map" />
+                <item android:title="" />
+                <item
+                    android:id="@+id/menuNavDrawerSearchActivity"
+                    android:icon="@drawable/ic_search_black_24dp"
+                    android:title="@string/search_uppercase" />
             </menu>
         </item>
     </group>
