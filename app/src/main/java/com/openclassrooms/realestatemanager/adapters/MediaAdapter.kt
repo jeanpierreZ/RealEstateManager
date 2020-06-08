@@ -60,7 +60,7 @@ class MediaAdapter(private var list: ArrayList<Media?>,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == TYPE_MEDIA) {
-            (holder as MediaViewHolder).updateMedias(list[position], glide, callbackMedia, callbackMediaLongClick, isRealEstateActivity, context)
+            (holder as MediaViewHolder).updateMedias(list[position], position, list.size, glide, callbackMedia, callbackMediaLongClick, isRealEstateActivity, context)
         } else {
             // For full screen layout
             (holder as MediaFullScreenViewHolder).updateMediasFullScreen(list[position], glide, callbackFullScreen, context)

@@ -30,6 +30,7 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
         private val TAG = MediaViewHolder::class.java.simpleName
     }
 
+    private var currentPageView: TextView? = null
     private var textView: TextView? = null
     private var imageView: ImageView? = null
     private var playerView: PlayerView? = null
@@ -40,17 +41,22 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
     private var callbackLongClickWeakRef: WeakReference<MediaAdapter.MediaLongClickListener>? = null
 
     init {
+        currentPageView = mediaView.findViewById(R.id.media_current_page)
         textView = mediaView.findViewById(R.id.media_text)
         imageView = mediaView.findViewById(R.id.media_image)
         playerView = mediaView.findViewById(R.id.media_player_video)
         fullScreenIconView = mediaView.findViewById(R.id.exo_fullscreen)
     }
 
-    fun updateMedias(media: Media?, glide: RequestManager,
+    fun updateMedias(media: Media?, position: Int, listSize: Int, glide: RequestManager,
                      callback: MediaAdapter.MediaListener,
                      callbackLongClick: MediaAdapter.MediaLongClickListener,
                      isRealEstateActivity: Boolean,
                      context: Context) {
+        // Current page
+        val page = position + 1
+        currentPageView?.text = context.getString(R.string.page, page, listSize)
+
         // Description
         textView?.text = media?.mediaDescription
 
@@ -77,7 +83,6 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
                     }
                 }
             })
-
 
             // Produces DataSource instances through which media data is loaded.
             val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(context,

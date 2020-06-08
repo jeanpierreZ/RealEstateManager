@@ -111,6 +111,7 @@
     <string name="price">price</string>
     <string name="property_media">property media</string>
     <string name="text">text</string>
+    <string name="page">%1$d / %2$d</string>
 
     <!-- media_full_screen xml for RecyclerView -->
     <string name="close">Close</string>
