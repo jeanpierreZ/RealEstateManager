@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -319,12 +320,7 @@ class MainActivity : AppCompatActivity(),
                     .replace(R.id.activityMainMapFragmentContainerView, mapFragment)
                     .addToBackStack(mapFragment.toString())
                     .commit()
-
-            // If the toolbar is hide (from PlayerFragment), show it
-            if (!supportActionBar?.isShowing!!) {
-                supportActionBar?.show()
-            }
-
+            showActionBarAndToolbarIfAreHidden()
         } else {
             // Display mapFragment instead of ListFragment or DetailsFragment in Phone mode
             supportFragmentManager.beginTransaction()
@@ -353,11 +349,7 @@ class MainActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction().attach(mapFragment).show(mapFragment)
                 .addToBackStack(mapFragment.toString())
                 .commit()
-
-        // If the toolbar is hide (from PlayerFragment), show it
-        if (!supportActionBar?.isShowing!!) {
-            supportActionBar?.show()
-        }
+        showActionBarAndToolbarIfAreHidden()
     }
 
     private fun refreshListFragment() {
@@ -370,8 +362,17 @@ class MainActivity : AppCompatActivity(),
         val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.activityMainFragmentContainerView)
         if (currentFragment is ListFragment) {
             refreshListFragment()
+            showActionBarAndToolbarIfAreHidden()
         } else {
             displayListFragment()
+        }
+    }
+
+    private fun showActionBarAndToolbarIfAreHidden() {
+        // If the toolbar is hide (from PlayerFragment), show it with the status bar
+        if (!supportActionBar?.isShowing!!) {
+            supportActionBar?.show()
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
 

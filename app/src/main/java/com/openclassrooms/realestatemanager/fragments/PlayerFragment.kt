@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,11 +50,15 @@ class PlayerFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
+        // Hide status bar and toolbar
+        activity?.window?.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         (activity as AppCompatActivity).supportActionBar?.hide()
     }
 
     override fun onStop() {
         super.onStop()
+        // Show status bar and toolbar
+        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         (activity as AppCompatActivity).supportActionBar?.show()
     }
 

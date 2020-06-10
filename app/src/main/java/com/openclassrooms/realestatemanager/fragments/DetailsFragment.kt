@@ -71,7 +71,6 @@ class DetailsFragment : Fragment(),
 
     // Nested PlayerFragment
     private val playerFragment: Fragment = PlayerFragment()
-
     private lateinit var fragmentTransaction: FragmentTransaction
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
