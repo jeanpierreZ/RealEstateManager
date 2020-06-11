@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
 
@@ -20,12 +21,15 @@ class PropertyDialogFragment(private var editText: EditText,
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
+            var isStatus = false
+
             // Preselected item to pass for dialog in SingleChoiceItems
             var preSelectedChoice: Int = -1
 
             // Update value if the item was previously selected
             if (!previouslySelectedChoice.isNullOrEmpty()) {
                 if (list.contains(Type.DUPLEX.realEstateType)) {
+                    isStatus = false
                     when (previouslySelectedChoice) {
                         Type.DUPLEX.realEstateType -> preSelectedChoice = 0
                         Type.FLAT.realEstateType -> preSelectedChoice = 1
@@ -34,6 +38,7 @@ class PropertyDialogFragment(private var editText: EditText,
                         Type.PENTHOUSE.realEstateType -> preSelectedChoice = 4
                     }
                 } else {
+                    isStatus = true
                     when (previouslySelectedChoice) {
                         Status.AVAILABLE.availability -> preSelectedChoice = 0
                         Status.SOLD.availability -> preSelectedChoice = 1
@@ -44,7 +49,7 @@ class PropertyDialogFragment(private var editText: EditText,
             var choice: String? = null
 
             // Use the Builder class for convenient dialog construction
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.DialogTheme)
             builder.setTitle(title)
                     // Specify the list array, the item to be selected by default (-1 for none),
                     // and the listener through which to receive callbacks which item is selected
@@ -57,6 +62,14 @@ class PropertyDialogFragment(private var editText: EditText,
                         editText.setText(choice)
                         callbackProperty?.onPropertyChosen(editText)
                     }
+            // Set the negative action button for status only
+            if (isStatus) {
+                builder.setNegativeButton(getString(R.string.erase)) { _, _ ->
+                    // Save a null value for the property of the item
+                    editText.text = null
+                    callbackProperty?.onPropertyChosen(editText)
+                }
+            }
             // Create the AlertDialog object and return it
             builder.create()
             builder.show()

@@ -51,12 +51,12 @@
             android:id="@+id/media_current_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:background="#99000000"
+            android:padding="4dp"
             android:text="@string/page"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"
-            android:layout_margin="8dp"
-            android:padding="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

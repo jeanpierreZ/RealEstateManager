@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +20,7 @@ import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.RealEstateAdapter
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import kotlinx.android.synthetic.main.real_estate.view.*
 
 
 /**
@@ -60,9 +63,9 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
             realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
 
             // Get the itemWithPicturesList
-            realEstateWithMediasViewModel.getRealEstateWithMedias.observe(viewLifecycleOwner, Observer { itemWithPicturesList ->
-                Log.d(TAG, "itemWithPicturesList = $itemWithPicturesList")
-                updateUI(itemWithPicturesList)
+            realEstateWithMediasViewModel.getRealEstateWithMedias.observe(viewLifecycleOwner, Observer { list ->
+                Log.d(TAG, "list = $list")
+                updateUI(list)
             })
         }
 
@@ -84,6 +87,7 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
     private fun updateUI(updateList: List<RealEstateWithMedias?>) {
         // Add the list from the request and notify the adapter
         realEstateAdapter?.setRealEstates(updateList)
+        realEstateWithMediasList = updateList as MutableList<RealEstateWithMedias?>
     }
 
     //----------------------------------------------------------------------------------
@@ -94,7 +98,17 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
         val realEstateWithMedias: RealEstateWithMedias? = realEstateAdapter?.getPosition(position)
         // Spread the click to the parent activity with the item id
         callbackRealEstate?.onRealEstateClicked(realEstateWithMedias?.realEstate?.id)
-        Log.d(TAG, "Click on ${realEstateWithMedias?.realEstate?.type} ")
+
+        // Set accent light color for the real estate selected
+        for (i in realEstateWithMediasList.indices) {
+            if (i == position) {
+                recyclerView?.get(i)?.real_estate_card_view?.setCardBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.colorAccentLight))
+            } else {
+                recyclerView?.get(i)?.real_estate_card_view?.setCardBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.colorWhite))
+            }
+        }
+
+        Log.d(TAG, "Click on ${realEstateWithMedias?.realEstate?.id} ")
     }
 
     //----------------------------------------------------------------------------------

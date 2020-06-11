@@ -46,7 +46,6 @@ class MediaAdapter(private var list: ArrayList<Media?>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
         val inflater = LayoutInflater.from(context)
-        //val view: View
 
         return if (viewType == TYPE_MEDIA) {
             val view = inflater.inflate(R.layout.media, parent, false)

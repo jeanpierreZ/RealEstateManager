@@ -48,7 +48,7 @@ class DateDialogFragment(private var editDate: EditText, private val previousDat
         }
 
         // Set DatePickerDialog with date from the calendar
-        val dialog = activity?.let { DatePickerDialog(it, 0, this, year, month, day) }
+        val dialog = activity?.let { DatePickerDialog(it, R.style.DialogTheme, this, year, month, day) }
         dialog?.datePicker?.minDate
 
         // Set neutral button to erase data

@@ -33,7 +33,7 @@ class MyUtils {
     fun showSnackbarMessage(activity: Activity?, text: Int?) {
         val snackbar = activity?.findViewById<View>(android.R.id.content)?.let { Snackbar.make(it, text!!, 3500) }
         snackbar?.view?.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorWhite))
-        snackbar?.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark))
+        snackbar?.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
         snackbar?.view?.setOnClickListener { _ -> snackbar.dismiss() }
         snackbar?.show()
     }
@@ -56,7 +56,7 @@ class MyUtils {
 
             infiniteFirstPage.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
             if (position == 0) {
-                infiniteFirstPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                infiniteFirstPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
                 infiniteFirstPage.layoutParams.height = 10
                 infiniteFirstPage.layoutParams.width = 40
             } else {
@@ -76,14 +76,14 @@ class MyUtils {
                 infiniteMiddlePage.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
 
                 if (position > 3 && position < (list.lastIndex - 2) && page == 3) {
-                    infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
                 }
                 when (page) {
-                    1 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
-                    2 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
-                    3 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
-                    4 -> if (position == (list.lastIndex - 2)) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
-                    5 -> if (position == (list.lastIndex - 1)) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    1 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
+                    2 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
+                    3 -> if (page == position) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
+                    4 -> if (position == (list.lastIndex - 2)) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
+                    5 -> if (position == (list.lastIndex - 1)) infiniteMiddlePage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
                 }
             }
 
@@ -93,7 +93,7 @@ class MyUtils {
 
             infiniteLastPage.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
             if (position == list.lastIndex) {
-                infiniteLastPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                infiniteLastPage.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
                 infiniteLastPage.layoutParams.height = 10
                 infiniteLastPage.layoutParams.width = 40
             } else {
@@ -114,14 +114,13 @@ class MyUtils {
                 pagerView.updateLayoutParams<ViewGroup.MarginLayoutParams> { setMargins(5, 0, 5, 0) }
                 // Distinguish the actual position in the RecyclerView by colorAccent
                 if (media == position) {
-                    pagerView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent))
+                    pagerView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
                 } else {
                     pagerView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 }
             }
         }
     }
-
 
     //----------------------------------------------------------------------------------
     // Configure DialogFragments
