@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,8 @@ import com.openclassrooms.realestatemanager.views.viewholders.RealEstateViewHold
 
 class RealEstateAdapter(private var list: List<RealEstateWithMedias?>,
                         private val glide: RequestManager,
-                        private val callback: Listener) : RecyclerView.Adapter<RealEstateViewHolder>() {
+                        private val callback: Listener,
+private var context: Context) : RecyclerView.Adapter<RealEstateViewHolder>() {
 
     // Callback
     interface Listener {
@@ -19,7 +21,8 @@ class RealEstateAdapter(private var list: List<RealEstateWithMedias?>,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RealEstateViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
+        context = parent.context
+        val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.real_estate, parent, false)
         return RealEstateViewHolder(view)
     }
@@ -27,7 +30,7 @@ class RealEstateAdapter(private var list: List<RealEstateWithMedias?>,
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: RealEstateViewHolder, position: Int) =
-            holder.updateRealEstates(list[position], glide, callback)
+            holder.updateRealEstates(list[position], glide, callback, context)
 
     fun setRealEstates(realEstateWithMediasList: List<RealEstateWithMedias?>) {
         list = realEstateWithMediasList

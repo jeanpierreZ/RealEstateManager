@@ -10,6 +10,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -83,6 +84,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val fragmentView = inflater.inflate(R.layout.fragment_map, container, false)
+
+        setHasOptionsMenu(true)
 
         mMapView = fragmentView.findViewById(R.id.fragment_map_view)
 
@@ -176,6 +179,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
     override fun onLowMemory() {
         super.onLowMemory()
         mMapView?.onLowMemory()
+    }
+
+    //----------------------------------------------------------------------------------
+    // Method for Toolbar Menu
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.menu_toolbar_add)?.isVisible = false
+        super.onPrepareOptionsMenu(menu)
     }
 
     //----------------------------------------------------------------------------------

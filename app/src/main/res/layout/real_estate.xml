@@ -16,25 +16,11 @@
         android:layout_margin="6dp">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/real_estate_guideline_thirty_vertical"
+            android:id="@+id/real_estate_guideline_forty_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.3" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/real_estate_guideline_thirty_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.3" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/real_estate_guideline_sixty_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.6" />
+            app:layout_constraintGuide_percent="0.4" />
 
         <ImageView
             android:id="@+id/real_estate_image"
@@ -44,7 +30,7 @@
             android:padding="4dp"
             android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/real_estate_guideline_thirty_vertical"
+            app:layout_constraintEnd_toStartOf="@+id/real_estate_guideline_forty_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,41 +38,48 @@
             android:id="@+id/real_estate_type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/type"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/real_estate_guideline_thirty_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/real_estate_district"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_thirty_vertical"
+            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_forty_vertical"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/real_estate_district"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/district"
-            app:layout_constraintBottom_toTopOf="@+id/real_estate_guideline_sixty_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/real_estate_price"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_thirty_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/real_estate_guideline_thirty_horizontal" />
+            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_forty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/real_estate_type" />
 
         <TextView
             android:id="@+id/real_estate_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@string/price"
+            android:text="@string/dollar_price"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_thirty_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/real_estate_guideline_sixty_horizontal" />
+            app:layout_constraintStart_toEndOf="@id/real_estate_guideline_forty_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/real_estate_district" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -108,7 +108,7 @@
     <string name="property_image">property image</string>
     <string name="type">type</string>
     <string name="district">district</string>
-    <string name="price">price</string>
+    <string name="dollar_price">$%1$s</string>
     <string name="property_media">property media</string>
     <string name="text">text</string>
     <string name="page">%1$d / %2$d</string>

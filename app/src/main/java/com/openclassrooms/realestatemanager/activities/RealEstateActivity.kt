@@ -10,7 +10,6 @@ import com.openclassrooms.realestatemanager.fragments.AddRealEstateFragment
 import com.openclassrooms.realestatemanager.fragments.DetailsFragment
 import com.openclassrooms.realestatemanager.fragments.UpdateRealEstateFragment
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
-import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
@@ -32,8 +31,6 @@ class RealEstateActivity : AppCompatActivity(),
     private var title: String? = ""
     private var realEstateWithMedias: RealEstateWithMedias? = null
     private var fragment = Fragment()
-
-    private val myUtils = MyUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

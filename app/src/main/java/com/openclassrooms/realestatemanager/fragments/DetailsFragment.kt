@@ -193,9 +193,10 @@ class DetailsFragment : Fragment(),
     //----------------------------------------------------------------------------------
     // Methods for Toolbar Menu
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.menu_toolbar_edit)?.isVisible = true
-        super.onCreateOptionsMenu(menu, inflater)
+        super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

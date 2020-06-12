@@ -17,6 +17,7 @@ import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
+import java.text.NumberFormat
 
 
 class MyUtils {
@@ -25,6 +26,16 @@ class MyUtils {
     fun displayIntegerProperties(value: Int?, text: TextView?) {
         if (value != -1) {
             text?.text = value.toString()
+        } else {
+            text?.text = ""
+        }
+    }
+
+    // For the price of a real estate (that has a negative value if it is null)
+    fun displayPrice(value: Int?, text: TextView?, context: Context) {
+        val formatValue = NumberFormat.getInstance().format(value)
+        if (value != -1) {
+            text?.text = context.getString(R.string.dollar_price, formatValue.toString())
         } else {
             text?.text = ""
         }

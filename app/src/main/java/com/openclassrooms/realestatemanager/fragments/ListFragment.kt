@@ -77,7 +77,7 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of items
-        realEstateAdapter = RealEstateAdapter(realEstateWithMediasList, Glide.with(this), this)
+        realEstateAdapter = RealEstateAdapter(realEstateWithMediasList, Glide.with(this), this, requireActivity())
         // Attach the adapter to the recyclerView to populate items
         recyclerView?.adapter = realEstateAdapter
         // Set layout manager to position the items
@@ -103,8 +103,10 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
         for (i in realEstateWithMediasList.indices) {
             if (i == position) {
                 recyclerView?.get(i)?.real_estate_card_view?.setCardBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.colorAccentLight))
+                recyclerView?.get(i)?.real_estate_price?.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorWhite))
             } else {
                 recyclerView?.get(i)?.real_estate_card_view?.setCardBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.colorWhite))
+                recyclerView?.get(i)?.real_estate_price?.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccentDark))
             }
         }
 

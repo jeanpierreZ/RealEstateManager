@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.views.viewholders
 
+import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -37,11 +38,11 @@ class RealEstateViewHolder(realEstateView: View) : RecyclerView.ViewHolder(realE
         callback?.onClickRealEstate(adapterPosition)
     }
 
-    fun updateRealEstates(realEstateWithMedias: RealEstateWithMedias?, glide: RequestManager, callback: RealEstateAdapter.Listener) {
+    fun updateRealEstates(realEstateWithMedias: RealEstateWithMedias?, glide: RequestManager, callback: RealEstateAdapter.Listener, context: Context) {
         // Update widgets
         realEstateType?.text = realEstateWithMedias?.realEstate?.type
         realEstateDistrict?.text = realEstateWithMedias?.realEstate?.address?.district
-        myUtils.displayIntegerProperties(realEstateWithMedias?.realEstate?.price, realEstatePrice)
+        myUtils.displayPrice(realEstateWithMedias?.realEstate?.price, realEstatePrice, context)
 
         // Necessary if the user don't have a media with the real estate
         if (realEstateWithMedias?.medias?.size != 0) {
