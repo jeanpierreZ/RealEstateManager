@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.*
 import androidx.activity.addCallback
@@ -125,7 +126,6 @@ class DetailsFragment : Fragment(),
                     // Get data to set addresses for textViews and map
                     val streetNumber = realEstateWithMedias?.realEstate?.address?.streetNumber ?: ""
                     val street = realEstateWithMedias?.realEstate?.address?.street ?: ""
-                    val shortAddress = String.format("$streetNumber $street ")
                     val apartmentNumber = realEstateWithMedias?.realEstate?.address?.apartmentNumber
                     val postalCode = realEstateWithMedias?.realEstate?.address?.postalCode
                     val city = realEstateWithMedias?.realEstate?.address?.city
@@ -136,20 +136,26 @@ class DetailsFragment : Fragment(),
                     val roomsNumber = realEstateWithMedias?.realEstate?.roomsNumber
                     val bathroomsNumber = realEstateWithMedias?.realEstate?.bathroomsNumber
                     val bedroomsNumber = realEstateWithMedias?.realEstate?.bedroomsNumber
+                    val poi = realEstateWithMedias?.realEstate?.pointsOfInterest
 
                     // Set the editTexts
                     details_fragment_description.text = realEstateWithMedias?.realEstate?.description
 
-                    myUtils.displayIntegerProperties(surface, details_fragment_surface)
-                    myUtils.displayIntegerProperties(roomsNumber, details_fragment_rooms)
-                    myUtils.displayIntegerProperties(bathroomsNumber, details_fragment_bathrooms)
-                    myUtils.displayIntegerProperties(bedroomsNumber, details_fragment_bedrooms)
+                    myUtils.displaySurface(surface, details_fragment_surface, requireActivity())
+                    myUtils.displayRooms(roomsNumber, details_fragment_rooms, requireActivity())
+                    myUtils.displayBathrooms(bathroomsNumber, details_fragment_bathrooms, requireActivity())
+                    myUtils.displayBedrooms(bedroomsNumber, details_fragment_bedrooms, requireActivity())
 
-                    details_fragment_street.text = shortAddress
+                    if (poi!= null) {
+                        val poiList: String? = poi.let { TextUtils.join(", ", it) }
+                        details_fragment_poi.text = poiList
+                    }
+
+                    details_fragment_street.text = getString(R.string.short_address, streetNumber, street)
                     if (apartmentNumber.isNullOrBlank() || apartmentNumber == "") {
                         details_fragment_apartment.text = apartmentNumber
                     } else {
-                        details_fragment_apartment.text = String.format(getString(R.string.apt) + " $apartmentNumber")
+                        details_fragment_apartment.text = getString(R.string.apt, apartmentNumber)
                     }
                     details_fragment_city.text = city
                     details_fragment_postal_code.text = postalCode

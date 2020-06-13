@@ -9,15 +9,30 @@
     <string name="description">Description</string>
     <string name="surface_icon">Surface icon</string>
     <string name="surface_title">Surface</string>
+    <string name="sq_m">%d sq m</string>
+    <string name="poi_icon">POI icon</string>
     <string name="room_icon">Room icon</string>
     <string name="number_of_rooms_title">Number of rooms</string>
+    <plurals name="rooms">
+        <item quantity="one">%d room</item>
+        <item quantity="other">%d rooms</item>
+    </plurals>
     <string name="bathroom_icon">Bathroom icon</string>
     <string name="number_of_bathrooms_title">Number of bathrooms</string>
+    <plurals name="bathrooms">
+        <item quantity="one">%d bathroom</item>
+        <item quantity="other">%d bathrooms</item>
+    </plurals>
     <string name="bedroom_icon">Bedroom icon</string>
     <string name="number_of_bedrooms_title">Number of bedrooms</string>
+    <plurals name="bedrooms">
+        <item quantity="one">%d bedroom</item>
+        <item quantity="other">%d bedrooms</item>
+    </plurals>
     <string name="location_icon">Location icon</string>
     <string name="location_title">Location</string>
-    <string name="apt">Apt</string>
+    <string name="short_address">%1$s %2$s</string>
+    <string name="apt">Apt %s</string>
     <string name="address_not_available">Address not available to display the map</string>
 
     <!-- RealEstate and Search Activities -->
@@ -45,7 +60,7 @@
     <string name="sale_date_earlier_entry_date">The sale date cannot be earlier than the entry date.</string>
     <string name="impossible_future_date">You cannot choose a date in the future.</string>
     <string name="media_description">Media description</string>
-    <string name="no_media_description">Choose a description for the media</string>
+    <string name="no_media_description">Enter a description for the media</string>
     <string name="add_picture">Add a picture</string>
     <string name="take_picture">Take a picture</string>
     <string name="take_video">Take a video</string>
@@ -108,7 +123,7 @@
     <string name="property_image">property image</string>
     <string name="type">type</string>
     <string name="district">district</string>
-    <string name="dollar_price">$%1$s</string>
+    <string name="dollar_price">$%s</string>
     <string name="property_media">property media</string>
     <string name="text">text</string>
     <string name="page">%1$d / %2$d</string>

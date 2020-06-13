@@ -31,6 +31,9 @@ class MyUtils {
         }
     }
 
+    //----------------------------------------------------------------------------------
+    // For DetailsFragment and ViewHolders
+
     // For the price of a real estate (that has a negative value if it is null)
     fun displayPrice(value: Int?, text: TextView?, context: Context) {
         val formatValue = NumberFormat.getInstance().format(value)
@@ -40,6 +43,44 @@ class MyUtils {
             text?.text = ""
         }
     }
+
+    // For the price of a real estate (that has a negative value if it is null)
+    fun displaySurface(value: Int?, text: TextView?, context: Context) {
+        if (value != -1) {
+            text?.text = context.getString(R.string.sq_m, value)
+        } else {
+            text?.text = ""
+        }
+    }
+
+    // For the price of a real estate (that has a negative value if it is null)
+    fun displayRooms(value: Int?, text: TextView?, context: Context) {
+        if (value != -1) {
+            text?.text = value?.let { context.resources.getQuantityString(R.plurals.rooms, it, it) }
+        } else {
+            text?.text = ""
+        }
+    }
+
+    // For the price of a real estate (that has a negative value if it is null)
+    fun displayBathrooms(value: Int?, text: TextView?, context: Context) {
+        if (value != -1) {
+            text?.text = value?.let { context.resources.getQuantityString(R.plurals.bathrooms, it, it) }
+        } else {
+            text?.text = ""
+        }
+    }
+
+    // For the price of a real estate (that has a negative value if it is null)
+    fun displayBedrooms(value: Int?, text: TextView?, context: Context) {
+        if (value != -1) {
+            text?.text = value?.let { context.resources.getQuantityString(R.plurals.bedrooms, it, it) }
+        } else {
+            text?.text = ""
+        }
+    }
+
+    //----------------------------------------------------------------------------------
 
     fun showSnackbarMessage(activity: Activity?, text: Int?) {
         val snackbar = activity?.findViewById<View>(android.R.id.content)?.let { Snackbar.make(it, text!!, 3500) }
@@ -55,6 +96,7 @@ class MyUtils {
         return displayMetrics.widthPixels.coerceAtMost(displayMetrics.heightPixels) / displayMetrics.density
     }
 
+    //----------------------------------------------------------------------------------
     fun addPagerToRecyclerView(context: Context, list: ArrayList<Media?>, position: Int, linearLayout: LinearLayout) {
         linearLayout.removeAllViews()
         val infiniteMiddlePageList = arrayOf(1, 2, 3, 4, 5)
