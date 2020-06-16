@@ -5,69 +5,65 @@
     <string name="real_estate_not_saved">Real estate not saved</string>
 
     <!-- Details Fragment -->
-    <string name="media">Media</string>
     <string name="description">Description</string>
     <string name="surface_icon">Surface icon</string>
-    <string name="surface_title">Surface</string>
     <string name="sq_m">%d sq m</string>
     <string name="poi_icon">POI icon</string>
     <string name="room_icon">Room icon</string>
-    <string name="number_of_rooms_title">Number of rooms</string>
     <plurals name="rooms">
         <item quantity="one">%d room</item>
         <item quantity="other">%d rooms</item>
     </plurals>
     <string name="bathroom_icon">Bathroom icon</string>
-    <string name="number_of_bathrooms_title">Number of bathrooms</string>
     <plurals name="bathrooms">
         <item quantity="one">%d bathroom</item>
         <item quantity="other">%d bathrooms</item>
     </plurals>
     <string name="bedroom_icon">Bedroom icon</string>
-    <string name="number_of_bedrooms_title">Number of bedrooms</string>
     <plurals name="bedrooms">
         <item quantity="one">%d bedroom</item>
         <item quantity="other">%d bedrooms</item>
     </plurals>
     <string name="location_icon">Location icon</string>
-    <string name="location_title">Location</string>
     <string name="short_address">%1$s %2$s</string>
     <string name="apt">Apt %s</string>
     <string name="address_not_available">Address not available to display the map</string>
 
     <!-- RealEstate and Search Activities -->
-    <string name="create_real_estate">Create a real estate</string>
-    <string name="update_real_estate">Update a real estate</string>
-    <string name="real_estate_type">Type of the real estate</string>
-    <string name="real_estate_price">Price of the real estate</string>
-    <string name="real_estate_surface">Surface of the real estate</string>
-    <string name="real_estate_rooms_number">Number of rooms of the real estate</string>
-    <string name="real_estate_bathrooms_number">Number of bathrooms of the real estate</string>
-    <string name="real_estate_bedrooms_number">Number of bedrooms of the real estate</string>
-    <string name="real_estate_points_of_interest">Points of interest of the real estate</string>
-    <string name="real_estate_street_number">Street number of the real estate</string>
-    <string name="real_estate_street">Street of the real estate</string>
-    <string name="real_estate_apartment_number">Apartment number of the real estate</string>
-    <string name="real_estate_district">District of the real estate</string>
-    <string name="real_estate_city">City of the real estate</string>
-    <string name="real_estate_postal_code">Postal code of the real estate</string>
-    <string name="real_estate_country">Country of the real estate</string>
-    <string name="real_estate_description">Description of the real estate</string>
-    <string name="real_estate_status">Status of the real estate</string>
-    <string name="real_estate_entry_date">Date of entry of the real estate</string>
-    <string name="real_estate_sale_date">Date of sale of the real estate</string>
+    <string name="create_real_estate">Create a property</string>
+    <string name="update_real_estate">Update this property</string>
+    <string name="real_estate_type">Type</string>
+    <string name="real_estate_price">Price</string>
+    <string name="real_estate_surface">Surface</string>
+    <string name="real_estate_rooms_number">Number of rooms</string>
+    <string name="real_estate_bathrooms_number">Number of bathrooms</string>
+    <string name="real_estate_bedrooms_number">Number of bedrooms</string>
+    <string name="real_estate_points_of_interest">Points of interest</string>
+    <string name="real_estate_street_number">Street number</string>
+    <string name="real_estate_street">Street</string>
+    <string name="real_estate_apartment_number">Apartment number</string>
+    <string name="real_estate_district">District</string>
+    <string name="real_estate_city">City</string>
+    <string name="real_estate_postal_code">Postal code</string>
+    <string name="real_estate_country">Country</string>
+    <string name="real_estate_description">Description</string>
+    <string name="real_estate_status">Status</string>
+    <string name="real_estate_entry_date">Date of entry</string>
+    <string name="real_estate_sale_date">Date of sale</string>
     <string name="real_estate_agent">The real estate agent in charge of this property</string>
     <string name="sale_date_earlier_entry_date">The sale date cannot be earlier than the entry date</string>
     <string name="impossible_future_date">You cannot choose a date in the future</string>
     <string name="media_description">Media description</string>
     <string name="no_media_description">Enter a description for the media</string>
-    <string name="add_picture">Add a picture</string>
-    <string name="take_picture">Take a picture</string>
-    <string name="take_video">Take a video</string>
+    <string name="add_picture">Photo gallery</string>
+    <string name="take_picture">Snapshot</string>
+    <string name="take_video">Video</string>
     <string name="delete_media">Delete this media?</string>
     <string name="erase">Erase</string>
-    <string name="enter_type_and_media">Enter a type and media</string>
-    <string name="save">Save</string>
+    <string name="add_type_and_media">Add a type and media</string>
+    <string name="enter_type">Enter a type</string>
+    <string name="enter_media">Enter a media</string>
+    <string name="save">Register property</string>
 
     <string name="search_title">Search for real estate</string>
     <string name="search_type">What type of property are you looking for?</string>

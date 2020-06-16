@@ -19,11 +19,11 @@ class AddRealEstateFragment : BaseRealEstateFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val fragmentView = super.onCreateView(inflater, container, savedInstanceState)
 
-        myUtils.displayIntegerProperties(price, fragment_base_real_estate_edit_price)
-        myUtils.displayIntegerProperties(surface, fragment_base_real_estate_edit_surface)
-        myUtils.displayIntegerProperties(roomsNumber, fragment_base_real_estate_edit_rooms)
-        myUtils.displayIntegerProperties(bathroomsNumber, fragment_base_real_estate_edit_bathrooms)
-        myUtils.displayIntegerProperties(bedroomsNumber, fragment_base_real_estate_edit_bedrooms)
+        myUtils.displayIntegerProperties(price, fragment_base_real_estate_price?.editText)
+        myUtils.displayIntegerProperties(surface, fragment_base_real_estate_surface?.editText)
+        myUtils.displayIntegerProperties(roomsNumber, fragment_base_real_estate_rooms?.editText)
+        myUtils.displayIntegerProperties(bathroomsNumber, fragment_base_real_estate_bathrooms?.editText)
+        myUtils.displayIntegerProperties(bedroomsNumber, fragment_base_real_estate_bedrooms?.editText)
 
         return fragmentView
     }

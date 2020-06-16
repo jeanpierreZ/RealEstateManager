@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -147,7 +148,7 @@ abstract class BaseRealEstateFragment : Fragment(),
         val fragmentView: View = inflater.inflate(R.layout.fragment_base_real_estate, container, false)
 
         recyclerView = fragmentView.findViewById(R.id.fragment_base_real_estate_recycler_view)
-        pager = fragmentView.findViewById(R.id.baseRealEstateFragmentPager)
+        pager = fragmentView.findViewById(R.id.fragment_base_real_estate_pager)
 
         configureRecyclerView()
 
@@ -159,92 +160,96 @@ abstract class BaseRealEstateFragment : Fragment(),
         // Get data
 
         // Show the AlertDialog to choose the type of the real estate
-        fragment_base_real_estate_edit_type.setOnClickListener {
-            myUtils.openPropertyDialogFragment(fragment_base_real_estate_edit_type, typeTitle,
+        fragment_base_real_estate_type.editText?.setOnClickListener {
+            myUtils.openPropertyDialogFragment(fragment_base_real_estate_type.editText!!, typeTitle,
                     type, types, requireActivity().supportFragmentManager)
         }
 
-        fragment_base_real_estate_edit_price.doOnTextChanged { text, _, _, _ ->
+        validateType()
+        fragment_base_real_estate_type.editText?.doAfterTextChanged { validateType() }
+
+        fragment_base_real_estate_price.editText?.doOnTextChanged { text, _, _, _ ->
             price = text.toString().toIntOrNull()
         }
 
-        fragment_base_real_estate_edit_surface.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_surface.editText?.doOnTextChanged { text, _, _, _ ->
             surface = text.toString().toIntOrNull()
         }
 
-        fragment_base_real_estate_edit_rooms.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_rooms.editText?.doOnTextChanged { text, _, _, _ ->
             roomsNumber = text.toString().toIntOrNull()
         }
 
-        fragment_base_real_estate_edit_bathrooms.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_bathrooms.editText?.doOnTextChanged { text, _, _, _ ->
             bathroomsNumber = text.toString().toIntOrNull()
         }
 
-        fragment_base_real_estate_edit_bedrooms.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_bedrooms.editText?.doOnTextChanged { text, _, _, _ ->
             bedroomsNumber = text.toString().toIntOrNull()
         }
 
         // Show the AlertDialog to choose the points of interest of the real estate
-        fragment_base_real_estate_edit_poi.setOnClickListener {
-            myUtils.openPOIDialogFragment(fragment_base_real_estate_edit_poi, pointsOfInterest,
+        fragment_base_real_estate_poi.editText?.setOnClickListener {
+            myUtils.openPOIDialogFragment(fragment_base_real_estate_poi.editText!!, pointsOfInterest,
                     requireActivity().supportFragmentManager)
         }
 
-        fragment_base_real_estate_edit_street_number.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_street_number.editText?.doOnTextChanged { text, _, _, _ ->
             streetNumber = text.toString()
         }
 
-        fragment_base_real_estate_edit_street.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_street.editText?.doOnTextChanged { text, _, _, _ ->
             street = text.toString()
         }
 
-        fragment_base_real_estate_edit_apartment_number.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_apartment_number.editText?.doOnTextChanged { text, _, _, _ ->
             apartmentNumber = text.toString()
         }
 
-        fragment_base_real_estate_edit_district.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_district.editText?.doOnTextChanged { text, _, _, _ ->
             district = text.toString()
         }
 
-        fragment_base_real_estate_edit_city.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_city.editText?.doOnTextChanged { text, _, _, _ ->
             city = text.toString()
         }
 
-        fragment_base_real_estate_edit_postal_code.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_postal_code.editText?.doOnTextChanged { text, _, _, _ ->
             postalCode = text.toString()
         }
 
-        fragment_base_real_estate_edit_country.doOnTextChanged { text, _, _, _ ->
+    fragment_base_real_estate_country.editText?.doOnTextChanged { text, _, _, _ ->
             country = text.toString()
         }
 
-        fragment_base_real_estate_edit_description.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_description.editText?.doOnTextChanged { text, _, _, _ ->
             description = text.toString()
         }
 
         // Show the AlertDialog to choose the status of the real estate
-        fragment_base_real_estate_edit_status.setOnClickListener {
-            myUtils.openPropertyDialogFragment(fragment_base_real_estate_edit_status, statusTitle,
+        fragment_base_real_estate_status.editText?.setOnClickListener {
+            myUtils.openPropertyDialogFragment(fragment_base_real_estate_status.editText!!, statusTitle,
                     status, statutes, requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the entry date of the real estate
-        fragment_base_real_estate_edit_entry_date.setOnClickListener {
-            myUtils.openDateDialogFragment(fragment_base_real_estate_edit_entry_date, entryDate,
+        fragment_base_real_estate_entry_date.editText?.setOnClickListener {
+            myUtils.openDateDialogFragment(fragment_base_real_estate_entry_date.editText!!, entryDate,
                     requireActivity().supportFragmentManager)
         }
 
         // Show the AlertDialog to choose the sale date of the real estate
-        fragment_base_real_estate_edit_sale_date.setOnClickListener {
-            myUtils.openDateDialogFragment(fragment_base_real_estate_edit_sale_date, saleDate,
+        fragment_base_real_estate_sale_date.editText?.setOnClickListener {
+            myUtils.openDateDialogFragment(fragment_base_real_estate_sale_date.editText!!, saleDate,
                     requireActivity().supportFragmentManager)
         }
 
-        fragment_base_real_estate_edit_agent.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_agent.editText?.doOnTextChanged { text, _, _, _ ->
             agent = text.toString()
         }
 
-        fragment_base_real_estate_edit_media_description.doOnTextChanged { text, _, _, _ ->
+        validateMedia()
+        fragment_base_real_estate_media_description.editText?.doOnTextChanged { text, _, _, _ ->
             mediaDescription = text.toString()
         }
 
@@ -350,11 +355,12 @@ abstract class BaseRealEstateFragment : Fragment(),
     }
 
     private fun refreshMediaInList(updateList: ArrayList<Media?>) {
-        mediaAdapter?.notifyItemInserted(updateList.lastIndex)
+        mediaAdapter?.notifyDataSetChanged()
         val position = updateList.lastIndex
         recyclerView?.scrollToPosition(position)
         // Update pager
         myUtils.addPagerToRecyclerView(requireActivity(), updateList, position, pager)
+        validateMedia()
     }
 
     private fun removeMediaFromListAndRefresh(media: Media, position: Int) {
@@ -365,12 +371,34 @@ abstract class BaseRealEstateFragment : Fragment(),
         // Remove the media object from the list to save
         mediaList.remove(media)
         mediaAdapter?.notifyItemRemoved(position)
+        mediaAdapter?.notifyDataSetChanged()
         // Update pager
         myUtils.addPagerToRecyclerView(requireActivity(), mediaList, updatedPosition, pager)
+        validateMedia()
     }
 
     //----------------------------------------------------------------------------------
     // Private methods for Pictures and data
+
+    private fun validateType(): Boolean {
+        return if (fragment_base_real_estate_type.editText?.text.toString() == "") {
+            fragment_base_real_estate_type.error = getString(R.string.enter_type)
+            false
+        } else {
+            fragment_base_real_estate_type.error = null
+            true
+        }
+    }
+
+    private fun validateMedia(): Boolean {
+        return if (mediaList.size == 0) {
+            fragment_base_real_estate_media_description.error = getString(R.string.enter_media)
+            false
+        } else {
+            fragment_base_real_estate_media_description.error = null
+            true
+        }
+    }
 
     @AfterPermissionGranted(RC_READ_PERM)
     private fun addPicture() {
@@ -500,7 +528,7 @@ abstract class BaseRealEstateFragment : Fragment(),
 
     private fun saveRealEstateWithMedias() {
         if (type.isNullOrEmpty() || mediaList.isNullOrEmpty()) {
-            myUtils.showSnackbarMessage(activity, R.string.enter_type_and_media)
+            myUtils.showSnackbarMessage(activity, R.string.add_type_and_media)
         } else {
             storeLatLng()
             saveRealEstateIntent.putExtra(ID_REAL_ESTATE, id)
@@ -535,7 +563,7 @@ abstract class BaseRealEstateFragment : Fragment(),
 
     fun setPropertyChosen(propertyChosen: EditText?) {
         if (propertyChosen != null) {
-            if (fragment_base_real_estate_edit_type == propertyChosen) {
+            if (fragment_base_real_estate_type == propertyChosen) {
                 type = propertyChosen.text.toString()
             } else {
                 status = propertyChosen.text.toString()
@@ -554,13 +582,13 @@ abstract class BaseRealEstateFragment : Fragment(),
 
         if (editTextChosen?.text.toString() != "") {
             when (editTextChosen) {
-                fragment_base_real_estate_edit_entry_date -> entryDate = editTextChosen?.text.toString()
-                fragment_base_real_estate_edit_sale_date -> saleDate = editTextChosen?.text.toString()
+                fragment_base_real_estate_entry_date?.editText -> entryDate = editTextChosen?.text.toString()
+                fragment_base_real_estate_sale_date?.editText -> saleDate = editTextChosen?.text.toString()
             }
         } else {
             when (editTextChosen) {
-                fragment_base_real_estate_edit_entry_date -> entryDate = null
-                fragment_base_real_estate_edit_sale_date -> saleDate = null
+                fragment_base_real_estate_entry_date?.editText -> entryDate = null
+                fragment_base_real_estate_sale_date?.editText -> saleDate = null
             }
         }
 
@@ -573,8 +601,8 @@ abstract class BaseRealEstateFragment : Fragment(),
             // The sale date cannot be earlier than the entry date
             if (dateOfSale!!.before(dateOfEntry)) {
                 myUtils.showSnackbarMessage(requireActivity(), R.string.sale_date_earlier_entry_date)
-                fragment_base_real_estate_edit_entry_date.text.clear()
-                fragment_base_real_estate_edit_sale_date.text.clear()
+                fragment_base_real_estate_entry_date.editText?.text?.clear()
+                fragment_base_real_estate_sale_date.editText?.text?.clear()
                 entryDate = null
                 saleDate = null
             }

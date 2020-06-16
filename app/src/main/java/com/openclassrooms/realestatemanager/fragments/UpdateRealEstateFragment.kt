@@ -70,30 +70,30 @@ class UpdateRealEstateFragment : BaseRealEstateFragment() {
         //----------------------------------------------------------------------------------
         // Set data in editTexts
 
-        fragment_base_real_estate_edit_type.setText(type)
+        fragment_base_real_estate_type.editText?.setText(type)
 
-        myUtils.displayIntegerProperties(price, fragment_base_real_estate_edit_price)
-        myUtils.displayIntegerProperties(surface, fragment_base_real_estate_edit_surface)
-        myUtils.displayIntegerProperties(roomsNumber, fragment_base_real_estate_edit_rooms)
-        myUtils.displayIntegerProperties(bathroomsNumber, fragment_base_real_estate_edit_bathrooms)
-        myUtils.displayIntegerProperties(bedroomsNumber, fragment_base_real_estate_edit_bedrooms)
+        myUtils.displayIntegerProperties(price, fragment_base_real_estate_price.editText)
+        myUtils.displayIntegerProperties(surface, fragment_base_real_estate_surface.editText)
+        myUtils.displayIntegerProperties(roomsNumber, fragment_base_real_estate_rooms.editText)
+        myUtils.displayIntegerProperties(bathroomsNumber, fragment_base_real_estate_bathrooms.editText)
+        myUtils.displayIntegerProperties(bedroomsNumber, fragment_base_real_estate_bedrooms.editText)
 
         val displayPOI = pointsOfInterest?.joinToString { it -> it }
-        fragment_base_real_estate_edit_poi.setText(displayPOI)
+        fragment_base_real_estate_poi.editText?.setText(displayPOI)
 
-        fragment_base_real_estate_edit_street_number.setText(streetNumber)
-        fragment_base_real_estate_edit_street.setText(street)
-        fragment_base_real_estate_edit_apartment_number.setText(apartmentNumber)
-        fragment_base_real_estate_edit_district.setText(district)
-        fragment_base_real_estate_edit_city.setText(city)
-        fragment_base_real_estate_edit_postal_code.setText(postalCode)
-        fragment_base_real_estate_edit_country.setText(country)
+        fragment_base_real_estate_street_number.editText?.setText(streetNumber)
+        fragment_base_real_estate_street.editText?.setText(street)
+        fragment_base_real_estate_apartment_number.editText?.setText(apartmentNumber)
+        fragment_base_real_estate_district.editText?.setText(district)
+        fragment_base_real_estate_city.editText?.setText(city)
+        fragment_base_real_estate_postal_code.editText?.setText(postalCode)
+        fragment_base_real_estate_country.editText?.setText(country)
 
-        fragment_base_real_estate_edit_description.setText(description)
-        fragment_base_real_estate_edit_status.setText(status)
-        fragment_base_real_estate_edit_entry_date.setText(entryDate)
-        fragment_base_real_estate_edit_sale_date.setText(saleDate)
-        fragment_base_real_estate_edit_agent.setText(agent)
+        fragment_base_real_estate_description.editText?.setText(description)
+        fragment_base_real_estate_status.editText?.setText(status)
+        fragment_base_real_estate_entry_date.editText?.setText(entryDate)
+        fragment_base_real_estate_sale_date.editText?.setText(saleDate)
+        fragment_base_real_estate_agent.editText?.setText(agent)
     }
 
 }
