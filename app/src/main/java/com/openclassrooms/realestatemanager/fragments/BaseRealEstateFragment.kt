@@ -218,7 +218,7 @@ abstract class BaseRealEstateFragment : Fragment(),
             postalCode = text.toString()
         }
 
-    fragment_base_real_estate_country.editText?.doOnTextChanged { text, _, _, _ ->
+        fragment_base_real_estate_country.editText?.doOnTextChanged { text, _, _, _ ->
             country = text.toString()
         }
 
@@ -563,7 +563,7 @@ abstract class BaseRealEstateFragment : Fragment(),
 
     fun setPropertyChosen(propertyChosen: EditText?) {
         if (propertyChosen != null) {
-            if (fragment_base_real_estate_type == propertyChosen) {
+            if (fragment_base_real_estate_type?.editText == propertyChosen) {
                 type = propertyChosen.text.toString()
             } else {
                 status = propertyChosen.text.toString()

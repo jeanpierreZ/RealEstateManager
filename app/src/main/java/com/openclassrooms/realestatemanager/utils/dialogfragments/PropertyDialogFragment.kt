@@ -58,7 +58,10 @@ class PropertyDialogFragment(private var editText: EditText,
                         choice = list[which] as String
                     }
                     .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
-                        // Set and save the selected value for the property or the status of the item
+                        // Set and save the selected (or the preSelectedChoice) value for the property or the status of the item
+                        if (choice == null && preSelectedChoice != -1) {
+                            choice = list[preSelectedChoice] as String
+                        }
                         editText.setText(choice)
                         callbackProperty?.onPropertyChosen(editText)
                     }
