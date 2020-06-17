@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +40,8 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.io.IOException
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -168,9 +172,37 @@ abstract class BaseRealEstateFragment : Fragment(),
         validateType()
         fragment_base_real_estate_type.editText?.doAfterTextChanged { validateType() }
 
-        fragment_base_real_estate_price.editText?.doOnTextChanged { text, _, _, _ ->
-            price = text.toString().toIntOrNull()
-        }
+        fragment_base_real_estate_price.editText?.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                fragment_base_real_estate_price.editText?.removeTextChangedListener(this)
+                try {
+                    var originalString = s.toString()
+
+                    if (originalString.contains(",")) {
+                        originalString = originalString.replace(",", "")
+                    }
+                    val long: Long = originalString.toLong()
+
+                    // Format the displayed price
+                    val formatter = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
+                    formatter.applyPattern("#,###,###,###")
+                    val formattedString = formatter.format(long)
+
+                    // Set text formatted in EditText and set price data
+                    fragment_base_real_estate_price.editText?.setText(formattedString)
+                    fragment_base_real_estate_price.editText?.text?.length?.let { fragment_base_real_estate_price.editText?.setSelection(it) }
+                    price = originalString.toIntOrNull()
+                } catch (nfe: NumberFormatException) {
+                    nfe.printStackTrace()
+                }
+                fragment_base_real_estate_price.editText?.addTextChangedListener(this)
+            }
+        })
 
         fragment_base_real_estate_surface.editText?.doOnTextChanged { text, _, _, _ ->
             surface = text.toString().toIntOrNull()
