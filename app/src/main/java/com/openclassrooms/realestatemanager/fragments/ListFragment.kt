@@ -7,8 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +18,6 @@ import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.RealEstateAdapter
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
-import kotlinx.android.synthetic.main.real_estate.view.*
 
 
 /**
@@ -91,25 +88,13 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
     }
 
     //----------------------------------------------------------------------------------
-    // Interface for callback from ItemAdapter
+    // Interface for callback from RealEstateAdapter
 
     override fun onClickRealEstate(position: Int) {
         // Save the item object in the RecyclerView
         val realEstateWithMedias: RealEstateWithMedias? = realEstateAdapter?.getPosition(position)
         // Spread the click to the parent activity with the item id
         callbackRealEstate?.onRealEstateClicked(realEstateWithMedias?.realEstate?.id)
-
-        // Set accent light color for the real estate selected
-        for (i in realEstateWithMediasList.indices) {
-            if (i == position) {
-                recyclerView?.get(i)?.real_estate_card_view?.setCardBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.colorAccentLight))
-                recyclerView?.get(i)?.real_estate_price?.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorWhite))
-            } else {
-                recyclerView?.get(i)?.real_estate_card_view?.setCardBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.colorWhite))
-                recyclerView?.get(i)?.real_estate_price?.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorAccentDark))
-            }
-        }
-
         Log.d(TAG, "Click on ${realEstateWithMedias?.realEstate?.id} ")
     }
 

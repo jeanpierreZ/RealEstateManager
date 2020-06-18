@@ -40,7 +40,6 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.io.IOException
-import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -168,13 +167,14 @@ abstract class BaseRealEstateFragment : Fragment(),
             myUtils.openPropertyDialogFragment(fragment_base_real_estate_type.editText!!, typeTitle,
                     type, types, requireActivity().supportFragmentManager)
         }
-
         validateType()
         fragment_base_real_estate_type.editText?.doAfterTextChanged { validateType() }
 
         fragment_base_real_estate_price.editText?.addTextChangedListener(object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                validatePrice(s.toString())
+            }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -186,12 +186,10 @@ abstract class BaseRealEstateFragment : Fragment(),
                     if (originalString.contains(",")) {
                         originalString = originalString.replace(",", "")
                     }
-                    val long: Long = originalString.toLong()
 
-                    // Format the displayed price
-                    val formatter = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
-                    formatter.applyPattern("#,###,###,###")
-                    val formattedString = formatter.format(long)
+                    val int: Int = originalString.toInt()
+                    val formatValue = NumberFormat.getInstance().format(int)
+                    val formattedString = formatValue.toString()
 
                     // Set text formatted in EditText and set price data
                     fragment_base_real_estate_price.editText?.setText(formattedString)
@@ -418,6 +416,17 @@ abstract class BaseRealEstateFragment : Fragment(),
             false
         } else {
             fragment_base_real_estate_type.error = null
+            true
+        }
+    }
+
+    private fun validatePrice(s: String): Boolean {
+        val filtered = s.filterNot { it == ',' }
+        return if (filtered.length > 10) {
+            fragment_base_real_estate_price.error = getString(R.string.price_to_long)
+            false
+        } else {
+            fragment_base_real_estate_price.error = null
             true
         }
     }

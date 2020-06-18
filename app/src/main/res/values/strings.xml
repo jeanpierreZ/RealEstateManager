@@ -62,6 +62,7 @@
     <string name="erase">Erase</string>
     <string name="add_type_and_media">Add a type and media</string>
     <string name="enter_type">Enter a type</string>
+    <string name="price_to_long">The price is too long</string>
     <string name="enter_media">Enter a media</string>
     <string name="save">Register property</string>
 

@@ -24,9 +24,8 @@ data class Media(@PrimaryKey(autoGenerate = true)
 
     fun mediaFromContentValues(values: ContentValues): Media {
         val media = Media()
-
-        if (values.containsKey("mediaId")) media.mediaId = values.getAsLong("pictureId")
-        if (values.containsKey("mediaDescription")) media.mediaDescription = values.getAsString("pictureDescription")
+        if (values.containsKey("mediaId")) media.mediaId = values.getAsLong("mediaId")
+        if (values.containsKey("mediaDescription")) media.mediaDescription = values.getAsString("mediaDescription")
         if (values.containsKey("mediaPicture")) media.mediaPicture = values.get("mediaPicture") as Uri?
         if (values.containsKey("mediaVideo")) media.mediaVideo = values.get("mediaVideo") as Uri?
         if (values.containsKey("realEstateId")) media.realEstateId = values.getAsLong("realEstateId")
