@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.RealEstateAdapter
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import kotlinx.android.synthetic.main.toolbar.*
 
 
 /**
@@ -36,25 +38,33 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
 
     private var realEstateWithMediasList: MutableList<RealEstateWithMedias?> = mutableListOf()
 
+    private var isTablet = false
+    private var searchResult = false
+
     // Declare callback
     private var callbackRealEstate: OnRealEstateClickedListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val fragmentView: View = inflater.inflate(R.layout.fragment_list, container, false)
+        setHasOptionsMenu(true)
 
         // Get RecyclerView from layout and serialise it
         recyclerView = fragmentView.findViewById(R.id.fragment_list_recycler_view)
+
+        // Boolean to accentuate or not the color of the real estate
+        isTablet = arguments?.getBoolean(MainActivity.IS_TABLET)!!
 
         configureRecyclerView()
 
         // UpdateUI either with the search list or with the list of all properties
         val listFromSearch: ArrayList<RealEstateWithMedias>
-        if (arguments != null && !requireArguments().isEmpty) {
+        if (arguments?.getParcelableArrayList<RealEstateWithMedias>(MainActivity.LIST_FROM_SEARCH) != null) {
             listFromSearch = arguments?.getParcelableArrayList<RealEstateWithMedias>(MainActivity.LIST_FROM_SEARCH)
                     as ArrayList<RealEstateWithMedias>
             updateUI(listFromSearch)
             arguments?.remove(MainActivity.LIST_FROM_SEARCH)
+            searchResult = true
         } else {
             // Use the ViewModelProvider to associate the ViewModel with ListFragment
             realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
@@ -64,9 +74,21 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
                 Log.d(TAG, "list = $list")
                 updateUI(list)
             })
+            searchResult = false
         }
 
         return fragmentView
+    }
+
+    //----------------------------------------------------------------------------------
+    // Method for Toolbar Menu
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if (searchResult) {
+            menu.findItem(R.id.menu_toolbar_add)?.isVisible = false
+            activity?.toolbar?.setTitle(R.string.search_results)
+        }
+        super.onPrepareOptionsMenu(menu)
     }
 
     //----------------------------------------------------------------------------------
@@ -74,7 +96,7 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
 
     private fun configureRecyclerView() {
         // Create the adapter by passing the list of items
-        realEstateAdapter = RealEstateAdapter(realEstateWithMediasList, Glide.with(this), this, requireActivity())
+        realEstateAdapter = RealEstateAdapter(realEstateWithMediasList, Glide.with(this), this, isTablet, requireActivity())
         // Attach the adapter to the recyclerView to populate items
         recyclerView?.adapter = realEstateAdapter
         // Set layout manager to position the items

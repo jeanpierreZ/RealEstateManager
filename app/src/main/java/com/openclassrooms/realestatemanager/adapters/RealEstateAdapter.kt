@@ -16,6 +16,7 @@ import java.lang.ref.WeakReference
 class RealEstateAdapter(private var list: List<RealEstateWithMedias?>,
                         private val glide: RequestManager,
                         private var callback: Listener,
+                        private val isTablet: Boolean,
                         private var context: Context) : RecyclerView.Adapter<RealEstateViewHolder>() {
 
     companion object {
@@ -45,18 +46,22 @@ class RealEstateAdapter(private var list: List<RealEstateWithMedias?>,
             // Fire the listener to get the real estate position in the list
             callback.onClickRealEstate(position)
 
-            // Update last item clicked position for UI
-            lastClickedItemPosition = position
-            notifyDataSetChanged()
+            if (isTablet) {
+                // Update last item clicked position for UI
+                lastClickedItemPosition = position
+                notifyDataSetChanged()
+            }
         }
 
-        // Set accent light color for the real estate selected
-        if (lastClickedItemPosition == position) {
-            holder.itemView.real_estate_card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
-            holder.itemView.real_estate_price.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
-        } else {
-            holder.itemView.real_estate_card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-            holder.itemView.real_estate_price.setTextColor(ContextCompat.getColor(context, R.color.colorAccentDark))
+        if (isTablet) {
+            // Set accent light color for the real estate selected in tablet mode only
+            if (lastClickedItemPosition == position) {
+                holder.itemView.real_estate_card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorAccentLight))
+                holder.itemView.real_estate_price.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+            } else {
+                holder.itemView.real_estate_card_view.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                holder.itemView.real_estate_price.setTextColor(ContextCompat.getColor(context, R.color.colorAccentDark))
+            }
         }
     }
 

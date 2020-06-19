@@ -408,7 +408,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     }
 
     //----------------------------------------------------------------------------------
-    // Private methods for Pictures and data
+    // Methods to set error in TextInputLayout
 
     private fun validateType(): Boolean {
         return if (fragment_base_real_estate_type.editText?.text.toString() == "") {
@@ -440,6 +440,9 @@ abstract class BaseRealEstateFragment : Fragment(),
             true
         }
     }
+
+    //----------------------------------------------------------------------------------
+    // Methods for medias
 
     @AfterPermissionGranted(RC_READ_PERM)
     private fun addPicture() {
@@ -546,6 +549,9 @@ abstract class BaseRealEstateFragment : Fragment(),
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
+
+    //----------------------------------------------------------------------------------
+    // Methods for data
 
     private fun storeLatLng() {
         val streetNumberFormat = streetNumber ?: ""

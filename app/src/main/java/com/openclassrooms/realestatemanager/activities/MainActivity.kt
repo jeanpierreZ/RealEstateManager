@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity(),
         // Keys for bundle
         const val REAL_ESTATE_ID_USED_FOR_DETAIL: String = "REAL_ESTATE_ID_USED_FOR_DETAIL"
         const val LIST_FROM_SEARCH: String = "LIST_FROM_SEARCH"
+        const val IS_TABLET: String = "IS_TABLET"
 
         // Key for real estate title
         const val TITLE_REAL_ESTATE_ACTIVITY: String = "TITLE_REAL_ESTATE_ACTIVITY"
@@ -74,7 +75,9 @@ class MainActivity : AppCompatActivity(),
         realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
 
         displayListFragment()
-        displayDetailsFragmentAtLaunchInTabletMode()
+        if (activityMainDetailsFragmentContainerView != null) {
+            displayDetailsFragmentAtLaunchInTabletMode()
+        }
     }
 
     //----------------------------------------------------------------------------------
@@ -268,7 +271,11 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun displayListFragment() {
+        val bundleMode = Bundle()
         if (activityMainDetailsFragmentContainerView != null) {
+            // Tablet mode
+            bundleMode.putBoolean(IS_TABLET, true)
+            listFragment.arguments = bundleMode
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activityMainFragmentContainerView, listFragment)
                     .attach(listFragment)
@@ -276,6 +283,9 @@ class MainActivity : AppCompatActivity(),
                     .addToBackStack(listFragment.toString())
                     .commit()
         } else {
+            // Phone mode
+            bundleMode.putBoolean(IS_TABLET, false)
+            listFragment.arguments = bundleMode
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activityMainFragmentContainerView, listFragment)
                     .addToBackStack(listFragment.toString())
@@ -286,12 +296,10 @@ class MainActivity : AppCompatActivity(),
     private fun displayDetailsFragmentAtLaunchInTabletMode() {
         // At launch, add only DetailsFragment in Tablet mode,
         // but hide the fragment because no real estate is selected
-        if (activityMainDetailsFragmentContainerView != null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.activityMainDetailsFragmentContainerView, detailsFragment)
-                    .hide(detailsFragment)
-                    .commit()
-        }
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.activityMainDetailsFragmentContainerView, detailsFragment)
+                .hide(detailsFragment)
+                .commit()
     }
 
     private fun displayDetailsFragment() {

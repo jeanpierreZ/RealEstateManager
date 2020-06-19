@@ -85,6 +85,7 @@
     <string name="search_canceled">Search canceled</string>
     <string name="no_search_parameter">Add a parameter to perform a search</string>
     <string name="no_results_search">No results for the search</string>
+    <string name="search_results">Search results</string>
 
     <!-- MapFragment -->
     <string name="network_unavailable">Network unavailable</string>
