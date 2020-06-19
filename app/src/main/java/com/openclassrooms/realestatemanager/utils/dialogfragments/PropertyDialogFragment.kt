@@ -13,7 +13,8 @@ import com.openclassrooms.realestatemanager.models.Type
 class PropertyDialogFragment(private var editText: EditText,
                              private val title: Int,
                              private val previouslySelectedChoice: String?,
-                             private val list: Array<CharSequence>) : DialogFragment() {
+                             private val list: Array<CharSequence>,
+                             private val toSearch: Boolean) : DialogFragment() {
 
     // Declare callback
     private var callbackProperty: OnPropertyChosenListener? = null
@@ -66,7 +67,7 @@ class PropertyDialogFragment(private var editText: EditText,
                         callbackProperty?.onPropertyChosen(editText)
                     }
             // Set the negative action button for status only
-            if (isStatus) {
+            if (isStatus || toSearch) {
                 builder.setNegativeButton(getString(R.string.erase)) { _, _ ->
                     // Save a null value for the property of the item
                     editText.text = null

@@ -68,17 +68,14 @@
 
     <string name="search_title">Search for real estate</string>
     <string name="search_type">What type of property are you looking for?</string>
-    <string name="search_price">At what price?</string>
-    <string name="search_between">Between</string>
-    <string name="search_minimum">min</string>
-    <string name="search_maximum">max</string>
-    <string name="search_and">and</string>
-    <string name="search_surface">From what surface?</string>
+    <string name="search_min_price">Min price?</string>
+    <string name="search_max_price">Max price?</string>
+    <string name="search_min_surface">Min surface?</string>
+    <string name="search_max_surface">Max surface?</string>
     <string name="search_poi">With which points of interest?</string>
     <string name="search_district">In which district?</string>
     <string name="search_entry_date">On the market since?</string>
     <string name="search_sale_date">Sold from?</string>
-    <string name="search_media">With how many photos or videos minimum?</string>
     <string name="search_media_number">Minimum number of media?</string>
     <string name="search_button">Search</string>
 

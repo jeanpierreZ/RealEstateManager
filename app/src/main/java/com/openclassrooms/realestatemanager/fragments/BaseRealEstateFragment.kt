@@ -40,7 +40,6 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.io.IOException
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -145,6 +144,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private val statusTitle = R.string.real_estate_status
 
     private val myUtils = MyUtils()
+    private val toSearch = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -165,7 +165,7 @@ abstract class BaseRealEstateFragment : Fragment(),
         // Show the AlertDialog to choose the type of the real estate
         fragment_base_real_estate_type.editText?.setOnClickListener {
             myUtils.openPropertyDialogFragment(fragment_base_real_estate_type.editText!!, typeTitle,
-                    type, types, requireActivity().supportFragmentManager)
+                    type, types, requireActivity().supportFragmentManager, toSearch)
         }
         validateType()
         fragment_base_real_estate_type.editText?.doAfterTextChanged { validateType() }
@@ -173,32 +173,13 @@ abstract class BaseRealEstateFragment : Fragment(),
         fragment_base_real_estate_price.editText?.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable?) {
-                validatePrice(s.toString())
+                myUtils.validatePrice(fragment_base_real_estate_price, requireActivity(), s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                fragment_base_real_estate_price.editText?.removeTextChangedListener(this)
-                try {
-                    var originalString = s.toString()
-
-                    if (originalString.contains(",")) {
-                        originalString = originalString.replace(",", "")
-                    }
-
-                    val int: Int = originalString.toInt()
-                    val formatValue = NumberFormat.getInstance().format(int)
-                    val formattedString = formatValue.toString()
-
-                    // Set text formatted in EditText and set price data
-                    fragment_base_real_estate_price.editText?.setText(formattedString)
-                    fragment_base_real_estate_price.editText?.text?.length?.let { fragment_base_real_estate_price.editText?.setSelection(it) }
-                    price = originalString.toIntOrNull()
-                } catch (nfe: NumberFormatException) {
-                    nfe.printStackTrace()
-                }
-                fragment_base_real_estate_price.editText?.addTextChangedListener(this)
+                price = myUtils.formatPrice(fragment_base_real_estate_price?.editText, this, s)
             }
         })
 
@@ -259,7 +240,7 @@ abstract class BaseRealEstateFragment : Fragment(),
         // Show the AlertDialog to choose the status of the real estate
         fragment_base_real_estate_status.editText?.setOnClickListener {
             myUtils.openPropertyDialogFragment(fragment_base_real_estate_status.editText!!, statusTitle,
-                    status, statutes, requireActivity().supportFragmentManager)
+                    status, statutes, requireActivity().supportFragmentManager, toSearch)
         }
 
         // Show the AlertDialog to choose the entry date of the real estate
@@ -416,17 +397,6 @@ abstract class BaseRealEstateFragment : Fragment(),
             false
         } else {
             fragment_base_real_estate_type.error = null
-            true
-        }
-    }
-
-    private fun validatePrice(s: String): Boolean {
-        val filtered = s.filterNot { it == ',' }
-        return if (filtered.length > 10) {
-            fragment_base_real_estate_price.error = getString(R.string.price_to_long)
-            false
-        } else {
-            fragment_base_real_estate_price.error = null
             true
         }
     }

@@ -25,7 +25,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_type"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -43,11 +43,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_price_min"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_search_surface_min"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_poi"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_price_max"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_type">
@@ -62,12 +62,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_price_max"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/activity_search_price_min"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_surface_min"
         app:layout_constraintStart_toEndOf="@+id/activity_search_price_min">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -80,14 +80,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_surface_min"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_search_poi"
+        app:layout_constraintBaseline_toBaselineOf="@+id/activity_search_price_max"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_surface_max"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_search_price_min">
+        app:layout_constraintStart_toEndOf="@+id/activity_search_price_max">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -99,7 +98,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_surface_max"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -117,12 +116,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_poi"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_district"
-        app:layout_constraintTop_toBottomOf="@+id/activity_search_surface_min">
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_price_min">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -135,7 +134,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_district"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
@@ -152,11 +151,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_entry_date"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_search_media"
+        app:layout_constraintBottom_toTopOf="@+id/activity_search_button"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_sale_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_search_district">
@@ -172,12 +171,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_sale_date"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/activity_search_entry_date"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/activity_search_media"
         app:layout_constraintStart_toEndOf="@+id/activity_search_entry_date">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -191,12 +190,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_search_media"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_button"
-        app:layout_constraintTop_toBottomOf="@+id/activity_search_entry_date">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/activity_search_sale_date"
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_district">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -215,6 +216,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_search_media" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_search_entry_date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

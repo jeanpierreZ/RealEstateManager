@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.utils
 
 import android.app.Activity
 import android.content.Context
+import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
@@ -77,6 +79,47 @@ class MyUtils {
             text?.text = value?.let { context.resources.getQuantityString(R.plurals.bedrooms, it, it) }
         } else {
             text?.text = ""
+        }
+    }
+
+    //----------------------------------------------------------------------------------
+    // Format price number and validate it
+
+    fun formatPrice(editText: EditText?, textWatcher: TextWatcher, s: CharSequence?): Int? {
+        editText?.removeTextChangedListener(textWatcher)
+
+        var price: Int? = null
+
+        try {
+            var originalString = s.toString()
+
+            if (originalString.contains(",")) {
+                originalString = originalString.replace(",", "")
+            }
+            val int: Int = originalString.toInt()
+            val formatValue = NumberFormat.getInstance().format(int)
+            val formattedString = formatValue.toString()
+
+            // Set text formatted in EditText and set price data
+            editText?.setText(formattedString)
+            editText?.text?.length?.let { editText.setSelection(it) }
+            price = originalString.toIntOrNull()
+        } catch (nfe: NumberFormatException) {
+            nfe.printStackTrace()
+        }
+        editText?.addTextChangedListener(textWatcher)
+
+        return price
+    }
+
+    fun validatePrice(textInputLayout: TextInputLayout, context: Context, s: String): Boolean {
+        val filtered = s.filterNot { it == ',' }
+        return if (filtered.length > 10) {
+            textInputLayout.error = context.getString(R.string.price_to_long)
+            false
+        } else {
+            textInputLayout.error = null
+            true
         }
     }
 
@@ -184,8 +227,8 @@ class MyUtils {
     }
 
     fun openPropertyDialogFragment(editText: EditText, title: Int, previouslySelectedChoice: String?,
-                                   list: Array<CharSequence>, fragmentManager: FragmentManager) {
-        val propertyDialogFragment = PropertyDialogFragment(editText, title, previouslySelectedChoice, list)
+                                   list: Array<CharSequence>, fragmentManager: FragmentManager, toSearch: Boolean) {
+        val propertyDialogFragment = PropertyDialogFragment(editText, title, previouslySelectedChoice, list, toSearch)
         propertyDialogFragment.show(fragmentManager, "propertyDialogFragment")
     }
 
