@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(),
 
     private val detailsFragment = DetailsFragment()
     private val listFragment = ListFragment()
+    private val bundleListFragment = Bundle()
     private val mapFragment = MapFragment()
 
     private val myUtils = MyUtils()
@@ -108,7 +109,6 @@ class MainActivity : AppCompatActivity(),
                             data?.getParcelableArrayListExtra<RealEstateWithMedias>(SearchActivity.SEARCH_LIST)
 
                     // Add a bundle to listFragment with the list from SearchActivity
-                    val bundleListFragment = Bundle()
                     bundleListFragment.putParcelableArrayList(LIST_FROM_SEARCH, intentFromSearch)
                     listFragment.arguments = bundleListFragment
 
@@ -271,11 +271,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun displayListFragment() {
-        val bundleMode = Bundle()
         if (activityMainDetailsFragmentContainerView != null) {
             // Tablet mode
-            bundleMode.putBoolean(IS_TABLET, true)
-            listFragment.arguments = bundleMode
+            bundleListFragment.putBoolean(IS_TABLET, true)
+            listFragment.arguments = bundleListFragment
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activityMainFragmentContainerView, listFragment)
                     .attach(listFragment)
@@ -284,8 +283,8 @@ class MainActivity : AppCompatActivity(),
                     .commit()
         } else {
             // Phone mode
-            bundleMode.putBoolean(IS_TABLET, false)
-            listFragment.arguments = bundleMode
+            bundleListFragment.putBoolean(IS_TABLET, false)
+            listFragment.arguments = bundleListFragment
             supportFragmentManager.beginTransaction()
                     .replace(R.id.activityMainFragmentContainerView, listFragment)
                     .addToBackStack(listFragment.toString())

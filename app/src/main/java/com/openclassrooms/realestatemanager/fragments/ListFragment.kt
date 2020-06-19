@@ -91,6 +91,11 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
         super.onPrepareOptionsMenu(menu)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity?.toolbar?.setTitle(R.string.app_name)
+    }
+
     //----------------------------------------------------------------------------------
     // Configure RecyclerViews, Adapters & LayoutManager
 

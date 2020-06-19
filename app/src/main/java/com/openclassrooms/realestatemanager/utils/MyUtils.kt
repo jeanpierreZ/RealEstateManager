@@ -19,7 +19,9 @@ import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
+import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.*
 
 
 class MyUtils {
@@ -92,13 +94,14 @@ class MyUtils {
 
         try {
             var originalString = s.toString()
-
             if (originalString.contains(",")) {
                 originalString = originalString.replace(",", "")
             }
-            val int: Int = originalString.toInt()
-            val formatValue = NumberFormat.getInstance().format(int)
-            val formattedString = formatValue.toString()
+
+            val long: Long = originalString.toLong()
+            val formatter = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
+            formatter.applyPattern("#,###,###,###")
+            val formattedString = formatter.format(long)
 
             // Set text formatted in EditText and set price data
             editText?.setText(formattedString)

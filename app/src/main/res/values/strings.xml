@@ -76,7 +76,7 @@
     <string name="search_district">In which district?</string>
     <string name="search_entry_date">On the market since?</string>
     <string name="search_sale_date">Sold from?</string>
-    <string name="search_media_number">Minimum number of media?</string>
+    <string name="search_media_number">Min number of media?</string>
     <string name="search_button">Search</string>
 
     <string name="search_canceled">Search canceled</string>

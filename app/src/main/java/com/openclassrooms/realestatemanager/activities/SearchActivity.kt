@@ -32,6 +32,18 @@ class SearchActivity : AppCompatActivity(),
     companion object {
         private val TAG = SearchActivity::class.java.simpleName
         const val SEARCH_LIST = "SEARCH_LIST"
+
+        // Keys used in onSaveInstanceState()
+        const val TYPE_SAVE_INSTANCE_STATE = "TYPE_SAVE_INSTANCE_STATE"
+        const val MIN_PRICE_SAVE_INSTANCE_STATE = "MIN_PRICE_SAVE_INSTANCE_STATE"
+        const val MAX_PRICE_SAVE_INSTANCE_STATE = "MAX_PRICE_SAVE_INSTANCE_STATE"
+        const val MIN_SURFACE_SAVE_INSTANCE_STATE = "MIN_SURFACE_SAVE_INSTANCE_STATE"
+        const val MAX_SURFACE_SAVE_INSTANCE_STATE = "MAX_SURFACE_SAVE_INSTANCE_STATE"
+        const val POI_SAVE_INSTANCE_STATE = "POI_SAVE_INSTANCE_STATE"
+        const val DISTRICT_SAVE_INSTANCE_STATE = "DISTRICT_SAVE_INSTANCE_STATE"
+        const val ENTRY_DATE_SAVE_INSTANCE_STATE = "ENTRY_DATE_SAVE_INSTANCE_STATE"
+        const val SALE_DATE_SAVE_INSTANCE_STATE = "SALE_DATE_SAVE_INSTANCE_STATE"
+        const val MEDIA_NUMBER_SAVE_INSTANCE_STATE = "MEDIA_NUMBER_SAVE_INSTANCE_STATE"
     }
 
     private val myUtils = MyUtils()
@@ -81,7 +93,6 @@ class SearchActivity : AppCompatActivity(),
             }
         })
 
-
         activity_search_price_max.editText?.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable?) {
@@ -128,6 +139,59 @@ class SearchActivity : AppCompatActivity(),
 
         activity_search_button.setOnClickListener {
             searchRealEstateWithMedias()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString(TYPE_SAVE_INSTANCE_STATE, type)
+        minPrice?.let { outState.putInt(MIN_PRICE_SAVE_INSTANCE_STATE, it) }
+        maxPrice?.let { outState.putInt(MAX_PRICE_SAVE_INSTANCE_STATE, it) }
+        minSurface?.let { outState.putInt(MIN_SURFACE_SAVE_INSTANCE_STATE, it) }
+        maxSurface?.let { outState.putInt(MAX_SURFACE_SAVE_INSTANCE_STATE, it) }
+        outState.putStringArrayList(POI_SAVE_INSTANCE_STATE, pointsOfInterest)
+        outState.putString(DISTRICT_SAVE_INSTANCE_STATE, district)
+        outState.putString(ENTRY_DATE_SAVE_INSTANCE_STATE, entryDate)
+        outState.putString(SALE_DATE_SAVE_INSTANCE_STATE, saleDate)
+        mediaNumber?.let { outState.putInt(MEDIA_NUMBER_SAVE_INSTANCE_STATE, it) }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        type = savedInstanceState.getString(TYPE_SAVE_INSTANCE_STATE)
+        activity_search_type.editText?.setText(type)
+        minPrice = savedInstanceState.getInt(MIN_PRICE_SAVE_INSTANCE_STATE)
+        if (minPrice != 0) {
+            activity_search_price_min.editText?.setText(minPrice.toString())
+        }
+        maxPrice = savedInstanceState.getInt(MAX_PRICE_SAVE_INSTANCE_STATE)
+        if (maxPrice != 0) {
+            activity_search_price_max.editText?.setText(maxPrice.toString())
+        }
+        minSurface = savedInstanceState.getInt(MIN_SURFACE_SAVE_INSTANCE_STATE)
+        if (minSurface != 0) {
+            activity_search_surface_min.editText?.setText(minSurface.toString())
+        }
+        maxSurface = savedInstanceState.getInt(MAX_SURFACE_SAVE_INSTANCE_STATE)
+        if (maxSurface != 0) {
+            activity_search_surface_max.editText?.setText(maxSurface.toString())
+        }
+        pointsOfInterest = savedInstanceState.getStringArrayList(POI_SAVE_INSTANCE_STATE)
+        val displayPOI = pointsOfInterest?.joinToString { it -> it }
+        activity_search_poi.editText?.setText(displayPOI)
+        district = savedInstanceState.getString(DISTRICT_SAVE_INSTANCE_STATE)
+        if (!district.isNullOrBlank()) {
+            activity_search_district.editText?.setText(district)
+        }
+        entryDate = savedInstanceState.getString(ENTRY_DATE_SAVE_INSTANCE_STATE)
+        activity_search_entry_date.editText?.setText(entryDate)
+        saleDate = savedInstanceState.getString(SALE_DATE_SAVE_INSTANCE_STATE)
+        activity_search_sale_date.editText?.setText(saleDate)
+        mediaNumber = savedInstanceState.getInt(MEDIA_NUMBER_SAVE_INSTANCE_STATE)
+        if (mediaNumber != 0) {
+            activity_search_media.editText?.setText(mediaNumber.toString())
         }
     }
 
