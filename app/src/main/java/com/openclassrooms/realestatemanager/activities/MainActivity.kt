@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity(),
         ListFragment.OnRealEstateClickedListener,
+        ListFragment.OnFirstPropertyClickedListener,
         MapFragment.OnMarkerClickedListener,
         NavigationView.OnNavigationItemSelectedListener {
 
@@ -189,9 +190,7 @@ class MainActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_toolbar_add -> {
-                val intentRealEstate = Intent(this, RealEstateActivity::class.java)
-                intentRealEstate.putExtra(TITLE_REAL_ESTATE_ACTIVITY, getString(R.string.create_real_estate))
-                startActivityForResult(intentRealEstate, ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE)
+                startRealEstateActivity()
             }
             R.id.menu_toolbar_search -> {
                 startSearchActivity()
@@ -268,6 +267,12 @@ class MainActivity : AppCompatActivity(),
     private fun startSearchActivity() {
         val intentSearch = Intent(this, SearchActivity::class.java)
         startActivityForResult(intentSearch, SEARCH_ACTIVITY_REQUEST_CODE)
+    }
+
+    private fun startRealEstateActivity() {
+        val intentRealEstate = Intent(this, RealEstateActivity::class.java)
+        intentRealEstate.putExtra(TITLE_REAL_ESTATE_ACTIVITY, getString(R.string.create_real_estate))
+        startActivityForResult(intentRealEstate, ADD_REAL_ESTATE_ACTIVITY_REQUEST_CODE)
     }
 
     private fun displayListFragment() {
@@ -412,6 +417,11 @@ class MainActivity : AppCompatActivity(),
     }
 
     //----------------------------------------------------------------------------------
+
+    // Implement listener from ListFragment to add the first property
+    override fun onFirstPropertyClicked() {
+        startRealEstateActivity()
+    }
 
     // Implement listener from ListFragment to display DetailsFragment when click on a real estate
     override fun onRealEstateClicked(realEstateWithMediasId: Long?) {

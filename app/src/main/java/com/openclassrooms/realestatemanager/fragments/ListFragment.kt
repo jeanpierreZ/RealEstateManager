@@ -19,6 +19,7 @@ import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.RealEstateAdapter
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
@@ -41,8 +42,9 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
     private var isTablet = false
     private var searchResult = false
 
-    // Declare callback
+    // Declare callbacks
     private var callbackRealEstate: OnRealEstateClickedListener? = null
+    private var callbackFirstProperty: OnFirstPropertyClickedListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -72,7 +74,17 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
             // Get the itemWithPicturesList
             realEstateWithMediasViewModel.getRealEstateWithMedias.observe(viewLifecycleOwner, Observer { list ->
                 Log.d(TAG, "list = $list")
-                updateUI(list)
+                if (list.isEmpty()) {
+                    fragment_list_text.visibility = View.VISIBLE
+                    fragment_list_fab.visibility = View.VISIBLE
+                    fragment_list_fab.setOnClickListener {
+                        callbackFirstProperty?.onFirstPropertyClicked()
+                    }
+                } else {
+                    fragment_list_text.visibility = View.INVISIBLE
+                    fragment_list_fab.visibility = View.INVISIBLE
+                    updateUI(list)
+                }
             })
             searchResult = false
         }
@@ -130,8 +142,9 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        // Call the method that creating callback after being attached to parent activity
-        createCallbackToParentActivity()
+        // Call the methods that creating callback after being attached to parent activity
+        createRealEstateCallbackToParentActivity()
+        createFirstPropertyCallbackToParentActivity()
     }
 
     // Declare our interface that will be implemented by any container activity
@@ -140,7 +153,7 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
     }
 
     // Create callback to parent activity
-    private fun createCallbackToParentActivity() {
+    private fun createRealEstateCallbackToParentActivity() {
         try {
             // Parent activity will automatically subscribe to callback
             callbackRealEstate = activity as OnRealEstateClickedListener?
@@ -148,4 +161,20 @@ class ListFragment : Fragment(), RealEstateAdapter.Listener {
             throw ClassCastException("$e must implement OnRealEstateClickedListener")
         }
     }
+
+    // Declare our interface that will be implemented by any container activity
+    interface OnFirstPropertyClickedListener {
+        fun onFirstPropertyClicked()
+    }
+
+    // Create callback to parent activity
+    private fun createFirstPropertyCallbackToParentActivity() {
+        try {
+            // Parent activity will automatically subscribe to callback
+            callbackFirstProperty = activity as OnFirstPropertyClickedListener?
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$e must implement OnFirstPropertyClickedListener")
+        }
+    }
+
 }

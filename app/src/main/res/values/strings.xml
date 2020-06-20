@@ -4,6 +4,9 @@
     <!-- Main and RealEstate Activities -->
     <string name="real_estate_not_saved">Real estate not saved</string>
 
+    <!-- ListFragment -->
+    <string name="add_your_first_property">Click to add your first property</string>
+
     <!-- Details Fragment -->
     <string name="description">Description</string>
     <string name="surface_icon">Surface icon</string>
