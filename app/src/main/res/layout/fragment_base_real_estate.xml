@@ -11,13 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/fragment_base_real_estate_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
         <TextView
             android:id="@+id/fragment_base_real_estate_title"
             android:layout_width="match_parent"
@@ -40,8 +33,7 @@
             android:layout_margin="4dp"
             app:errorEnabled="true"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_surface"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_guideline"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_price"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_title">
 
@@ -63,8 +55,10 @@
             android:layout_margin="4dp"
             app:errorEnabled="true"
             app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_type"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_surface"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_guideline">
+            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_type"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -83,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_bathrooms"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_rooms"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_type">
 
@@ -104,8 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_surface"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_bathrooms"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_guideline">
+            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_surface"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_type">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -124,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_poi"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_bedrooms"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_surface">
 
@@ -144,8 +140,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_bathrooms"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_poi"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_guideline">
+            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_bathrooms"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_surface">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -184,8 +182,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_street_number"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_guideline"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_street"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_street_number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_poi">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -202,9 +202,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_apartment_number"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_street"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_guideline"
+            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_apartment_number"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_poi">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -365,7 +366,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_agent"
-            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_guideline"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_sale_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_status">
 
@@ -385,9 +386,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_entry_date"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_agent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_guideline"
+            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_entry_date"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_status">
 
             <com.google.android.material.textfield.TextInputEditText

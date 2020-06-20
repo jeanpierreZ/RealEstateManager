@@ -53,7 +53,6 @@
         android:layout_marginTop="2dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="2dp"
-        app:errorEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/activity_search_poi"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_price_max"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +75,6 @@
         android:layout_marginTop="2dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="2dp"
-        app:errorEnabled="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/activity_search_price_min"
         app:layout_constraintEnd_toStartOf="@+id/activity_search_surface_min"
         app:layout_constraintStart_toEndOf="@+id/activity_search_price_min">
