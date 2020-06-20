@@ -411,6 +411,18 @@ abstract class BaseRealEstateFragment : Fragment(),
         }
     }
 
+    private fun validateSaleDate(): Boolean {
+        return if (status == Status.SOLD.availability && saleDate.isNullOrEmpty()
+                || status == Status.AVAILABLE.availability && !saleDate.isNullOrEmpty()
+                || !saleDate.isNullOrEmpty() && status.isNullOrEmpty()) {
+            fragment_base_real_estate_sale_date.error = getString(R.string.need_sale_date)
+            false
+        } else {
+            fragment_base_real_estate_sale_date.error = null
+            true
+        }
+    }
+
     //----------------------------------------------------------------------------------
     // Methods for medias
 
@@ -546,6 +558,10 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun saveRealEstateWithMedias() {
         if (type.isNullOrEmpty() || mediaList.isNullOrEmpty()) {
             myUtils.showSnackbarMessage(activity, R.string.add_type_and_media)
+        } else if (status == Status.SOLD.availability && saleDate.isNullOrEmpty()
+                || status == Status.AVAILABLE.availability && !saleDate.isNullOrEmpty()
+                || !saleDate.isNullOrEmpty() && status.isNullOrEmpty()) {
+            myUtils.showSnackbarMessage(activity, R.string.need_sale_date)
         } else {
             storeLatLng()
             saveRealEstateIntent.putExtra(ID_REAL_ESTATE, id)
@@ -585,6 +601,7 @@ abstract class BaseRealEstateFragment : Fragment(),
             } else {
                 status = propertyChosen.text.toString()
             }
+            validateSaleDate()
         }
     }
 
@@ -624,6 +641,7 @@ abstract class BaseRealEstateFragment : Fragment(),
                 saleDate = null
             }
         }
+        validateSaleDate()
     }
 
     //----------------------------------------------------------------------------------

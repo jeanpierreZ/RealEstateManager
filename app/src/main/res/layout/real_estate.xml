@@ -22,17 +22,37 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.4" />
 
-        <ImageView
-            android:id="@+id/real_estate_image"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:contentDescription="@string/property_image"
-            android:padding="4dp"
-            android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/real_estate_guideline_forty_vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/real_estate_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/property_image"
+                android:padding="4dp"
+                android:scaleType="center" />
+
+            <TextView
+                android:id="@+id/real_estate_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/colorWhite"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:rotation="-45"
+                android:text="@string/sold"
+                android:textColor="@color/colorAccentDark"
+                android:textSize="18sp"
+                android:visibility="invisible" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/real_estate_type"

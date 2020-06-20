@@ -64,6 +64,7 @@
     <string name="enter_type">Enter a type</string>
     <string name="price_to_long">The price is too long</string>
     <string name="enter_media">Enter a media</string>
+    <string name="need_sale_date">Need a sale date if sold</string>
     <string name="save">Register property</string>
 
     <string name="search_title">Search for real estate</string>
@@ -122,6 +123,7 @@
     <string name="property_media">property media</string>
     <string name="text">text</string>
     <string name="page">%1$d / %2$d</string>
+    <string name="sold">SOLD</string>
 
     <!-- media_full_screen xml for RecyclerView -->
     <string name="close">Close</string>

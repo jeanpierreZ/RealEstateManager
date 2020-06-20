@@ -2,7 +2,7 @@
 <resources>
 
     <!-- DialogFragment DatePicker theme -->
-    <style name="DialogOutlinedButtonTheme" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="DialogButtonTheme" parent="Theme.MaterialComponents.Light.Dialog">
 
         <item name="android:buttonBarNegativeButtonStyle">
             @style/Widget.MaterialComponents.Button.TextButton.Dialog

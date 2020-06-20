@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
+import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.utils.MyUtils
 
 
@@ -19,6 +20,7 @@ class RealEstateViewHolder(realEstateView: View) : RecyclerView.ViewHolder(realE
     private var realEstateDistrict: TextView? = null
     private var realEstatePrice: TextView? = null
     private var realEstateImage: ImageView? = null
+    private var realEstateStatus: TextView? = null
     private var realEstateCardView: CardView? = null
     private val myUtils = MyUtils()
 
@@ -27,6 +29,7 @@ class RealEstateViewHolder(realEstateView: View) : RecyclerView.ViewHolder(realE
         realEstateDistrict = itemView.findViewById(R.id.real_estate_district)
         realEstatePrice = itemView.findViewById(R.id.real_estate_price)
         realEstateImage = itemView.findViewById(R.id.real_estate_image)
+        realEstateStatus = itemView.findViewById(R.id.real_estate_status)
         realEstateCardView = itemView.findViewById(R.id.real_estate_card_view)
     }
 
@@ -35,6 +38,9 @@ class RealEstateViewHolder(realEstateView: View) : RecyclerView.ViewHolder(realE
         realEstateType?.text = realEstateWithMedias?.realEstate?.type
         realEstateDistrict?.text = realEstateWithMedias?.realEstate?.address?.district
         myUtils.displayPrice(realEstateWithMedias?.realEstate?.price, realEstatePrice, context)
+        if (realEstateWithMedias?.realEstate?.status == Status.SOLD.availability) {
+            realEstateStatus?.visibility = View.VISIBLE
+        }
 
         // Necessary if the user don't have a media with the real estate
         if (realEstateWithMedias?.medias?.size != 0) {

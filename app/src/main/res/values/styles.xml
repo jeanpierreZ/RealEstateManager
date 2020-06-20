@@ -17,7 +17,7 @@
     </style>
 
     <!-- DialogFragment DatePicker theme -->
-    <style name="DialogOutlinedButtonTheme" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="DialogButtonTheme" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
