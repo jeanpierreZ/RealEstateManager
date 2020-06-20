@@ -27,14 +27,6 @@ class RealEstateWithMediasRepository(private val realEstateWithMediasDao: RealEs
 
     // --- CREATE ---
 
-    suspend fun insertItem(realEstate: RealEstate) {
-        realEstateWithMediasDao.insertRealEstate(realEstate)
-    }
-
-    suspend fun insertPictures(mediaList: ArrayList<Media?>) {
-        realEstateWithMediasDao.insertMedias(mediaList)
-    }
-
     suspend fun insertRealEstateWithMedias(realEstate: RealEstate, mediaList: ArrayList<Media?>) {
         realEstateWithMediasDao.insertRealEstateWithMedias(realEstate, mediaList)
     }

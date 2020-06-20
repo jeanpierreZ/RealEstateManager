@@ -30,7 +30,7 @@ import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.Utils.isInternetAvailable
-import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import com.openclassrooms.realestatemanager.viewmodels.RealEstateWithMediasViewModel
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions

@@ -18,7 +18,7 @@ import com.openclassrooms.realestatemanager.utils.MyUtils
 import com.openclassrooms.realestatemanager.utils.dialogfragments.DateDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.POIDialogFragment
 import com.openclassrooms.realestatemanager.utils.dialogfragments.PropertyDialogFragment
-import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import com.openclassrooms.realestatemanager.viewmodels.RealEstateWithMediasViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.text.SimpleDateFormat

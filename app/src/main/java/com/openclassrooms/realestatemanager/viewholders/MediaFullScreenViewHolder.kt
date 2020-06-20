@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.views.viewholders
+package com.openclassrooms.realestatemanager.viewholders
 
 import android.annotation.SuppressLint
 import android.content.Context

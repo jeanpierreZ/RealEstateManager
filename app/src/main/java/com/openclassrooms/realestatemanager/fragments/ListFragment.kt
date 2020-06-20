@@ -18,7 +18,7 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.activities.MainActivity
 import com.openclassrooms.realestatemanager.adapters.RealEstateAdapter
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
-import com.openclassrooms.realestatemanager.views.viewmodels.RealEstateWithMediasViewModel
+import com.openclassrooms.realestatemanager.viewmodels.RealEstateWithMediasViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 

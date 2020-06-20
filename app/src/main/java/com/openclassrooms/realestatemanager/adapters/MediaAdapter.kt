@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.Media
-import com.openclassrooms.realestatemanager.views.viewholders.MediaFullScreenViewHolder
-import com.openclassrooms.realestatemanager.views.viewholders.MediaViewHolder
+import com.openclassrooms.realestatemanager.viewholders.MediaFullScreenViewHolder
+import com.openclassrooms.realestatemanager.viewholders.MediaViewHolder
 
 
 class MediaAdapter(private var list: ArrayList<Media?>,

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.RealEstateWithMedias
-import com.openclassrooms.realestatemanager.views.viewholders.RealEstateViewHolder
+import com.openclassrooms.realestatemanager.viewholders.RealEstateViewHolder
 import kotlinx.android.synthetic.main.real_estate.view.*
 import java.lang.ref.WeakReference
 

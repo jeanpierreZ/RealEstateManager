@@ -130,7 +130,7 @@ class MyUtils {
 
     fun showSnackbarMessage(activity: Activity?, text: Int?) {
         val snackbar = activity?.findViewById<View>(android.R.id.content)?.let { Snackbar.make(it, text!!, 3500) }
-        snackbar?.view?.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorWhite))
+        snackbar?.view?.background = activity?.baseContext?.let { ContextCompat.getDrawable(it, R.drawable.border) }
         snackbar?.setTextColor(ContextCompat.getColor(activity, R.color.colorBlack))
         snackbar?.view?.setOnClickListener { _ -> snackbar.dismiss() }
         snackbar?.show()
