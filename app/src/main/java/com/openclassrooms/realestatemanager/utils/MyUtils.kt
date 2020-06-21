@@ -99,7 +99,7 @@ class MyUtils {
             }
 
             val long: Long = originalString.toLong()
-            val formatter = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
+            val formatter = NumberFormat.getInstance(Locale.US) as DecimalFormat
             formatter.applyPattern("#,###,###,###")
             val formattedString = formatter.format(long)
 
