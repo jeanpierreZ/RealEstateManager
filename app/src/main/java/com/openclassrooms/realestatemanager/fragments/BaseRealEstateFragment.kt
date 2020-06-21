@@ -34,6 +34,7 @@ import com.openclassrooms.realestatemanager.models.Media
 import com.openclassrooms.realestatemanager.models.Status
 import com.openclassrooms.realestatemanager.models.Type
 import com.openclassrooms.realestatemanager.utils.MyUtils
+import com.openclassrooms.realestatemanager.utils.Utils
 import kotlinx.android.synthetic.main.fragment_base_real_estate.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -154,6 +155,11 @@ abstract class BaseRealEstateFragment : Fragment(),
         pager = fragmentView.findViewById(R.id.fragment_base_real_estate_pager)
 
         configureRecyclerView()
+
+        // Alert the user that without connectivity, it is impossible to have the GPS coordinates of the address
+        if (!Utils.isInternetAvailable(activity)) {
+            impossibleToStoreLatLong()
+        }
 
         return fragmentView
     }
@@ -519,7 +525,7 @@ abstract class BaseRealEstateFragment : Fragment(),
     private fun deleteMediaAlertDialog(media: Media, position: Int) {
         // Create an AlertDialog to request deletion of the media
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
-        builder.setMessage(getString(R.string.delete_media))
+        builder.setMessage(R.string.delete_media)
         builder.apply {
             setPositiveButton(android.R.string.ok) { _, _ ->
                 removeMediaFromListAndRefresh(media, position)
@@ -535,6 +541,18 @@ abstract class BaseRealEstateFragment : Fragment(),
     //----------------------------------------------------------------------------------
     // Methods for data
 
+    private fun impossibleToStoreLatLong() {
+        // Create an AlertDialog to request deletion of the media
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        builder.setMessage(R.string.impossible_to_store_lat_long)
+        builder.apply {
+            setPositiveButton(android.R.string.ok) { _, _ ->
+            }
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
     private fun storeLatLng() {
         val streetNumberFormat = streetNumber ?: ""
         val streetFormat = street ?: ""
@@ -542,15 +560,25 @@ abstract class BaseRealEstateFragment : Fragment(),
         val postalCodeFormat = postalCode ?: ""
         val cityFormat = city ?: ""
         val countryFormat = country ?: ""
-        val fullAddress = "$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat"
-        val geocoder = Geocoder(activity)
-        val addresses: List<Address>
-        addresses = geocoder.getFromLocationName(fullAddress, 1)
 
-        if (addresses.isNotEmpty()) {
-            latitude = addresses[0].latitude
-            longitude = addresses[0].longitude
+        val fullAddress = "$streetNumberFormat $streetFormat $districtFormat $postalCodeFormat $cityFormat $countryFormat"
+        val addresses: List<Address>
+
+        try {
+            if (Utils.isInternetAvailable(activity)) {
+                if (fullAddress.isNotBlank()) {
+                    val geocoder = Geocoder(activity)
+                    addresses = geocoder.getFromLocationName(fullAddress, 1)
+                    if (addresses.isNotEmpty()) {
+                        latitude = addresses[0].latitude
+                        longitude = addresses[0].longitude
+                    }
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+
         saveRealEstateIntent.putExtra(LATITUDE_REAL_ESTATE, latitude)
         saveRealEstateIntent.putExtra(LONGITUDE_REAL_ESTATE, longitude)
     }

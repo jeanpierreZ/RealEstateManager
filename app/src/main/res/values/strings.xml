@@ -69,6 +69,8 @@
     <string name="price_to_long">The price is too long</string>
     <string name="enter_media">Enter a media</string>
     <string name="need_sale_date">Need a sale date if sold</string>
+    <string name="impossible_to_store_lat_long">Unable to have the GPS coordinates of the address
+        without connectivity. You can save the property address now and update it later.</string>
     <string name="save">Register property</string>
 
     <string name="search_title">Search for real estate</string>

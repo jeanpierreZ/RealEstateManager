@@ -58,7 +58,7 @@ class PropertyDialogFragment(private var editText: EditText,
                         // The 'which' argument contains the index position of the selected item
                         choice = list[which] as String
                     }
-                    .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
                         // Set and save the selected (or the preSelectedChoice) value for the property or the status of the item
                         if (choice == null && preSelectedChoice != -1) {
                             choice = list[preSelectedChoice] as String
@@ -68,7 +68,7 @@ class PropertyDialogFragment(private var editText: EditText,
                     }
             // Set the negative action button for status only
             if (isStatus || toSearch) {
-                builder.setNegativeButton(getString(R.string.erase)) { _, _ ->
+                builder.setNegativeButton(R.string.erase) { _, _ ->
                     // Save a null value for the property of the item
                     editText.text = null
                     callbackProperty?.onPropertyChosen(editText)
