@@ -409,9 +409,11 @@ abstract class BaseRealEstateFragment : Fragment(),
 
     private fun validateMedia(): Boolean {
         return if (mediaList.size == 0) {
+            recyclerView?.visibility = View.GONE
             fragment_base_real_estate_media_description.error = getString(R.string.enter_media)
             false
         } else {
+            recyclerView?.visibility = View.VISIBLE
             fragment_base_real_estate_media_description.error = null
             true
         }

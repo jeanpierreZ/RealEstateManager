@@ -366,8 +366,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_agent"
             app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_sale_date"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_agent"
             app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_sale_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_status">
@@ -465,9 +465,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/take_picture"
-            app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_button_add_picture"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_recycler_view"
             app:layout_constraintEnd_toStartOf="@+id/fragment_base_real_estate_button_take_video"
-            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_button_add_picture" />
+            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_button_add_picture"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_media_description" />
 
         <Button
             android:id="@+id/fragment_base_real_estate_button_take_video"
@@ -476,15 +477,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/take_video"
-            app:layout_constraintBaseline_toBaselineOf="@+id/fragment_base_real_estate_button_take_picture"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_recycler_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_button_take_picture" />
+            app:layout_constraintStart_toEndOf="@+id/fragment_base_real_estate_button_take_picture"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_media_description" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_base_real_estate_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_margin="4dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_base_real_estate_pager"
             app:layout_constraintTop_toBottomOf="@+id/fragment_base_real_estate_button_add_picture" />
 
