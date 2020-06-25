@@ -264,9 +264,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, EasyPermissions.PermissionCa
 
     private fun getDataAndShowRealEstates() {
         // Add markers at real estates location
-        map?.clear() // clear older markers
         realEstateWithMediasViewModel = ViewModelProvider(this).get(RealEstateWithMediasViewModel::class.java)
         realEstateWithMediasViewModel.getRealEstateWithMedias.observe(this, Observer { realEstateWithMedias ->
+            map?.clear() // clear older markers
             for (realEstateWithMedia in realEstateWithMedias) {
                 realEstateWithMedia?.let { showRealEstates(it) }
             }
