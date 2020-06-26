@@ -135,8 +135,8 @@ abstract class BaseRealEstateFragment : Fragment(),
 
     // Create a charSequence array of the Type Enum and a title
     private val types: Array<CharSequence> =
-            arrayOf(Type.DUPLEX.realEstateType, Type.FLAT.realEstateType, Type.LOFT.realEstateType,
-                    Type.MANOR.realEstateType, Type.PENTHOUSE.realEstateType)
+            arrayOf(Type.DUPLEX.realEstateType, Type.FLAT.realEstateType, Type.HOUSE.realEstateType,
+                    Type.LOFT.realEstateType, Type.MANOR.realEstateType, Type.PENTHOUSE.realEstateType)
     private val typeTitle = R.string.real_estate_type
 
     // Create a charSequence array of the Status Enum and a title

@@ -51,8 +51,8 @@ class SearchActivity : AppCompatActivity(),
 
     // Create a charSequence array of the Type Enum
     private val types: Array<CharSequence> =
-            arrayOf(Type.DUPLEX.realEstateType, Type.FLAT.realEstateType, Type.LOFT.realEstateType,
-                    Type.MANOR.realEstateType, Type.PENTHOUSE.realEstateType)
+            arrayOf(Type.DUPLEX.realEstateType, Type.FLAT.realEstateType, Type.HOUSE.realEstateType,
+                    Type.LOFT.realEstateType, Type.MANOR.realEstateType, Type.PENTHOUSE.realEstateType)
 
     private var type: String? = null
     private var minPrice: Int? = null

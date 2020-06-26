@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity(),
                     realEstateWithMediasViewModel
                             .insertRealEstateWithMedias(realEstateData(data, null), mediaData(data))
                     sendNotification()
+                    displayListFragment()
                 }
 
                 UPDATE_REAL_ESTATE_ACTIVITY_REQUEST_CODE -> {

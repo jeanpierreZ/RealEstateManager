@@ -34,9 +34,10 @@ class PropertyDialogFragment(private var editText: EditText,
                     when (previouslySelectedChoice) {
                         Type.DUPLEX.realEstateType -> preSelectedChoice = 0
                         Type.FLAT.realEstateType -> preSelectedChoice = 1
-                        Type.LOFT.realEstateType -> preSelectedChoice = 2
-                        Type.MANOR.realEstateType -> preSelectedChoice = 3
-                        Type.PENTHOUSE.realEstateType -> preSelectedChoice = 4
+                        Type.HOUSE.realEstateType -> preSelectedChoice = 2
+                        Type.LOFT.realEstateType -> preSelectedChoice = 3
+                        Type.MANOR.realEstateType -> preSelectedChoice = 4
+                        Type.PENTHOUSE.realEstateType -> preSelectedChoice = 5
                     }
                 } else {
                     isStatus = true
