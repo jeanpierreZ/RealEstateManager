@@ -55,6 +55,8 @@ class MediaFullScreenViewHolder(mediaFullScreenView: View) : RecyclerView.ViewHo
         if (media?.mediaVideo != null && media.mediaVideo?.isAbsolute!!) {
             imageView?.visibility = View.GONE
             closePictureView?.visibility = View.GONE
+            playerView?.visibility = View.VISIBLE
+            fullScreenIconView?.visibility = View.VISIBLE
             fullScreenIconView?.background = ContextCompat.getDrawable(context, R.drawable.ic_fullscreen_exit_white_24dp)
 
             // Build SimpleExoPlayer
@@ -85,6 +87,9 @@ class MediaFullScreenViewHolder(mediaFullScreenView: View) : RecyclerView.ViewHo
             // Picture
         } else if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
             playerView?.visibility = View.GONE
+            fullScreenIconView?.visibility = View.GONE
+            imageView?.visibility = View.VISIBLE
+            closePictureView?.visibility = View.VISIBLE
             imageView?.let { glide.load(media.mediaPicture).into(it) }
             // Use the listener for zoom the imageView
             imageView?.setOnTouchListener(ScaleViewListener(context))

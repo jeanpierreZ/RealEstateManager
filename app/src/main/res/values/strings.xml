@@ -54,7 +54,7 @@
     <string name="real_estate_status">Status</string>
     <string name="real_estate_entry_date">Date of entry</string>
     <string name="real_estate_sale_date">Date of sale</string>
-    <string name="real_estate_agent">The real estate agent in charge of this property</string>
+    <string name="real_estate_agent">The name of real estate agent</string>
     <string name="sale_date_earlier_entry_date">The sale date cannot be earlier than the entry date</string>
     <string name="impossible_future_date">You cannot choose a date in the future</string>
     <string name="media_description">Media description</string>

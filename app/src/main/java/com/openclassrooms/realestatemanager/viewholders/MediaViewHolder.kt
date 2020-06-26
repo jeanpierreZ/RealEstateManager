@@ -63,6 +63,7 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
         // Video
         if (media?.mediaVideo != null && media.mediaVideo?.isAbsolute!!) {
             imageView?.visibility = View.GONE
+            playerView?.visibility = View.VISIBLE
 
             if (isRealEstateActivity) {
                 fullScreenIconView?.visibility = View.GONE
@@ -91,12 +92,12 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
             val videoSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(media.mediaVideo)
             // Prepare the player with the source.
-            player.prepare(videoSource, true, true)
-            player.seekTo(1)
+            player.prepare(videoSource)
 
             // Picture
         } else if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
             playerView?.visibility = View.GONE
+            imageView?.visibility = View.VISIBLE
             imageView?.let { glide.load(media.mediaPicture).into(it) }
         }
 
