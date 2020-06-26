@@ -91,7 +91,8 @@ class MediaViewHolder(mediaView: View) : RecyclerView.ViewHolder(mediaView),
             val videoSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(media.mediaVideo)
             // Prepare the player with the source.
-            player.prepare(videoSource)
+            player.prepare(videoSource, true, true)
+            player.seekTo(1)
 
             // Picture
         } else if (media?.mediaPicture != null && media.mediaPicture?.isAbsolute!!) {
